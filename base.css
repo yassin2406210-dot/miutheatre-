@@ -1,0 +1,337 @@
+/* =============================================
+   base.css
+   Reset, Variables, Buttons, Layout, Animations
+   ============================================= */
+
+/* ── Reset ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── CSS Variables (Light Mode) ── */
+:root {
+  --red: #C0141C;
+  --red-dark: #8B0E14;
+  --red-light: #fdf0f0;
+  --white: #ffffff;
+  --off-white: #fafafa;
+  --gray-100: #f4f4f4;
+  --gray-300: #e0e0e0;
+  --gray-500: #888888;
+  --gray-700: #444444;
+  --black: #111111;
+  --nav-height: 70px;
+
+  /* Dark mode toggle vars */
+  --bg-body: #ffffff;
+  --bg-card: #ffffff;
+  --bg-off: #fafafa;
+  --bg-input: #ffffff;
+  --text-main: #111111;
+  --text-muted: #888888;
+  --text-label: #444444;
+  --border-color: #e0e0e0;
+  --nav-bg: rgba(255, 255, 255, 0.97);
+  --mobile-menu-bg: #ffffff;
+  --checkbox-bg: #f4f4f4;
+  --dropdown-bg: #ffffff;
+  --admin-topbar-bg: #ffffff;
+  --admin-card-bg: #ffffff;
+  --admin-form-card-bg: #ffffff;
+  --stat-card-bg: #ffffff;
+  --admin-row-bg: #fafafa;
+  --table-header-bg: #fafafa;
+  --table-hover-bg: #fafafa;
+  --info-card-bg: #fafafa;
+  --success-card-bg: #ffffff;
+}
+
+/* ── Dark Mode Variables ── */
+body.dark-mode {
+  --red-light: #2a0a0b;
+  --white: #1a1a1a;
+  --off-white: #141414;
+  --gray-100: #2a2a2a;
+  --gray-300: #333333;
+  --gray-500: #888888;
+  --gray-700: #bbbbbb;
+  --black: #f0f0f0;
+
+  --bg-body: #0f0f0f;
+  --bg-card: #1e1e1e;
+  --bg-off: #141414;
+  --bg-input: #252525;
+  --text-main: #f0f0f0;
+  --text-muted: #888888;
+  --text-label: #bbbbbb;
+  --border-color: #333333;
+  --nav-bg: rgba(15, 15, 15, 0.97);
+  --mobile-menu-bg: #1a1a1a;
+  --checkbox-bg: #252525;
+  --dropdown-bg: #1e1e1e;
+  --admin-topbar-bg: #1a1a1a;
+  --admin-card-bg: #1e1e1e;
+  --admin-form-card-bg: #1e1e1e;
+  --stat-card-bg: #1e1e1e;
+  --admin-row-bg: #252525;
+  --table-header-bg: #252525;
+  --table-hover-bg: #252525;
+  --info-card-bg: #252525;
+  --success-card-bg: #1e1e1e;
+}
+
+/* ── Base Body ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-body);
+  overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ── Page System ── */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ── Buttons ── */
+.btn-red {
+  background-color: var(--red);
+  color: #ffffff;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-red:hover {
+  background-color: var(--red-dark);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 2px solid var(--border-color);
+  padding: 13px 30px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.btn-outline:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 8px;
+  min-height: 46px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--red);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 12px;
+  transition: letter-spacing 0.2s;
+}
+
+.link-btn:hover {
+  letter-spacing: 0.5px;
+}
+
+.link-btn-white {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 10px;
+  border-bottom: 2px solid var(--red);
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
+
+.link-btn-white:hover {
+  color: var(--red);
+}
+
+/* ── Layout Helpers ── */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.section {
+  padding: 90px 5%;
+  background: var(--bg-body);
+}
+
+.bg-off {
+  background-color: var(--bg-off) !important;
+}
+
+.text-center {
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 46px;
+}
+
+.white {
+  color: #ffffff;
+}
+
+.light {
+  color: #aaaaaa;
+}
+
+/* ── Footer ── */
+footer {
+  background: #0d0d0d;
+  color: #aaaaaa;
+  padding: 56px 5% 24px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.footer-brand img {
+  height: 32px;
+  margin-bottom: 12px;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.footer-brand p {
+  font-size: 13px;
+  line-height: 1.75;
+  max-width: 230px;
+  color: #555555;
+}
+
+.footer-col h4 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  margin-bottom: 11px;
+}
+
+.footer-col button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+  color: #555555;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.footer-col button:hover {
+  color: var(--red);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: #333333;
+  margin-top: 18px;
+}
+
+/* ── Dark Mode Toggle Button ── */
+#darkModeBtn {
+  background: none;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, background-color 0.3s;
+  flex-shrink: 0;
+  margin-left: 6px;
+  color: var(--text-main);
+}
+
+#darkModeBtn:hover {
+  border-color: var(--red);
+  background: var(--red-light);
+}
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── Mobile Responsive (shared) ── */
+@media (max-width: 860px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

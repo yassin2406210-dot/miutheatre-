@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIU Theatre Club</title>
+  <link rel="stylesheet" href="base.css"/>
+  <link rel="stylesheet" href="navbar.css"/>
+  <link rel="stylesheet" href="home.css"/>
+  <link rel="stylesheet" href="pages.css"/>
+  <link rel="stylesheet" href="forms.css"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar">
+  <div class="logo" onclick="showPage('home')">
+    <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU Logo"/>
+    <div class="logo-text">
+      <span class="logo-title">Theatre Club</span>
+      <span class="logo-sub">Misr International University</span>
+    </div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <button id="darkModeBtn" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+    <button onclick="showPage('home')">Home</button>
+    <div class="dropdown">
+      <button>Features ▾</button>
+      <div class="dropdown-menu">
+        <button onclick="showPage('auditions')">🎤 Auditions</button>
+        <button onclick="showPage('acting')">🎬 Acting Interview</button>
+        <button onclick="showPage('scripts')">📜 Script Upload</button>
+        <button onclick="showPage('exit')">🚪 Exit Interview</button>
+        <button onclick="showPage('workshops')">🛠 Workshops</button>
+        <button onclick="showPage('deadlines')">⏰ Deadlines</button>
+        <button onclick="showPage('rehearsals')">🎥 Rehearsal Videos</button>
+      </div>
+    </div>
+    <button onclick="showPage('about')">About Us</button>
+    <button onclick="showPage('contact')">Contact</button>
+    <button id="loginBtn" class="btn-red" onclick="showPage('login')">Login</button>
+    <button id="logoutBtn" class="btn-outline" onclick="doLogout()" style="display:none">Sign Out</button>
+  </div>
+
+  <button class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- mobile menu -->
+<div id="mobileMenu">
+  <button onclick="showPage('home'); closeMobileMenu()">Home</button>
+  <button onclick="showPage('auditions'); closeMobileMenu()">🎤 Auditions</button>
+  <button onclick="showPage('acting'); closeMobileMenu()">🎬 Acting Interview</button>
+  <button onclick="showPage('scripts'); closeMobileMenu()">📜 Script Upload</button>
+  <button onclick="showPage('exit'); closeMobileMenu()">🚪 Exit Interview</button>
+  <button onclick="showPage('workshops'); closeMobileMenu()">🛠 Workshops</button>
+  <button onclick="showPage('deadlines'); closeMobileMenu()">⏰ Deadlines</button>
+  <button onclick="showPage('rehearsals'); closeMobileMenu()">🎥 Rehearsal Videos</button>
+  <button onclick="showPage('about'); closeMobileMenu()">About Us</button>
+  <button onclick="showPage('contact'); closeMobileMenu()">Contact</button>
+  <button id="mobileLoginBtn" class="btn-red" onclick="showPage('login'); closeMobileMenu()">Login</button>
+  <button id="mobileLogoutBtn" class="btn-outline" onclick="doLogout(); closeMobileMenu()" style="display:none">Sign Out</button>
+</div>
+
+<!-- toast notification -->
+<div id="toast"></div>
+
+<!-- ===================== HOME PAGE ===================== -->
+<div class="page active" id="page-home">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-shape"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-tag">MIU Theatre Club</div>
+        <h1>Where Every <em>Story</em><br>Finds Its Stage</h1>
+        <p>Join the most passionate performing arts community at Misr International University. Audition, rehearse, create — and bring characters to life.</p>
+        <div class="hero-buttons">
+          <button class="btn-red" onclick="showPage('auditions')">Apply Now</button>
+          <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span class="hero-emoji">🎭</span>
+        <h3>MIU Theatre Club</h3>
+        <p>Performing Arts · OOA Room · MIU</p>
+        <div class="hero-stats">
+          <div class="stat"><strong>120+</strong><small>Members</small></div>
+          <div class="stat"><strong>15+</strong><small>Productions</small></div>
+          <div class="stat"><strong>8+</strong><small>Years</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section">
+    <div class="container">
+      <span class="section-tag">What We Offer</span>
+      <h2 class="section-title">Everything You Need to Shine on Stage</h2>
+      <p class="section-sub">From auditions to full productions — our club gives you all the tools to grow as a performer.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎤</div>
+          <h3>Open Auditions</h3>
+          <p>Anyone can audition. No experience required — just passion and dedication.</p>
+          <button class="link-btn" onclick="showPage('auditions')">Apply →</button>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎬</div>
+          <h3>Acting Interviews</h3>
+          <p>Serious about acting? Requires strong Arabic reading and full commitment.</p>
+          <button class="link-btn" onclick="showPage('acting')">Apply →</button>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📜</div>
+          <h3>Script Submissions</h3>
+          <p>Upload your script for admin review. Approved scripts go to the OOA room.</p>
+          <button class="link-btn" onclick="showPage('scripts')">Submit →</button>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛠</div>
+          <h3>Workshops</h3>
+          <p>Regular workshops on acting, voice training, and stage direction.</p>
+          <button class="link-btn" onclick="showPage('workshops')">View All →</button>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎥</div>
+          <h3>Rehearsal Videos</h3>
+          <p>Access links to all rehearsal recordings to catch up or review.</p>
+          <button class="link-btn" onclick="showPage('rehearsals')">Watch →</button>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚪</div>
+          <h3>Exit Interviews</h3>
+          <p>Planning to leave? Complete an exit interview to wrap up properly.</p>
+          <button class="link-btn" onclick="showPage('exit')">Learn More →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Strip -->
+  <section class="about-strip">
+    <div class="container about-grid">
+      <div class="about-text">
+        <h2>A Legacy of <em>Performance</em> at MIU</h2>
+        <p>The MIU Theatre Club has been a cornerstone of student life at Misr International University. From humble beginnings in the OOA room to full-scale university productions, we've built a community rooted in creativity and storytelling.</p>
+        <p>Our members perform at university events, national competitions, and beyond.</p>
+        <button class="link-btn-white" onclick="showPage('about')">Read our full history →</button>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="tl-year">2016</span>
+          <div class="tl-body"><strong>Club Founded</strong><span>Started in the OOA room</span></div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">2018</span>
+          <div class="tl-body"><strong>First Major Production</strong><span>Sold-out university audience</span></div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">2020</span>
+          <div class="tl-body"><strong>Online Expansion</strong><span>Digital rehearsals and workshops</span></div>
+        </div>
+        <div class="timeline-item">
+          <span class="tl-year">2025</span>
+          <div class="tl-body"><strong>120+ Active Members</strong><span>Largest cohort in club history</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deadlines Section -->
+  <section class="section bg-off">
+    <div class="container">
+      <span class="section-tag">Don't Miss Out</span>
+      <h2 class="section-title">Upcoming Deadlines</h2>
+      <p class="section-sub">Registration windows close fast — stay ahead of all important dates.</p>
+      <div class="deadlines-grid" id="homeDeadlines"></div>
+    </div>
+  </section>
+
+  <!-- Social Section -->
+  <section class="section">
+    <div class="container text-center">
+      <span class="section-tag">Follow Us</span>
+      <h2 class="section-title">Stay Connected</h2>
+      <p>Follow us for behind-the-scenes content, announcements, and production highlights.</p>
+      <div class="social-buttons">
+        <a id="igLink" href="#" class="social-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+        <a id="ttLink" href="#" class="social-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+          TikTok
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid container">
+      <div class="footer-brand">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/>
+        <p>The official theatre club of Misr International University — where stories come to life on stage.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('about')">About Us</button>
+        <button onclick="showPage('contact')">Contact</button>
+        <button onclick="showPage('login')">Login</button>
+      </div>
+      <div class="footer-col">
+        <h4>Features</h4>
+        <button onclick="showPage('auditions')">Auditions</button>
+        <button onclick="showPage('workshops')">Workshops</button>
+        <button onclick="showPage('scripts')">Script Upload</button>
+        <button onclick="showPage('rehearsals')">Rehearsal Videos</button>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <span>© 2025 MIU Theatre Club. All rights reserved.</span>
+      <span>Misr International University · OOA Room</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ===================== LOGIN PAGE ===================== -->
+<div class="page" id="page-login">
+  <div class="login-wrap">
+    <div class="login-left">
+      <div class="login-left-content">
+        <span style="font-size:70px; display:block; margin-bottom:20px; animation: float 4s ease-in-out infinite;">🎭</span>
+        <h2>Welcome to MIU Theatre Club</h2>
+        <p>Sign in or create an account using your MIU student email to access all club features.</p>
+        <div class="login-badges">
+          <div class="badge"><span>🎤</span><div><strong>Auditions & Interviews</strong><small>Apply for roles and acting spots</small></div></div>
+          <div class="badge"><span>📜</span><div><strong>Script Submissions</strong><small>Upload and track your scripts</small></div></div>
+          <div class="badge"><span>🛠</span><div><strong>Workshops & Deadlines</strong><small>Stay on top of all events</small></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-box">
+        <!-- Tabs -->
+        <div class="login-tabs">
+          <button id="tabSignIn" class="tab active" onclick="switchLoginTab('signin')">Sign In</button>
+          <button id="tabSignUp" class="tab" onclick="switchLoginTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <div id="formSignIn">
+          <div id="signinAlert" class="alert" style="display:none"></div>
+          <div class="form-group">
+            <label for="signinEmail">MIU Email</label>
+            <input type="email" id="signinEmail" placeholder="yourname@miuegypt.edu.eg"/>
+            <span id="signinEmailError" class="error-msg" style="display:none">Please enter a valid @miuegypt.edu.eg email.</span>
+          </div>
+          <div class="form-group">
+            <label for="signinPw">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="signinPw" placeholder="Enter your password"/>
+              <button type="button" id="toggleSigninPw" onclick="togglePassword('signinPw', 'toggleSigninPw')">👁</button>
+            </div>
+            <span id="signinPwError" class="error-msg" style="display:none">Password must be at least 6 characters.</span>
+          </div>
+          <button class="btn-red full-width" id="signinBtn" onclick="doLogin()">Sign In</button>
+          <div class="miu-note"><strong>MIU Students Only</strong><br/>Email must end with <strong>@miuegypt.edu.eg</strong></div>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="formSignUp" style="display:none">
+          <div id="signupAlert" class="alert" style="display:none"></div>
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" placeholder="Your full name"/>
+            <span id="signupNameError" class="error-msg" style="display:none">Please enter your name.</span>
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">MIU Email</label>
+            <input type="email" id="signupEmail" placeholder="yourname@miuegypt.edu.eg"/>
+            <span id="signupEmailError" class="error-msg" style="display:none">Please enter a valid @miuegypt.edu.eg email.</span>
+          </div>
+          <div class="form-group">
+            <label for="signupPw">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="signupPw" placeholder="At least 6 characters"/>
+              <button type="button" id="toggleSignupPw" onclick="togglePassword('signupPw', 'toggleSignupPw')">👁</button>
+            </div>
+            <span id="signupPwError" class="error-msg" style="display:none">Password must be at least 6 characters.</span>
+          </div>
+          <div class="form-group">
+            <label for="signupPw2">Confirm Password</label>
+            <input type="password" id="signupPw2" placeholder="Re-enter your password"/>
+            <span id="signupPw2Error" class="error-msg" style="display:none">Passwords do not match.</span>
+          </div>
+          <button class="btn-red full-width" id="signupBtn" onclick="doSignup()">Create Account</button>
+          <div class="miu-note"><strong>MIU Students Only</strong><br/>Email must end with <strong>@miuegypt.edu.eg</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ABOUT PAGE ===================== -->
+<div class="page" id="page-about">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">About Us</span>
+      <h1>The Story Behind the <em>Curtain</em></h1>
+      <p>For over eight years, the MIU Theatre Club has been bringing stories to life — one performance at a time.</p>
+    </div>
+  </section>
+
+  <div class="stats-band">
+    <div class="container stats-grid">
+      <div class="stat-item"><strong>120+</strong><span>Active Members</span></div>
+      <div class="stat-item"><strong>15+</strong><span>Productions</span></div>
+      <div class="stat-item"><strong>8+</strong><span>Years</span></div>
+      <div class="stat-item"><strong>50+</strong><span>Workshops</span></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container mission-grid">
+      <div class="mission-text">
+        <span class="section-tag">Our Mission</span>
+        <h2 class="section-title">More Than a Club — A Community</h2>
+        <p>The MIU Theatre Club exists to nurture artistic talent, build confidence, and create a space where students can express themselves freely through the performing arts.</p>
+        <p>We believe theatre is not just entertainment — it's about empathy, communication, and human connection. Every member becomes part of a family.</p>
+        <p>From beginner workshops to full-scale productions, we give every student the opportunity to discover their potential.</p>
+      </div>
+      <div class="mission-quote">
+        <blockquote>"All the world's a stage, and all the men and women merely players."</blockquote>
+        <cite>— William Shakespeare</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off">
+    <div class="container">
+      <span class="section-tag">What We Stand For</span>
+      <h2 class="section-title">Our Core Values</h2>
+      <div class="values-grid">
+        <div class="value-card"><span>🎭</span><h3>Creativity</h3><p>Bold choices and artistic exploration in every production.</p></div>
+        <div class="value-card"><span>🤝</span><h3>Community</h3><p>We build bonds that go beyond the stage — a true MIU family.</p></div>
+        <div class="value-card"><span>📚</span><h3>Discipline</h3><p>Great performances come from hard work and commitment.</p></div>
+        <div class="value-card"><span>🌱</span><h3>Growth</h3><p>We help every member grow — from first-timer to seasoned performer.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark-section">
+    <div class="container">
+      <span class="section-tag">Our Journey</span>
+      <h2 class="section-title white">A History of Performance</h2>
+      <p class="section-sub light">From a small idea in the OOA room to a fully established university club.</p>
+      <div class="history-timeline">
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2016</div><div class="h-body"><h3>The Beginning</h3><p>A small group gathered in the OOA room with one dream — to create a theatre community at MIU.</p></div></div>
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2017</div><div class="h-body"><h3>First Official Workshop</h3><p>We hosted our first public acting workshop, drawing over 30 students.</p></div></div>
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2018</div><div class="h-body"><h3>First Major Production</h3><p>Our debut full-scale production performed to a sold-out university audience.</p></div></div>
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2020</div><div class="h-body"><h3>Going Digital</h3><p>We launched online rehearsals and virtual workshops to keep the community alive.</p></div></div>
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2022</div><div class="h-body"><h3>Back on Stage</h3><p>A powerful comeback production with our largest cast yet.</p></div></div>
+        <div class="history-item"><div class="h-dot"></div><div class="h-year">2025</div><div class="h-body"><h3>120+ Members & Growing</h3><p>Today MIU Theatre Club is one of the most active student organizations at the university.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="section-tag">The People</span>
+      <h2 class="section-title">Meet the Team</h2>
+      <p class="section-sub">The dedicated students who keep the club running on and off the stage.</p>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar">🎭</div><h4>Club President</h4><span class="role">Leadership</span></div>
+        <div class="team-card"><div class="team-avatar">🎬</div><h4>Director</h4><span class="role">Productions</span></div>
+        <div class="team-card"><div class="team-avatar">📋</div><h4>Head of Scripts</h4><span class="role">Script Review</span></div>
+        <div class="team-card"><div class="team-avatar">🛠</div><h4>Workshops Lead</h4><span class="role">Training</span></div>
+        <div class="team-card"><div class="team-avatar">📸</div><h4>Media Team</h4><span class="role">Content & Social</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid container">
+      <div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>The official theatre club of Misr International University.</p></div>
+      <div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('about')">About Us</button><button onclick="showPage('contact')">Contact</button></div>
+      <div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('workshops')">Workshops</button></div>
+    </div>
+    <div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span><span>OOA Room · MIU</span></div>
+  </footer>
+</div>
+
+<!-- ===================== CONTACT PAGE ===================== -->
+<div class="page" id="page-contact">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Contact</span>
+      <h1>Get in <em>Touch</em></h1>
+      <p>Have a question or want to know more about the club? We'd love to hear from you.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <h2>We're Here for You</h2>
+        <p>Whether you're a new student curious about joining or a current member with questions — reach out and we'll get back to you within 1–2 business days.</p>
+        <div class="info-card"><div class="info-icon">📍</div><div><h4>Location</h4><p>OOA Room, Main Building<br/>Misr International University, Cairo</p></div></div>
+        <div class="info-card"><div class="info-icon">✉️</div><div><h4>Email</h4><p>theatreclub@miuegypt.edu.eg</p></div></div>
+        <div class="info-card"><div class="info-icon">🕐</div><div><h4>Office Hours</h4><p>Sunday – Thursday: 10:00 AM – 4:00 PM</p></div></div>
+      </div>
+      <div class="form-card">
+        <h2>Send Us a Message</h2>
+        <p>Fill in the form and a team member will respond within 1–2 business days.</p>
+        <div id="contactAlert" class="alert" style="display:none"></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="ctFirstName">First Name</label><input type="text" id="ctFirstName" placeholder="Sara"/></div>
+          <div class="form-group"><label for="ctLastName">Last Name</label><input type="text" id="ctLastName" placeholder="Ahmed"/></div>
+        </div>
+        <div class="form-group"><label for="ctEmail">MIU Email</label><input type="email" id="ctEmail" placeholder="yourname@miuegypt.edu.eg"/></div>
+        <div class="form-group">
+          <label for="ctSubject">Subject</label>
+          <select id="ctSubject">
+            <option value="">Select a topic...</option>
+            <option>Joining the Club</option>
+            <option>Auditions</option>
+            <option>Workshops</option>
+            <option>Script Submission</option>
+            <option>General Inquiry</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="ctMessage">Message</label><textarea id="ctMessage" placeholder="Write your message here..."></textarea></div>
+        <button class="btn-red full-width" id="ctBtn" onclick="submitContact()">Send Message</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid container">
+      <div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div>
+      <div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('about')">About</button></div>
+      <div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('workshops')">Workshops</button></div>
+    </div>
+    <div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div>
+  </footer>
+</div>
+
+<!-- ===================== AUDITIONS PAGE ===================== -->
+<div class="page" id="page-auditions">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Open Auditions</span>
+      <h1>Join the <em>Cast</em></h1>
+      <p>Apply for our upcoming production. Open to all MIU students — no prior experience needed.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container form-container">
+      <div class="info-banner">
+        <strong>📋 Before You Apply</strong>
+        Auditions are open to all MIU students. You must be available for rehearsals and committed to the full production schedule.
+      </div>
+      <div class="form-card" id="auditionForm">
+        <h2>Audition Application</h2>
+        <p>Fill in the form to apply for our next production audition.</p>
+        <div id="auditionAlert" class="alert" style="display:none"></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="audName">Full Name *</label><input type="text" id="audName" placeholder="Your full name"/></div>
+          <div class="form-group"><label for="audEmail">MIU Email *</label><input type="email" id="audEmail" placeholder="name@miuegypt.edu.eg"/></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="audId">Student ID</label><input type="text" id="audId" placeholder="e.g. MIU-2022-123"/></div>
+          <div class="form-group"><label for="audFaculty">Faculty</label><input type="text" id="audFaculty" placeholder="e.g. Business Administration"/></div>
+        </div>
+        <div class="form-group"><label for="audExperience">Previous Experience</label><textarea id="audExperience" placeholder="Any previous acting or performing arts experience (optional)..."></textarea></div>
+        <div class="form-group"><label for="audWhy">Why do you want to join?</label><textarea id="audWhy" placeholder="Tell us what drives your passion for theatre..."></textarea></div>
+        <div class="checkbox-group"><input type="checkbox" id="audCheck1"/><span>I am available for rehearsals and commit to the full production schedule.</span></div>
+        <div class="checkbox-group"><input type="checkbox" id="audCheck2"/><span>I understand that missing rehearsals without notice may result in losing my role.</span></div>
+        <button class="btn-red full-width" onclick="submitAudition()">Submit Application</button>
+      </div>
+      <div id="auditionSuccess" class="success-card" style="display:none">
+        <span>🎉</span>
+        <h2>Application Submitted!</h2>
+        <p>We'll review your application and contact you via your MIU email within 3–5 business days.</p>
+        <button class="btn-red" onclick="showPage('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== ACTING INTERVIEW PAGE ===================== -->
+<div class="page" id="page-acting">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Acting Interview</span>
+      <h1>Prove Your <em>Craft</em></h1>
+      <p>Apply for a formal acting interview. For serious performers committed to Arabic theatre.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container form-container">
+      <div class="info-banner warning">
+        <strong>⚠️ Requirements</strong>
+        Strong Arabic reading skills and full commitment to the club's schedule are required.
+      </div>
+      <div class="form-card" id="actingForm">
+        <h2>Acting Interview Application</h2>
+        <p>Apply for a formal acting interview with our directors.</p>
+        <div id="actingAlert" class="alert" style="display:none"></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="actName">Full Name *</label><input type="text" id="actName" placeholder="Your full name"/></div>
+          <div class="form-group"><label for="actEmail">MIU Email *</label><input type="email" id="actEmail" placeholder="name@miuegypt.edu.eg"/></div>
+        </div>
+        <div class="form-group">
+          <label for="actArabic">Arabic Reading Level *</label>
+          <select id="actArabic">
+            <option value="">Select your level...</option>
+            <option>Excellent — fluent in classical and modern Arabic</option>
+            <option>Good — reads standard Arabic with minor difficulty</option>
+            <option>Intermediate — may need support with classical text</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="actExperience">Previous Acting Experience</label><textarea id="actExperience" placeholder="School plays, previous club work, workshops attended..."></textarea></div>
+        <div class="form-group">
+          <label for="actRole">Preferred Role Type</label>
+          <select id="actRole">
+            <option value="">Select...</option>
+            <option>Lead / Main character</option>
+            <option>Supporting role</option>
+            <option>Ensemble</option>
+            <option>No preference</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="actAvailability">Rehearsal Availability</label><textarea id="actAvailability" placeholder="Your weekly availability (days and hours)..."></textarea></div>
+        <p class="commitment-title">Please confirm all commitments:</p>
+        <div class="checkbox-group"><input type="checkbox" id="actCheck1"/><span>I have strong Arabic reading skills and am prepared to read scripts in Arabic during the interview.</span></div>
+        <div class="checkbox-group"><input type="checkbox" id="actCheck2"/><span>I commit to attending all rehearsals, workshops, and productions as required.</span></div>
+        <div class="checkbox-group"><input type="checkbox" id="actCheck3"/><span>I understand this is a serious commitment and will notify the club of any conflicts in advance.</span></div>
+        <button class="btn-red full-width" onclick="submitActing()">Submit Application</button>
+      </div>
+      <div id="actingSuccess" class="success-card" style="display:none">
+        <span>🎬</span>
+        <h2>Application Submitted!</h2>
+        <p>Our directors will review your application and schedule your interview. Check your MIU email for updates.</p>
+        <button class="btn-red" onclick="showPage('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== SCRIPTS PAGE ===================== -->
+<div class="page" id="page-scripts">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Script Submissions</span>
+      <h1>Share Your <em>Story</em></h1>
+      <p>Submit your script for admin review. Approved scripts go to the OOA room for production.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container form-container">
+      <div class="info-banner">
+        <strong>📜 How It Works</strong>
+        Submit your script details below. Admin will review within 7–10 days. If approved, it will be shared with the OOA room team.
+      </div>
+      <div class="form-card" id="scriptForm">
+        <h2>Script Submission</h2>
+        <p>Submit your script for review by the MIU Theatre Club admin team.</p>
+        <div id="scriptAlert" class="alert" style="display:none"></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="scrName">Full Name *</label><input type="text" id="scrName" placeholder="Your full name"/></div>
+          <div class="form-group"><label for="scrEmail">MIU Email *</label><input type="email" id="scrEmail" placeholder="name@miuegypt.edu.eg"/></div>
+        </div>
+        <div class="form-group"><label for="scrTitle">Script Title *</label><input type="text" id="scrTitle" placeholder="Title of your script"/></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="scrGenre">Genre</label><select id="scrGenre"><option value="">Select...</option><option>Drama</option><option>Comedy</option><option>Tragedy</option><option>Historical</option><option>Musical</option><option>Other</option></select></div>
+          <div class="form-group"><label for="scrLanguage">Language</label><select id="scrLanguage"><option value="">Select...</option><option>Arabic</option><option>English</option><option>Mixed</option></select></div>
+        </div>
+        <div class="form-group"><label for="scrDescription">Script Description</label><textarea id="scrDescription" placeholder="Plot summary, characters, themes..."></textarea></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="scrCast">Estimated Cast Size</label><input type="text" id="scrCast" placeholder="e.g. 5–8 actors"/></div>
+          <div class="form-group"><label for="scrLink">Script Link (Drive / Dropbox)</label><input type="url" id="scrLink" placeholder="https://..."/></div>
+        </div>
+        <div class="checkbox-group"><input type="checkbox" id="scrCheck1"/><span>I confirm this is my original work and give MIU Theatre Club permission to review and potentially produce it.</span></div>
+        <button class="btn-red full-width" onclick="submitScript()">Submit Script</button>
+      </div>
+      <div id="scriptSuccess" class="success-card" style="display:none">
+        <span>📜</span>
+        <h2>Script Submitted!</h2>
+        <p>Our admin team will review it within 7–10 days and contact you via your MIU email with their decision.</p>
+        <button class="btn-red" onclick="showPage('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('scripts')">Script Upload</button><button onclick="showPage('auditions')">Auditions</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== EXIT INTERVIEW PAGE ===================== -->
+<div class="page" id="page-exit">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Exit Interview</span>
+      <h1>Leaving the <em>Stage</em></h1>
+      <p>We're sorry to see you go. Please complete this form to begin your exit process.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container form-container">
+      <div class="info-banner">
+        <strong>🚪 Exit Process</strong>
+        Submitting this form will notify club leadership. You'll be contacted to schedule a short exit interview.
+      </div>
+      <div class="form-card" id="exitForm">
+        <h2>Exit Interview Request</h2>
+        <p>Complete this form to begin the exit process from the MIU Theatre Club.</p>
+        <div id="exitAlert" class="alert" style="display:none"></div>
+        <div class="form-row-2">
+          <div class="form-group"><label for="exitName">Full Name *</label><input type="text" id="exitName" placeholder="Your full name"/></div>
+          <div class="form-group"><label for="exitEmail">MIU Email *</label><input type="email" id="exitEmail" placeholder="name@miuegypt.edu.eg"/></div>
+        </div>
+        <div class="form-group"><label for="exitDuration">Membership Duration</label><input type="text" id="exitDuration" placeholder="e.g. 2 years, since 2023"/></div>
+        <div class="form-group">
+          <label for="exitReason">Reason for Leaving *</label>
+          <select id="exitReason">
+            <option value="">Select reason...</option>
+            <option>Academic workload</option>
+            <option>Personal reasons</option>
+            <option>Graduating / Leaving MIU</option>
+            <option>Time constraints</option>
+            <option>Found another opportunity</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="exitComments">Additional Comments</label><textarea id="exitComments" placeholder="Any feedback for the club leadership (optional)..."></textarea></div>
+        <div class="checkbox-group"><input type="checkbox" id="exitCheck1"/><span>I understand that submitting this form begins the official exit process and I will be contacted for a brief interview.</span></div>
+        <button class="btn-red full-width" onclick="submitExit()">Submit Exit Request</button>
+      </div>
+      <div id="exitSuccess" class="success-card" style="display:none">
+        <span>🚪</span>
+        <h2>Request Received</h2>
+        <p>A club leader will contact you via your MIU email within 3 days to schedule your exit interview.</p>
+        <button class="btn-red" onclick="showPage('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('contact')">Contact</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== WORKSHOPS PAGE ===================== -->
+<div class="page" id="page-workshops">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Workshops</span>
+      <h1>Learn. <em>Grow.</em> Perform.</h1>
+      <p>Regular workshops covering acting techniques, voice training, stage direction, and more.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <span class="section-tag">Upcoming Sessions</span>
+      <h2 class="section-title">All Workshops</h2>
+      <div id="workshopsOutput"></div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('deadlines')">Deadlines</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== DEADLINES PAGE ===================== -->
+<div class="page" id="page-deadlines">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Deadlines</span>
+      <h1>Don't Miss <em>Out</em></h1>
+      <p>Stay ahead of all important registration and submission deadlines.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <span class="section-tag">All Dates</span>
+      <h2 class="section-title">Registration Deadlines</h2>
+      <div class="deadlines-grid" id="deadlinesOutput"></div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('workshops')">Workshops</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== REHEARSALS PAGE ===================== -->
+<div class="page" id="page-rehearsals">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-tag">Rehearsal Videos</span>
+      <h1>Catch Up on <em>Every</em> Session</h1>
+      <p>Access links to all rehearsal recordings — review your performance or catch up on missed sessions.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <span class="section-tag">All Recordings</span>
+      <h2 class="section-title">Rehearsal Videos</h2>
+      <div id="rehearsalsOutput"></div>
+    </div>
+  </section>
+  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
+</div>
+
+<!-- ===================== ADMIN PAGE ===================== -->
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/>
+        <div>
+          <span class="sidebar-title">Theatre Club</span>
+          <span class="sidebar-sub">Admin Panel</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Overview</span>
+        <button class="sidebar-btn active" id="sb-dashboard" onclick="adminGoTo('dashboard', this)">📊 Dashboard</button>
+        <span class="nav-section-label">Applications</span>
+        <button class="sidebar-btn" id="sb-auditions" onclick="adminGoTo('auditions', this)">🎤 Auditions <span class="badge" id="badgeAud">0</span></button>
+        <button class="sidebar-btn" id="sb-acting" onclick="adminGoTo('acting', this)">🎬 Acting Interviews <span class="badge" id="badgeAct">0</span></button>
+        <button class="sidebar-btn" id="sb-exit" onclick="adminGoTo('exit', this)">🚪 Exit Interviews <span class="badge" id="badgeExit">0</span></button>
+        <span class="nav-section-label">Content</span>
+        <button class="sidebar-btn" id="sb-scripts" onclick="adminGoTo('scripts', this)">📜 Scripts <span class="badge" id="badgeScr">0</span></button>
+        <button class="sidebar-btn" id="sb-workshops" onclick="adminGoTo('workshops', this)">🛠 Workshops</button>
+        <button class="sidebar-btn" id="sb-deadlines" onclick="adminGoTo('deadlines', this)">⏰ Deadlines</button>
+        <button class="sidebar-btn" id="sb-rehearsals" onclick="adminGoTo('rehearsals', this)">🎥 Rehearsal Videos</button>
+        <button class="sidebar-btn" id="sb-social" onclick="adminGoTo('social', this)">📱 Social Links</button>
+        <button class="sidebar-btn" id="sb-messages" onclick="adminGoTo('messages', this)">✉️ Contact Messages <span class="badge" id="badgeMsg">0</span></button>
+        <span class="nav-section-label">System</span>
+        <button class="sidebar-btn" id="sb-admins" onclick="adminGoTo('admins', this)">🔐 Manage Admins</button>
+      </nav>
+      <button class="sidebar-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <h2 id="adminPanelTitle">Dashboard</h2>
+        <span class="admin-email-badge" id="adminEmailBadge">Admin</span>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- DASHBOARD PANEL -->
+        <div class="admin-panel active" id="adminPanel-dashboard">
+          <div class="stats-cards" id="dashboardStats"></div>
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Welcome to the Admin Panel</h3></div>
+            <div class="admin-card-body">Use the sidebar to navigate. Review and approve/reject applications, manage workshops, deadlines, rehearsal links, social media, and admin accounts.</div>
+          </div>
+        </div>
+
+        <!-- AUDITIONS PANEL -->
+        <div class="admin-panel" id="adminPanel-auditions">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Audition Applications</h3><span class="count-badge" id="countAud">0 pending</span></div>
+            <div class="table-wrap" id="tableAud"></div>
+          </div>
+        </div>
+
+        <!-- ACTING PANEL -->
+        <div class="admin-panel" id="adminPanel-acting">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Acting Interview Applications</h3><span class="count-badge" id="countAct">0 pending</span></div>
+            <div class="table-wrap" id="tableAct"></div>
+          </div>
+        </div>
+
+        <!-- EXIT PANEL -->
+        <div class="admin-panel" id="adminPanel-exit">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Exit Interview Requests</h3><span class="count-badge" id="countExit">0 pending</span></div>
+            <div class="table-wrap" id="tableExit"></div>
+          </div>
+        </div>
+
+        <!-- SCRIPTS PANEL -->
+        <div class="admin-panel" id="adminPanel-scripts">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Script Submissions</h3><span class="count-badge" id="countScr">0 pending</span></div>
+            <div class="table-wrap" id="tableScr"></div>
+          </div>
+        </div>
+
+        <!-- WORKSHOPS PANEL -->
+        <div class="admin-panel" id="adminPanel-workshops">
+          <div class="admin-form-card">
+            <h3>Add New Workshop</h3>
+            <div class="form-row-2">
+              <div class="form-group"><label>Title</label><input type="text" id="wsTitle" placeholder="e.g. Voice Training Workshop"/></div>
+              <div class="form-group"><label>Date</label><input type="date" id="wsDate"/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Time</label><input type="text" id="wsTime" placeholder="e.g. 2:00 PM – 4:00 PM"/></div>
+              <div class="form-group"><label>Location</label><input type="text" id="wsLocation" placeholder="e.g. OOA Room"/></div>
+            </div>
+            <div class="form-group"><label>Description</label><textarea id="wsDesc" placeholder="Brief description..."></textarea></div>
+            <button class="btn-red" onclick="addWorkshop()">Add Workshop</button>
+          </div>
+          <div class="admin-card"><div class="admin-card-header"><h3>All Workshops</h3></div><div class="table-wrap" id="tableWs"></div></div>
+        </div>
+
+        <!-- DEADLINES PANEL -->
+        <div class="admin-panel" id="adminPanel-deadlines">
+          <div class="admin-form-card">
+            <h3>Add New Deadline</h3>
+            <div class="form-row-2">
+              <div class="form-group"><label>Title</label><input type="text" id="dlTitle" placeholder="e.g. Audition Registration"/></div>
+              <div class="form-group"><label>Category</label><input type="text" id="dlCategory" placeholder="e.g. Auditions"/></div>
+            </div>
+            <div class="form-group"><label>Deadline Date</label><input type="date" id="dlDate"/></div>
+            <button class="btn-red" onclick="addDeadline()">Add Deadline</button>
+          </div>
+          <div class="admin-card"><div class="admin-card-header"><h3>All Deadlines</h3></div><div class="table-wrap" id="tableDl"></div></div>
+        </div>
+
+        <!-- REHEARSALS PANEL -->
+        <div class="admin-panel" id="adminPanel-rehearsals">
+          <div class="admin-form-card">
+            <h3>Add Rehearsal Video Link</h3>
+            <div class="form-row-2">
+              <div class="form-group"><label>Title</label><input type="text" id="rehTitle" placeholder="e.g. Rehearsal Session 3"/></div>
+              <div class="form-group"><label>Date</label><input type="date" id="rehDate"/></div>
+            </div>
+            <div class="form-group"><label>Video Link (YouTube / Drive)</label><input type="url" id="rehLink" placeholder="https://..."/></div>
+            <button class="btn-red" onclick="addRehearsal()">Add Link</button>
+          </div>
+          <div class="admin-card"><div class="admin-card-header"><h3>All Rehearsal Videos</h3></div><div class="table-wrap" id="tableReh"></div></div>
+        </div>
+
+        <!-- SOCIAL PANEL -->
+        <div class="admin-panel" id="adminPanel-social">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Social Media Links</h3></div>
+            <div class="admin-card-body">
+              <div class="form-group"><label>Instagram URL</label><input type="url" id="socialIG" placeholder="https://instagram.com/..."/></div>
+              <div class="form-group"><label>TikTok URL</label><input type="url" id="socialTT" placeholder="https://tiktok.com/@..."/></div>
+              <button class="btn-red" onclick="saveSocialLinks()">Save Links</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACT MESSAGES PANEL -->
+        <div class="admin-panel" id="adminPanel-messages">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Contact Messages</h3><span class="count-badge" id="countMsg">0 messages</span></div>
+            <div class="table-wrap" id="tableMsg"></div>
+          </div>
+        </div>
+
+        <!-- MANAGE ADMINS PANEL -->
+        <div class="admin-panel" id="adminPanel-admins">
+          <div class="admin-form-card">
+            <h3>Add New Admin Account</h3>
+            <p>Create a new admin. Only visible and manageable from within this panel.</p>
+            <div class="form-group"><label>Full Name</label><input type="text" id="newAdminName" placeholder="e.g. Sara Ahmed"/></div>
+            <div class="form-group"><label>MIU Email</label><input type="email" id="newAdminEmail" placeholder="name@miuegypt.edu.eg"/></div>
+            <div class="form-group"><label>Password</label><input type="password" id="newAdminPw" placeholder="At least 8 characters"/></div>
+            <button class="btn-red" onclick="addAdmin()">Create Admin</button>
+            <div style="margin-top:24px">
+              <h4>Current Admin Accounts</h4>
+              <div id="adminsList"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="web.js"> </script>
+</body>
+</html>
