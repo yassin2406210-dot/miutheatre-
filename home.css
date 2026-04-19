@@ -426,10 +426,6 @@ body.dark-mode .hero-tag {
 }
 
 .watch-btn:hover {
-  background: #8B0E14;  /* Darker red on hover */
-}
-
-.watch-btn:hover {
   background: var(--red-dark);
 }
 
