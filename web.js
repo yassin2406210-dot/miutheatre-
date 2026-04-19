@@ -647,6 +647,7 @@ function submitContact() {
     var firstName = document.getElementById("ctFirstName").value.trim();
     var email     = document.getElementById("ctEmail").value.trim();
     var message   = document.getElementById("ctMessage").value.trim();
+    var lastName = document.getElementById("ctLastName").value.trim();
 
     hideAlert("contactAlert");
 
@@ -673,7 +674,7 @@ function submitContact() {
     var messages = getData("contact_messages");
     messages.push({
         firstName: firstName,
-        lastName:  document.getElementById("ctLastName").value.trim(),
+        lastName:  lastName,
         email:     email,
         subject:   document.getElementById("ctSubject").value,
         message:   message,
