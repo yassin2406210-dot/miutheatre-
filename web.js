@@ -9,33 +9,6 @@ var ADMIN_PASSWORD = "MIUTheatre2025!";
 var ADMIN_NAME     = "Theatre Admin";
 
 
-// =============================================
-//   DARK MODE
-// =============================================
-
-function initDarkMode() {
-    var saved = localStorage.getItem("miu_dark_mode");
-    if (saved === "true") {
-        document.body.classList.add("dark-mode");
-    }
-    updateDarkModeBtn();
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    var isDark = document.body.classList.contains("dark-mode");
-    localStorage.setItem("miu_dark_mode", isDark ? "true" : "false");
-    updateDarkModeBtn();
-}
-
-function updateDarkModeBtn() {
-    var btn = document.getElementById("darkModeBtn");
-    if (btn === null) { return; }
-    var isDark = document.body.classList.contains("dark-mode");
-    btn.textContent = isDark ? "☀️" : "🌙";
-    btn.title = isDark ? "Switch to Light Mode" : "Switch to Dark Mode";
-}
-
 
 // =============================================
 //   PAGE NAVIGATION

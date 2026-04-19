@@ -1,5 +1,5 @@
 /* =============================================
-   base.css
+   base.css - PERMANENT DARK THEME (FIXED)
    Reset, Variables, Buttons, Layout, Animations
    ============================================= */
 
@@ -10,47 +10,11 @@
   box-sizing: border-box;
 }
 
-/* ── CSS Variables (Light Mode) ── */
+/* ── CSS Variables (FORCED DARK COLORS) ── */
 :root {
   --red: #C0141C;
   --red-dark: #8B0E14;
-  --red-light: #fdf0f0;
-  --white: #ffffff;
-  --off-white: #fafafa;
-  --gray-100: #f4f4f4;
-  --gray-300: #e0e0e0;
-  --gray-500: #888888;
-  --gray-700: #444444;
-  --black: #111111;
-  --nav-height: 70px;
-
-  /* Dark mode toggle vars */
-  --bg-body: #ffffff;
-  --bg-card: #ffffff;
-  --bg-off: #fafafa;
-  --bg-input: #ffffff;
-  --text-main: #111111;
-  --text-muted: #888888;
-  --text-label: #444444;
-  --border-color: #e0e0e0;
-  --nav-bg: rgba(255, 255, 255, 0.97);
-  --mobile-menu-bg: #ffffff;
-  --checkbox-bg: #f4f4f4;
-  --dropdown-bg: #ffffff;
-  --admin-topbar-bg: #ffffff;
-  --admin-card-bg: #ffffff;
-  --admin-form-card-bg: #ffffff;
-  --stat-card-bg: #ffffff;
-  --admin-row-bg: #fafafa;
-  --table-header-bg: #fafafa;
-  --table-hover-bg: #fafafa;
-  --info-card-bg: #fafafa;
-  --success-card-bg: #ffffff;
-}
-
-/* ── Dark Mode Variables ── */
-body.dark-mode {
-  --red-light: #2a0a0b;
+  --red-light: #2a0a0b; 
   --white: #1a1a1a;
   --off-white: #141414;
   --gray-100: #2a2a2a;
@@ -58,7 +22,9 @@ body.dark-mode {
   --gray-500: #888888;
   --gray-700: #bbbbbb;
   --black: #f0f0f0;
+  --nav-height: 70px;
 
+  /* Forced Theme Colors */
   --bg-body: #0f0f0f;
   --bg-card: #1e1e1e;
   --bg-off: #141414;
@@ -92,7 +58,6 @@ body {
   color: var(--text-main);
   background: var(--bg-body);
   overflow-x: hidden;
-  transition: background-color 0.3s, color 0.3s;
 }
 
 /* ── Page System ── */
@@ -297,29 +262,6 @@ footer {
   font-size: 11.5px;
   color: #333333;
   margin-top: 18px;
-}
-
-/* ── Dark Mode Toggle Button ── */
-#darkModeBtn {
-  background: none;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.3s, background-color 0.3s;
-  flex-shrink: 0;
-  margin-left: 6px;
-  color: var(--text-main);
-}
-
-#darkModeBtn:hover {
-  border-color: var(--red);
-  background: var(--red-light);
 }
 
 /* ── Animations ── */
