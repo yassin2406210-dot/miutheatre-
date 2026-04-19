@@ -297,12 +297,12 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 11px;
-  color: var(--text-main);
+  color: #f0f0f0;
 }
 
 .contact-info > p {
   font-size: 14px;
-  color: var(--text-muted);
+  color: #888888;
   line-height: 1.75;
   margin-bottom: 26px;
 }
@@ -313,9 +313,9 @@
   gap: 13px;
   margin-bottom: 14px;
   padding: 14px;
-  background: var(--info-card-bg);
+  background: #252525;
   border-radius: 11px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #333333;
   transition: border-color 0.3s, background-color 0.3s;
 }
 
@@ -326,7 +326,7 @@
 .info-icon {
   width: 40px;
   height: 40px;
-  background: var(--red-light);
+  background: #2a0a0b;  
   border-radius: 8px;
   display: flex;
   align-items: center;

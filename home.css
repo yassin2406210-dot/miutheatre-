@@ -278,11 +278,11 @@ body.dark-mode .hero-tag {
 }
 
 .deadline-card {
-  background: var(--bg-card);
+  background: #1e1e1e;
   border-radius: 12px;
   padding: 22px;
-  border-left: 4px solid var(--red);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #C0141C;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s, background-color 0.3s;
 }
 
@@ -315,7 +315,7 @@ body.dark-mode .hero-tag {
 .countdown {
   font-size: 23px;
   font-weight: 700;
-  color: var(--red);
+  color: #C0141C;  
 }
 
 .countdown small {
@@ -415,7 +415,7 @@ body.dark-mode .hero-tag {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: var(--red);
+  background: #C0141C;
   color: #ffffff;
   padding: 9px 17px;
   border-radius: 8px;
@@ -426,13 +426,17 @@ body.dark-mode .hero-tag {
 }
 
 .watch-btn:hover {
+  background: #8B0E14;  /* Darker red on hover */
+}
+
+.watch-btn:hover {
   background: var(--red-dark);
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--text-muted);
+  color: #888888;
 }
 
 .empty-state span {
