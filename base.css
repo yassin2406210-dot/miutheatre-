@@ -1,7 +1,3 @@
-/* =============================================
-   base.css - PERMANENT DARK THEME (FIXED)
-   Reset, Variables, Buttons, Layout, Animations
-   ============================================= */
 
 /* ── Reset ── */
 * {
@@ -10,42 +6,33 @@
   box-sizing: border-box;
 }
 
-/* ── CSS Variables (FORCED DARK COLORS) ── */
+/* ── CSS Variables  */
 :root {
+  /* Brand Accents */
   --red: #C0141C;
   --red-dark: #8B0E14;
   --red-light: #2a0a0b; 
-  --white: #1a1a1a;
-  --off-white: #141414;
-  --gray-100: #2a2a2a;
-  --gray-300: #333333;
-  --gray-500: #888888;
-  --gray-700: #bbbbbb;
-  --black: #f0f0f0;
-  --nav-height: 70px;
 
-  /* Forced Theme Colors */
-  --bg-body: #0f0f0f;
-  --bg-card: #1e1e1e;
-  --bg-off: #141414;
-  --bg-input: #252525;
-  --text-main: #f0f0f0;
-  --text-muted: #888888;
-  --text-label: #bbbbbb;
+  /* Core Backgrounds */
+  --bg-body: #0f0f0f;      /* Main site background */
+  --bg-card: #1e1e1e;      /* Pop-out sections and boxes */
+  --bg-off: #141414;       /* Subtle section shifts */
+  --bg-input: #252525;     /* Text boxes and dropdowns */
+  
+  /* Text Colors */
+  --text-main: #f0f0f0;    /* Primary readable text */
+  --text-muted: #888888;   /* Descriptive/small text */
+  --text-label: #bbbbbb;   /* Form labels and subtitles */
+  
+  /* UI Elements */
   --border-color: #333333;
+  --nav-height: 70px;
   --nav-bg: rgba(15, 15, 15, 0.97);
   --mobile-menu-bg: #1a1a1a;
-  --checkbox-bg: #252525;
-  --dropdown-bg: #1e1e1e;
-  --admin-topbar-bg: #1a1a1a;
+  
+  /* Admin Specific UI */
   --admin-card-bg: #1e1e1e;
-  --admin-form-card-bg: #1e1e1e;
-  --stat-card-bg: #1e1e1e;
   --admin-row-bg: #252525;
-  --table-header-bg: #252525;
-  --table-hover-bg: #252525;
-  --info-card-bg: #252525;
-  --success-card-bg: #1e1e1e;
 }
 
 /* ── Base Body ── */
@@ -58,6 +45,7 @@ body {
   color: var(--text-main);
   background: var(--bg-body);
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
 /* ── Page System ── */
@@ -126,24 +114,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-.link-btn-white {
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0;
-  margin-top: 10px;
-  border-bottom: 2px solid var(--red);
-  padding-bottom: 2px;
-  transition: color 0.3s;
-}
-
-.link-btn-white:hover {
-  color: var(--red);
-}
-
 /* ── Layout Helpers ── */
 .container {
   max-width: 1180px;
@@ -180,30 +150,20 @@ body {
   font-size: clamp(24px, 2.8vw, 40px);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--text-main);
   margin-bottom: 12px;
 }
 
 .section-sub {
   font-size: 15px;
   color: var(--text-muted);
-  max-width: 520px;
   line-height: 1.75;
   margin-bottom: 46px;
-}
-
-.white {
-  color: #ffffff;
-}
-
-.light {
-  color: #aaaaaa;
 }
 
 /* ── Footer ── */
 footer {
   background: #0d0d0d;
-  color: #aaaaaa;
+  color: var(--text-muted);
   padding: 56px 5% 24px;
 }
 
@@ -212,43 +172,33 @@ footer {
   grid-template-columns: 2fr 1fr 1fr;
   gap: 48px;
   padding-bottom: 32px;
-  border-bottom: 1px solid #1e1e1e;
-}
-
-.footer-brand img {
-  height: 32px;
-  margin-bottom: 12px;
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .footer-brand p {
   font-size: 13px;
-  line-height: 1.75;
+  color: var(--text-muted);
   max-width: 230px;
-  color: #555555;
+  margin-top: 12px;
 }
 
 .footer-col h4 {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
   color: #ffffff;
-  margin-bottom: 11px;
+  margin-bottom: 15px;
 }
 
 .footer-col button {
   display: block;
-  width: 100%;
   text-align: left;
   font-size: 13px;
-  color: #555555;
+  color: var(--text-muted);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   transition: color 0.3s;
 }
 
@@ -259,9 +209,9 @@ footer {
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  font-size: 11.5px;
-  color: #333333;
-  margin-top: 18px;
+  font-size: 11px;
+  color: #444444;
+  margin-top: 20px;
 }
 
 /* ── Animations ── */
@@ -270,10 +220,10 @@ footer {
   50%       { transform: translateY(-8px); }
 }
 
-/* ── Mobile Responsive (shared) ── */
+/* ── Mobile Responsive ── */
 @media (max-width: 860px) {
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 30px;
   }
 }
