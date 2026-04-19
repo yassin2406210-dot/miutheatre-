@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MIU Theatre Club</title>
@@ -12,25 +13,19 @@
   <link rel="stylesheet" href="admin.css"/>
 </head>
 <body>
+<h1>farida</h1>
 
-<!-- ==========================================================
-     SECTION 1: NAVBAR + MOBILE MENU + TOAST
-     - Fixed navigation bar (logo, links, dropdown, hamburger)
-     - Mobile menu (shown on small screens)
-     - Toast notification element
-     CSS file: navbar.css
-     JS functions: toggleMobileMenu(), closeMobileMenu(), updateNav()
-     ========================================================== -->
 <nav id="navbar">
   <div class="logo" onclick="showPage('home')">
     <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU Logo"/>
-    <div class="logo-text">
+    <div class="logo-text">S
       <span class="logo-title">Theatre Club</span>
       <span class="logo-sub">Misr International University</span>
     </div>
   </div>
 
   <div class="nav-links" id="navLinks">
+    <button id="darkModeBtn" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
     <button onclick="showPage('home')">Home</button>
     <div class="dropdown">
       <button>Features ▾</button>
@@ -55,7 +50,7 @@
   </button>
 </nav>
 
-<!-- ── Mobile Menu (hidden by default, opens on hamburger click) ── -->
+<!-- mobile menu -->
 <div id="mobileMenu">
   <button onclick="showPage('home'); closeMobileMenu()">Home</button>
   <button onclick="showPage('auditions'); closeMobileMenu()">🎤 Auditions</button>
@@ -71,20 +66,10 @@
   <button id="mobileLogoutBtn" class="btn-outline" onclick="doLogout(); closeMobileMenu()" style="display:none">Sign Out</button>
 </div>
 
-<!-- ── Toast Notification (JS controls show/hide) ── -->
+<!-- toast notification -->
 <div id="toast"></div>
 
-<!-- ==========================================================
-     SECTION 2: HOME PAGE
-     - Hero section with red shape + floating card
-     - Features grid (6 cards)
-     - About strip with timeline
-     - Upcoming deadlines (rendered by JS)
-     - Social media buttons
-     - Footer
-     CSS file: home.css
-     JS functions: renderHomeDeadlines(), loadSocialLinks()
-     ========================================================== -->
+<!-- ===================== HOME PAGE ===================== -->
 <div class="page active" id="page-home">
 
   <!-- Hero Section -->
@@ -248,15 +233,7 @@
   </footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 3: LOGIN PAGE
-     - Left panel (red, decorative)
-     - Right panel with Sign In / Sign Up tabs
-     - Sign In form: email + password validation
-     - Sign Up form: name + email + password + confirm
-     CSS file: forms.css
-     JS functions: doLogin(), doSignup(), switchLoginTab(), togglePassword()
-     ========================================================== -->
+<!-- ===================== LOGIN PAGE ===================== -->
 <div class="page" id="page-login">
   <div class="login-wrap">
     <div class="login-left">
@@ -333,17 +310,7 @@
   </div>
 </div>
 
-<!-- ==========================================================
-     SECTION 4: ABOUT PAGE
-     - Dark hero header
-     - Stats band (red bar with numbers)
-     - Mission section + Shakespeare quote
-     - Core values grid
-     - History timeline (dark background)
-     - Team cards
-     - Footer
-     CSS file: pages.css
-     ========================================================== -->
+<!-- ===================== ABOUT PAGE ===================== -->
 <div class="page" id="page-about">
   <section class="page-hero">
     <div class="container">
@@ -432,15 +399,7 @@
   </footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 5: CONTACT PAGE
-     - Dark hero header
-     - Contact info (location, email, hours)
-     - Contact form (saves to localStorage, shown in admin)
-     - Footer
-     CSS file: pages.css + forms.css
-     JS functions: submitContact(), autoFillContactEmail()
-     ========================================================== -->
+<!-- ===================== CONTACT PAGE ===================== -->
 <div class="page" id="page-contact">
   <section class="page-hero">
     <div class="container">
@@ -496,16 +455,7 @@
   </footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 6: AUDITIONS PAGE  [Requires Login]
-     - Dark hero header
-     - Info banner
-     - Application form (name, email, faculty, experience, checkboxes)
-     - Success card (shown after submission)
-     - Footer
-     CSS file: forms.css
-     JS functions: submitAudition()
-     ========================================================== -->
+<!-- ===================== AUDITIONS PAGE ===================== -->
 <div class="page" id="page-auditions">
   <section class="page-hero">
     <div class="container">
@@ -549,16 +499,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 7: ACTING INTERVIEW PAGE  [Requires Login]
-     - Dark hero header
-     - Warning banner (Arabic reading required)
-     - Application form (name, email, arabic level, 3 checkboxes)
-     - Success card
-     - Footer
-     CSS file: forms.css
-     JS functions: submitActing()
-     ========================================================== -->
+<!-- ===================== ACTING INTERVIEW PAGE ===================== -->
 <div class="page" id="page-acting">
   <section class="page-hero">
     <div class="container">
@@ -619,16 +560,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 8: SCRIPT UPLOAD PAGE  [Requires Login]
-     - Dark hero header
-     - Info banner
-     - Script submission form (title, genre, language, link)
-     - Success card
-     - Footer
-     CSS file: forms.css
-     JS functions: submitScript()
-     ========================================================== -->
+<!-- ===================== SCRIPTS PAGE ===================== -->
 <div class="page" id="page-scripts">
   <section class="page-hero">
     <div class="container">
@@ -675,16 +607,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('scripts')">Script Upload</button><button onclick="showPage('auditions')">Auditions</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 9: EXIT INTERVIEW PAGE  [Requires Login]
-     - Dark hero header
-     - Info banner
-     - Exit request form (name, email, reason, checkbox)
-     - Success card
-     - Footer
-     CSS file: forms.css
-     JS functions: submitExit()
-     ========================================================== -->
+<!-- ===================== EXIT INTERVIEW PAGE ===================== -->
 <div class="page" id="page-exit">
   <section class="page-hero">
     <div class="container">
@@ -735,14 +658,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('contact')">Contact</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 10: WORKSHOPS PAGE
-     - Dark hero header
-     - Workshops grid (rendered dynamically by JS from localStorage)
-     - Footer
-     CSS file: home.css
-     JS functions: renderWorkshops()
-     ========================================================== -->
+<!-- ===================== WORKSHOPS PAGE ===================== -->
 <div class="page" id="page-workshops">
   <section class="page-hero">
     <div class="container">
@@ -761,14 +677,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('deadlines')">Deadlines</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 11: DEADLINES PAGE
-     - Dark hero header
-     - Deadlines grid with countdown (rendered dynamically by JS)
-     - Footer
-     CSS file: home.css
-     JS functions: renderDeadlinesPage(), getDaysLeft()
-     ========================================================== -->
+<!-- ===================== DEADLINES PAGE ===================== -->
 <div class="page" id="page-deadlines">
   <section class="page-hero">
     <div class="container">
@@ -787,14 +696,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('workshops')">Workshops</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 12: REHEARSAL VIDEOS PAGE  [Requires Login]
-     - Dark hero header
-     - Rehearsal video cards with links (rendered dynamically by JS)
-     - Footer
-     CSS file: home.css
-     JS functions: renderRehearsals()
-     ========================================================== -->
+<!-- ===================== REHEARSALS PAGE ===================== -->
 <div class="page" id="page-rehearsals">
   <section class="page-hero">
     <div class="container">
@@ -813,16 +715,7 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button></div></div><div class="footer-bottom container"><span>© 2025 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ==========================================================
-     SECTION 13: ADMIN PAGE  [Admin Login Required]
-     - Sidebar with navigation buttons and badges
-     - Panels: Dashboard, Auditions, Acting, Exit, Scripts,
-               Workshops, Deadlines, Rehearsals, Social,
-               Contact Messages, Manage Admins
-     CSS file: admin.css
-     JS functions: adminGoTo(), renderAdminPanel(), all admin functions
-     Admin login: theatreadmin@miuegypt.edu.eg / MIUTheatre2025!
-     ========================================================== -->
+<!-- ===================== ADMIN PAGE ===================== -->
 <div class="page" id="page-admin">
   <div class="admin-layout">
     <!-- Sidebar -->
@@ -991,6 +884,7 @@
   </div>
 </div>
 
-<script src="web.js"></script>
+<script src="web.js"> </script>
 </body>
 </html>
+
