@@ -365,8 +365,8 @@ body.dark-mode .hero-tag {
 }
 
 .content-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: #1e1e1e;
+  border: 1px solid #333333;
   border-radius: 13px;
   padding: 26px;
   transition: transform 0.3s, border-color 0.3s, background-color 0.3s;
