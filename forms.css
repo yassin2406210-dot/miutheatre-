@@ -1,7 +1,4 @@
-/* =============================================
-   forms.css
-   Forms, Inputs, Alerts, Login Page, Success Cards
-   ============================================= */
+/* forms.css */
 
 /* ── Form Container (centers form on page) ── */
 .form-container {
@@ -107,7 +104,7 @@
   color:  #ff6666;
 }
 
-/* ── Error Message (shown under input) ── */
+/* ── Error Message── */
 .error-msg {
   font-size: 11px;
   color:#ff8888;
