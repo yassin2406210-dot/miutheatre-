@@ -953,62 +953,6 @@ function formatDate(dateString) {
     var date = new Date(dateString);
     return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
-
-function buildDeadlineCard(item) {
-    var days = getDaysLeft(item.date);
-    var daysText = days === 1 ? "day left" : "days left";
-
-    var card = '<div class="deadline-card">';
-    card += '<div class="deadline-label">' + (item.category || "Event") + '</div>';
-    card += '<h4>' + item.title + '</h4>';
-    card += '<div class="deadline-date">📅 ' + formatDate(item.date) + '</div>';
-    card += '<div class="countdown">' + days + '<small>' + daysText + '</small></div>';
-    card += '</div>';
-
-    return card;
-}
-
-function renderHomeDeadlines() {
-    var container = document.getElementById("homeDeadlines");
-    if (container === null) { return; }
-
-    var deadlines = getData("deadlines");
-
-    if (deadlines.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted); font-size:14.5px;">No upcoming deadlines yet. Check back soon.</p>';
-        return;
-    }
-
-    var html = "";
-    var limit = Math.min(4, deadlines.length);
-
-    for (var i = 0; i < limit; i++) {
-        html += buildDeadlineCard(deadlines[i]);
-    }
-
-    container.innerHTML = html;
-}
-
-function renderDeadlinesPage() {
-    var container = document.getElementById("deadlinesOutput");
-    if (container === null) { return; }
-
-    var deadlines = getData("deadlines");
-
-    if (deadlines.length === 0) {
-        container.innerHTML = '<div class="empty-state"><span>⏰</span><p>No deadlines added yet.</p></div>';
-        return;
-    }
-
-    var html = "";
-    for (var i = 0; i < deadlines.length; i++) {
-        html += buildDeadlineCard(deadlines[i]);
-    }
-
-    container.innerHTML = html;
-}
-
-
 // =============================================
 //   WORKSHOPS RENDERING
 // =============================================
