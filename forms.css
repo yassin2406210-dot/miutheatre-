@@ -1,34 +1,4 @@
-/* forms.css */
 
-/* ── Form Container (centers form on page) ── */
-.form-container {
-  max-width: 660px;
-  margin: 0 auto;
-}
-
-/* ── Form Card ── */
-.form-card {
-  background: #1e1e1e;
-  border: 1px solid #333333;
-  border-radius: 16px;
-  padding: 38px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-.form-card h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 7px;
-  color: white;
-}
-
-.form-card > p {
-  font-size: 13.5px;
-  color: #b0b0b0;
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
 
 /* ── Form Group (label + input) ── */
 .form-group {
