@@ -310,7 +310,7 @@ body.dark-mode .info-banner.warning {
 }
 .tab {
   flex: 1;
-  padding: 9px;
+  padding: 8px;
   background: none;
   border: none;
   cursor: pointer;
