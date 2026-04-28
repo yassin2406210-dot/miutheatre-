@@ -208,7 +208,7 @@ body.dark-mode .info-banner.warning {
 }
 .login-left {
   width: 44%;
-  background: #C0141C;
+  background: #1e1e1e;
   display: flex;
   flex-direction: column;
   justify-content: center;
