@@ -59,7 +59,7 @@
 .form-row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 13px;
+  gap: 12px;
 }
 .input-wrap {
   position: relative;
