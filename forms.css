@@ -296,7 +296,7 @@ body.dark-mode .info-banner.warning {
   align-items: center;
   justify-content: center;
   padding: 56px 46px;
-  background: #0f0f0f;
+  background: #1e1e1e;
   transition: background-color 0.3s;
 }
 .login-box {
