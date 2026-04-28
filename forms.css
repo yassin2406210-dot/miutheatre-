@@ -225,7 +225,7 @@ body.dark-mode .info-banner.warning {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.05);
 }
 .login-left::after {
   content: '';
@@ -322,8 +322,8 @@ body.dark-mode .info-banner.warning {
   transition: all 0.2s;
 }
 .tab.active {
-  color: #C0141C;
-  border-bottom-color: #C0141C;
+  color: #ff4444;
+  border-bottom-color: #ff4444;
 }
 .miu-note {
   background: #252525;
