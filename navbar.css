@@ -1,73 +1,57 @@
-/* =============================================
-   navbar.css
-   Navbar, Dropdown, Hamburger, Mobile Menu, Toast
-   ============================================= */
-
-/* ── Navbar ── */
 #navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 9000;
-  height: var(--nav-height);
-  background: var(--nav-bg);
-  border-bottom: 1px solid var(--border-color);
+  height: 70px;
+  background: rgba(15, 15, 15, 0.97);
+  border-bottom: 1px solid #333333;
   display: flex;
   align-items: center;
   padding: 0 5%;
   backdrop-filter: blur(8px);
   transition: box-shadow 0.3s, background-color 0.3s, border-color 0.3s;
 }
-
 #navbar.scrolled {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
 }
-
-/* ── Logo ── */
 .logo {
   display: flex;
   align-items: center;
   gap: 11px;
   cursor: pointer;
 }
-
 .logo img {
   height: 44px;
   object-fit: contain;
 }
-
 .logo-text {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
-
 .logo-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--red);
+  color: #C0141C;
 }
-
 .logo-sub {
   font-size: 10px;
-  color: var(--text-muted);
+  color: #888888;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-
-/* ── Nav Links ── */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 3px;
   margin-left: auto;
 }
-
 .nav-links button {
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--text-label);
+  color: #bbbbbb;
   background: none;
   border: none;
   cursor: pointer;
@@ -75,30 +59,25 @@
   border-radius: 7px;
   transition: color 0.3s, background-color 0.3s;
 }
-
 .nav-links button:hover {
-  color: var(--red);
-  background-color: var(--red-light);
+  color: #C0141C;
+  background-color: #2a0a0b;
 }
-
-/* ── Dropdown ── */
 .dropdown {
   position: relative;
 }
-
 .dropdown > button::after {
   content: ' ▾';
   font-size: 9px;
   opacity: 0.6;
 }
-
 .dropdown-menu {
   display: none;
   position: absolute;
   top: calc(100% - 5px);
   left: 0;
-  background: var(--dropdown-bg);
-  border: 1px solid var(--border-color);
+  background: #1e1e1e;
+  border: 1px solid #333333;
   border-radius: 11px;
   min-width: 200px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
@@ -107,11 +86,9 @@
   padding-top: 8px;
   padding-bottom: 8px;
 }
-
 .dropdown:hover .dropdown-menu {
   display: block;
 }
-
 .dropdown-menu button {
   display: block;
   width: 100%;
@@ -119,15 +96,12 @@
   padding: 10px 15px;
   font-size: 13px;
   border-radius: 0;
-  color: var(--text-label);
+  color: #bbbbbb;
 }
-
 .dropdown-menu button:hover {
-  background-color: var(--red-light);
-  color: var(--red);
+  background-color: #2a0a0b;
+  color: #C0141C;
 }
-
-/* ── Hamburger ── */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -138,61 +112,53 @@
   background: none;
   border: none;
 }
-
 .hamburger span {
   display: block;
   width: 22px;
   height: 2px;
-  background-color: var(--text-main);
+  background-color: #f0f0f0;
   border-radius: 2px;
 }
-
-/* ── Mobile Menu ── */
 #mobileMenu {
   display: none;
   position: fixed;
-  top: var(--nav-height);
+  top: 70px;
   left: 0;
   right: 0;
-  background: var(--mobile-menu-bg);
-  border-bottom: 1px solid var(--border-color);
+  background: #1a1a1a;
+  border-bottom: 1px solid #333333;
   padding: 10px 5%;
   z-index: 8999;
   flex-direction: column;
   gap: 3px;
   transition: background-color 0.3s;
 }
-
 #mobileMenu.open {
   display: flex;
 }
-
 #mobileMenu button {
   width: 100%;
   text-align: left;
   padding: 10px 13px;
   font-size: 14px;
-  color: var(--text-label);
+  color: #bbbbbb;
   background: none;
   border: none;
   cursor: pointer;
   border-radius: 7px;
   transition: color 0.3s, background-color 0.3s;
 }
-
 #mobileMenu button:hover {
-  color: var(--red);
-  background-color: var(--red-light);
+  color: #C0141C;
+  background-color: #2a0a0b;
 }
-
-/* ── Toast Notification ── */
 #toast {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 99999;
-  background: var(--black);
-  color: var(--bg-body);
+  background: #000000;
+  color: #0f0f0f;
   padding: 12px 18px;
   border-radius: 10px;
   font-size: 13.5px;
@@ -202,28 +168,22 @@
   transition: all 0.3s ease;
   pointer-events: none;
 }
-
 #toast.show {
   opacity: 1;
   transform: translateY(0);
 }
-
 #toast.ok {
   background: #166534;
   color: #ffffff;
 }
-
 #toast.er {
   background: #991b1b;
   color: #ffffff;
 }
-
-/* ── Mobile Responsive ── */
 @media (max-width: 860px) {
   .nav-links {
     display: none;
   }
-
   .hamburger {
     display: flex;
   }
