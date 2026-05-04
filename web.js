@@ -111,15 +111,19 @@ function showPage(pageName) {
     // Reset feature forms when re-visiting
     if (pageName === "auditions") {
         resetForm("auditionForm", "auditionSuccess");
+        autoFillForms();
     }
     if (pageName === "acting") {
         resetForm("actingForm", "actingSuccess");
+        autoFillForms();
     }
     if (pageName === "scripts") {
         resetForm("scriptForm", "scriptSuccess");
+        autoFillForms();
     }
     if (pageName === "exit") {
         resetForm("exitForm", "exitSuccess");
+        autoFillForms();
     }
 }
 
@@ -218,6 +222,13 @@ function updateNav() {
     var mobileLoginBtn  = document.getElementById("mobileLoginBtn");
     var mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
     var navLinks        = document.getElementById("navLinks");
+
+    // Add/remove logged-in class on body for CSS control
+    if (session !== null) {
+        document.body.classList.add("logged-in");
+    } else {
+        document.body.classList.remove("logged-in");
+    }
 
     if (session !== null) {
         // User is logged in
@@ -653,15 +664,16 @@ function doLogout() {
 function submitContact() {
 
     var firstName = document.getElementById("ctFirstName").value.trim();
-    var email     = document.getElementById("ctEmail").value.trim();
-    var message   = document.getElementById("ctMessage").value.trim();
     var lastName = document.getElementById("ctLastName").value.trim();
+    var email     = document.getElementById("ctEmail").value.trim();
+    var subject = document.getElementById("ctSubject").value;
+    var message   = document.getElementById("ctMessage").value.trim();
 
     hideAlert("contactAlert");
 
-    // Validate required fields
-    if (firstName === "" || message === "") {
-        showAlert("contactAlert", "Please fill in all required fields.", "error");
+    // Validate ALL fields (required + optional to be filled)
+    if (firstName === "" || lastName === "" || email === "" || subject === "" || message === "") {
+        showAlert("contactAlert", "Please fill in ALL fields to send your message.", "error");
         return;
     }
 
@@ -714,14 +726,18 @@ function submitAudition() {
 
     var name  = document.getElementById("audName").value.trim();
     var email = document.getElementById("audEmail").value.trim().toLowerCase();
+    var studentId = document.getElementById("audId").value.trim();
+    var faculty = document.getElementById("audFaculty").value.trim();
+    var experience = document.getElementById("audExperience").value.trim();
+    var why = document.getElementById("audWhy").value.trim();
     var check1 = document.getElementById("audCheck1").checked;
     var check2 = document.getElementById("audCheck2").checked;
 
     hideAlert("auditionAlert");
 
-    // Validate
-    if (name === "" || email === "") {
-        showAlert("auditionAlert", "Please fill in Name and Email.", "error");
+    // Validate ALL fields (required + optional to be filled)
+    if (name === "" || email === "" || studentId === "" || faculty === "" || experience === "" || why === "") {
+        showAlert("auditionAlert", "Please fill in ALL fields to complete your application.", "error");
         return;
     }
 
@@ -766,14 +782,18 @@ function submitActing() {
     var name   = document.getElementById("actName").value.trim();
     var email  = document.getElementById("actEmail").value.trim().toLowerCase();
     var arabic = document.getElementById("actArabic").value;
+    var experience = document.getElementById("actExperience").value.trim();
+    var role = document.getElementById("actRole").value;
+    var availability = document.getElementById("actAvailability").value.trim();
     var check1 = document.getElementById("actCheck1").checked;
     var check2 = document.getElementById("actCheck2").checked;
     var check3 = document.getElementById("actCheck3").checked;
 
     hideAlert("actingAlert");
 
-    if (name === "" || email === "" || arabic === "") {
-        showAlert("actingAlert", "Please fill in all required fields.", "error");
+    // Validate ALL fields (required + optional to be filled)
+    if (name === "" || email === "" || arabic === "" || experience === "" || role === "" || availability === "") {
+        showAlert("actingAlert", "Please fill in ALL fields to complete your application.", "error");
         return;
     }
 
@@ -817,13 +837,18 @@ function submitScript() {
     var name  = document.getElementById("scrName").value.trim();
     var email = document.getElementById("scrEmail").value.trim().toLowerCase();
     var title = document.getElementById("scrTitle").value.trim();
+    var genre = document.getElementById("scrGenre").value;
+    var language = document.getElementById("scrLanguage").value;
+    var description = document.getElementById("scrDescription").value.trim();
+    var cast = document.getElementById("scrCast").value.trim();
     var link  = document.getElementById("scrLink").value.trim();
     var check1 = document.getElementById("scrCheck1").checked;
 
     hideAlert("scriptAlert");
 
-    if (name === "" || email === "" || title === "") {
-        showAlert("scriptAlert", "Please fill in Name, Email, and Script Title.", "error");
+    // Validate ALL fields (required + optional to be filled)
+    if (name === "" || email === "" || title === "" || genre === "" || language === "" || description === "" || cast === "" || link === "") {
+        showAlert("scriptAlert", "Please fill in ALL fields to complete your submission.", "error");
         return;
     }
 
@@ -833,7 +858,7 @@ function submitScript() {
     }
 
     // Validate URL
-    if (link !== "" && !isValidURL(link)) {
+    if (!isValidURL(link)) {
         showAlert("scriptAlert", "Please enter a valid URL for the script link.", "error");
         return;
     }
@@ -873,13 +898,16 @@ function submitExit() {
 
     var name   = document.getElementById("exitName").value.trim();
     var email  = document.getElementById("exitEmail").value.trim().toLowerCase();
+    var duration = document.getElementById("exitDuration").value.trim();
     var reason = document.getElementById("exitReason").value;
+    var comments = document.getElementById("exitComments").value.trim();
     var check1 = document.getElementById("exitCheck1").checked;
 
     hideAlert("exitAlert");
 
-    if (name === "" || email === "" || reason === "") {
-        showAlert("exitAlert", "Please fill in all required fields.", "error");
+    // Validate required fields only (comments is optional)
+    if (name === "" || email === "" || duration === "" || reason === "") {
+        showAlert("exitAlert", "Please fill in all required fields to complete your exit request.", "error");
         return;
     }
 
@@ -1584,14 +1612,49 @@ function promoteToAdmin(index) {
         showToast("✅ User promoted to admin!", "ok");
     }
     
-    function doLogout() {
-    clearSession();  // Beyemsah el localStorage
-    updateNav();     // Bey-update el navbar
-    showPage("home"); // Beyro7 le home page
-    showToast("Signed out successfully.", "ok");
-}
 }
 
+
+
+// =============================================
+//   AUTO-FILL FORMS WHEN LOGGED IN
+// =============================================
+
+function autoFillForms() {
+    var session = getSession();
+    if (session === null) return;
+
+    // Audition form
+    var audName = document.getElementById("audName");
+    var audEmail = document.getElementById("audEmail");
+    if (audName) audName.value = session.name || "";
+    if (audEmail) audEmail.value = session.email || "";
+
+    // Acting interview form
+    var actName = document.getElementById("actName");
+    var actEmail = document.getElementById("actEmail");
+    if (actName) actName.value = session.name || "";
+    if (actEmail) actEmail.value = session.email || "";
+
+    // Script submission form
+    var scrName = document.getElementById("scrName");
+    var scrEmail = document.getElementById("scrEmail");
+    if (scrName) scrName.value = session.name || "";
+    if (scrEmail) scrEmail.value = session.email || "";
+
+    // Exit interview form
+    var exitName = document.getElementById("exitName");
+    var exitEmail = document.getElementById("exitEmail");
+    if (exitName) exitName.value = session.name || "";
+    if (exitEmail) exitEmail.value = session.email || "";
+
+    // Contact form (name only - email is handled separately)
+    var ctFirstName = document.getElementById("ctFirstName");
+    if (ctFirstName && session.name) {
+        var nameParts = session.name.split(" ");
+        ctFirstName.value = nameParts[0] || "";
+    }
+}
 
 // =============================================
 //   INIT (runs when page loads)
