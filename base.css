@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-<<<<<<< HEAD
 
 /* ── CSS Variables  */
 :root {
@@ -17,18 +16,18 @@
   --bg-card: #1e1e1e;      /* Pop-out sections and boxes */
   --bg-off: #141414;       /* Subtle section shifts */
   --bg-input: #252525;     /* Text boxes and dropdowns */
-  
+
   /* Text Colors */
   --text-main: #f0f0f0;    /* Primary readable text */
   --text-muted: #888888;   /* Descriptive/small text */
   --text-label: #bbbbbb;   /* Form labels and subtitles */
-  
+
   /* UI Elements */
   --border-color: #333333;
   --nav-height: 70px;
   --nav-bg: rgba(15, 15, 15, 0.97);
   --mobile-menu-bg: #1a1a1a;
-  
+
   /* Admin Specific UI */
   --admin-card-bg: #1e1e1e;
   --admin-row-bg: #252525;
@@ -43,8 +42,6 @@
 }
 
 /* ── Base Body ── */
-=======
->>>>>>> 88f79bdc9989c1e41b90626ccfe93cf3addf5e40
 html {
   scroll-behavior: smooth;
 }
