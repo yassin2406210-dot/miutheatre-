@@ -12,8 +12,8 @@
 
 /* ── Sidebar ── */
 .admin-sidebar {
-  width: 225px;
-  background: #0d0d0d;
+  width: 260px;
+  background: #141414;
   position: fixed;
   top: var(--nav-height);
   left: 0;
@@ -22,130 +22,142 @@
   flex-direction: column;
   overflow-y: auto;
   z-index: 100;
+  border-right: 1px solid #333;
 }
 
 .sidebar-logo {
-  padding: 14px 17px;
-  border-bottom: 1px solid #1e1e1e;
+  padding: 18px 20px;
+  border-bottom: 1px solid #333;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
 }
 
 .sidebar-logo img {
-  height: 30px;
+  height: 36px;
   filter: brightness(0) invert(1);
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .sidebar-title {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--red);
   display: block;
+  letter-spacing: 0.02em;
 }
 
 .sidebar-sub {
-  font-size: 9px;
-  color: #444444;
+  font-size: 10px;
+  color: #666;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+  display: block;
 }
 
 /* ── Sidebar Navigation ── */
 .sidebar-nav {
   flex: 1;
-  padding: 10px 0;
+  padding: 12px 0;
   overflow-y: auto;
 }
 
 .nav-section-label {
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #333333;
-  padding: 13px 17px 5px;
+  letter-spacing: 0.12em;
+  color: #555;
+  padding: 16px 20px 6px;
   display: block;
 }
 
 .sidebar-btn {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 9px 17px;
-  font-size: 12.5px;
-  color: #777777;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 13.5px;
+  color: #aaa;
   background: none;
   border: none;
   cursor: pointer;
   width: 100%;
   text-align: left;
   font-family: inherit;
-  transition: color 0.3s, background-color 0.3s;
+  transition: all 0.25s ease;
+  margin: 2px 0;
+  border-radius: 0 8px 8px 0;
+  margin-right: 8px;
 }
 
 .sidebar-btn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  background: rgba(192, 20, 28, 0.1);
 }
 
 .sidebar-btn.active {
-  color: #ffffff;
-  background: rgba(192, 20, 28, 0.2);
+  color: #fff;
+  background: rgba(192, 20, 28, 0.22);
   border-right: 3px solid var(--red);
+  font-weight: 600;
 }
 
 /* Badge (pending count) on sidebar buttons */
 .badge {
   margin-left: auto;
   background: var(--red);
-  color: #ffffff;
-  font-size: 9px;
+  color: #fff;
+  font-size: 10px;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 8px;
-  min-width: 17px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  min-width: 20px;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(192, 20, 28, 0.3);
 }
 
 /* Sign Out button at bottom of sidebar */
 .sidebar-logout {
-  width: calc(100% - 26px);
-  margin: 13px;
-  padding: 8px;
-  border-radius: 7px;
-  background: rgba(192, 20, 28, 0.15);
+  width: calc(100% - 32px);
+  margin: 16px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(192, 20, 28, 0.12);
   color: var(--red);
-  border: 1px solid rgba(192, 20, 28, 0.3);
+  border: 1.5px solid rgba(192, 20, 28, 0.35);
   font-family: inherit;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
 }
 
 .sidebar-logout:hover {
-  background: rgba(192, 20, 28, 0.25);
+  background: rgba(192, 20, 28, 0.22);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(192, 20, 28, 0.15);
 }
 
 /* ── Admin Main Area ── */
 .admin-main {
-  margin-left: 225px;
+  margin-left: 260px;
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - var(--nav-height));
-  background: var(--bg-body);
+  background: #1f1f1f;
   transition: background-color 0.3s;
 }
 
 /* Top bar with title and email badge */
 .admin-topbar {
-  background: var(--admin-topbar-bg);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0 26px;
-  height: 50px;
+  background: #1f1f1f;
+  border-bottom: 1px solid #333;
+  padding: 0 30px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -153,287 +165,340 @@
   top: var(--nav-height);
   z-index: 50;
   transition: background-color 0.3s, border-color 0.3s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .admin-topbar h2 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-main);
+  color: #f0f0f0;
+  letter-spacing: -0.01em;
 }
 
 .admin-email-badge {
-  background: var(--red-light);
-  color: var(--red);
-  font-size: 11px;
+  background: rgba(192, 20, 28, 0.12);
+  color: #ff6b6b;
+  font-size: 12px;
   font-weight: 600;
-  padding: 4px 11px;
-  border-radius: 16px;
-  border: 1px solid #f5c0c0;
-}
-
-body.dark-mode .admin-email-badge {
-  border-color: #7f1d1d;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(192, 20, 28, 0.25);
+  letter-spacing: 0.01em;
 }
 
 /* ── Admin Content Area ── */
 .admin-content {
-  padding: 22px 26px;
+  padding: 28px 30px;
   flex: 1;
 }
 
 /* ── Admin Panels ── */
 .admin-panel {
   display: none;
+  animation: fadeIn 0.3s ease;
 }
 
 .admin-panel.active {
   display: block;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Dashboard Stat Cards ── */
 .stats-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 13px;
-  margin-bottom: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
 .stat-card {
-  background: var(--stat-card-bg);
-  border-radius: 11px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
-  transition: background-color 0.3s, border-color 0.3s;
+  background: #242424;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid #333;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #333;
+  border-radius: 14px 14px 0 0;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  border-color: #3a3a3a;
+}
+
+.stat-card.red::before {
+  background: var(--red);
+}
+
+.stat-card.red {
+  border-color: rgba(192, 20, 28, 0.2);
+}
+
+.stat-card.red:hover {
+  border-color: rgba(192, 20, 28, 0.35);
+  box-shadow: 0 8px 24px rgba(192, 20, 28, 0.1);
 }
 
 .stat-card .stat-label {
-  font-size: 10.5px;
-  color: var(--text-muted);
-  font-weight: 500;
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-bottom: 5px;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 .stat-card .stat-number {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--text-main);
+  font-size: 32px;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: -0.02em;
 }
 
-/* Red number for pending items */
+/* Red number for pending items - lighter red */
 .stat-card.red .stat-number {
-  color: var(--red);
+  color: #ff6b7a;
+  text-shadow: 0 0 10px rgba(255, 107, 122, 0.3);
 }
 
 /* ── Admin Cards ── */
 .admin-card {
-  background: var(--admin-card-bg);
-  border-radius: 13px;
-  border: 1px solid var(--border-color);
+  background: #242424;
+  border-radius: 14px;
+  border: 1px solid #333;
   overflow: hidden;
-  margin-bottom: 17px;
-  transition: background-color 0.3s, border-color 0.3s;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+  border-color: #3a3a3a;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .admin-card-header {
-  padding: 13px 19px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 18px 22px;
+  border-bottom: 1px solid #333;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #1f1f1f;
 }
 
 .admin-card-header h3 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 700;
+  color: #f0f0f0;
+  letter-spacing: -0.01em;
 }
 
 .count-badge {
-  font-size: 11px;
-  color: var(--text-muted);
-  background: var(--gray-100);
-  padding: 3px 8px;
-  border-radius: 8px;
+  font-size: 12px;
+  color: #888;
+  background: #2a2a2a;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
 }
 
 .admin-card-body {
-  padding: 18px;
-  font-size: 13px;
-  color: var(--text-label);
-  line-height: 1.75;
+  padding: 22px;
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.7;
 }
 
 /* ── Admin Form Cards (add workshop, deadline, etc.) ── */
 .admin-form-card {
-  background: var(--admin-form-card-bg);
-  border-radius: 13px;
-  border: 1px solid var(--border-color);
-  padding: 22px;
-  margin-bottom: 18px;
-  transition: background-color 0.3s, border-color 0.3s;
+  background: #242424;
+  border-radius: 14px;
+  border: 1px solid #333;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.admin-form-card:hover {
+  border-color: #3a3a3a;
 }
 
 .admin-form-card h3 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #f0f0f0;
+  letter-spacing: -0.01em;
 }
 
 .admin-form-card p {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  margin-bottom: 20px;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 22px;
+  line-height: 1.6;
 }
 
 /* ── Tables ── */
 .table-wrap {
   overflow-x: auto;
+  padding: 4px;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   min-width: 480px;
 }
 
 th {
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-muted);
-  padding: 8px 15px;
+  letter-spacing: 0.08em;
+  color: #888;
+  padding: 14px 18px;
   text-align: left;
-  background: var(--table-header-bg);
-  border-bottom: 1px solid var(--border-color);
+  background: #1f1f1f;
+  border-bottom: 2px solid #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+th:first-child {
+  border-radius: 8px 0 0 0;
+}
+
+th:last-child {
+  border-radius: 0 8px 0 0;
 }
 
 td {
-  padding: 10px 15px;
-  font-size: 12px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 18px;
+  font-size: 13.5px;
+  border-bottom: 1px solid #2a2a2a;
   vertical-align: middle;
-  color: var(--text-label);
+  color: #ccc;
+  transition: background-color 0.2s;
 }
 
 tr:last-child td {
   border-bottom: none;
 }
 
+tr:last-child td:first-child {
+  border-radius: 0 0 0 8px;
+}
+
+tr:last-child td:last-child {
+  border-radius: 0 0 8px 0;
+}
+
 tr:hover td {
-  background: var(--table-hover-bg);
+  background: rgba(192, 20, 28, 0.06);
 }
 
 /* ── Status Badges ── */
 .status-badge {
   display: inline-flex;
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
 }
 
 .status-badge.pending {
-  background: #fef9c3;
-  color: #854d0e;
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.2);
 }
 
 .status-badge.approved {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(134, 239, 172, 0.12);
+  color: #86efac;
+  border: 1px solid rgba(134, 239, 172, 0.2);
 }
 
 .status-badge.rejected {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-body.dark-mode .status-badge.pending {
-  background: #2d2000;
-  color: #fbbf24;
-}
-
-body.dark-mode .status-badge.approved {
-  background: #052e16;
-  color: #86efac;
-}
-
-body.dark-mode .status-badge.rejected {
-  background: #2a0a0b;
+  background: rgba(252, 165, 165, 0.12);
   color: #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.2);
 }
 
 /* ── Action Buttons (approve, reject, delete) ── */
 .action-buttons {
   display: flex;
-  gap: 5px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .btn-approve,
 .btn-reject,
 .btn-delete {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.25s ease;
   font-family: inherit;
+  letter-spacing: 0.01em;
 }
 
 .btn-approve {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(134, 239, 172, 0.1);
+  color: #86efac;
+  border: 1px solid rgba(134, 239, 172, 0.2);
 }
 
 .btn-approve:hover {
-  background: #bbf7d0;
+  background: rgba(134, 239, 172, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(134, 239, 172, 0.1);
 }
 
 .btn-reject {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(252, 165, 165, 0.1);
+  color: #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.2);
 }
 
 .btn-reject:hover {
-  background: #fecaca;
+  background: rgba(252, 165, 165, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(252, 165, 165, 0.1);
 }
 
 .btn-delete {
-  background: var(--gray-100);
-  color: var(--text-label);
+  background: rgba(255, 255, 255, 0.05);
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-delete:hover {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-body.dark-mode .btn-approve {
-  background: #052e16;
-  color: #86efac;
-}
-
-body.dark-mode .btn-approve:hover {
-  background: #14532d;
-}
-
-body.dark-mode .btn-reject {
-  background: #2a0a0b;
+  background: rgba(252, 165, 165, 0.15);
   color: #fca5a5;
-}
-
-body.dark-mode .btn-reject:hover {
-  background: #450a0a;
-}
-
-body.dark-mode .btn-delete:hover {
-  background: #2a0a0b;
-  color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.25);
+  transform: translateY(-1px);
 }
 
 /* ── Admin Accounts List ── */
@@ -441,50 +506,102 @@ body.dark-mode .btn-delete:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 12px;
-  background: var(--admin-row-bg);
-  border-radius: 8px;
-  margin-bottom: 6px;
-  border: 1px solid var(--border-color);
-  transition: background-color 0.3s, border-color 0.3s;
+  padding: 12px 16px;
+  background: #2a2a2a;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #333;
+  transition: all 0.25s ease;
+}
+
+.admin-row:hover {
+  border-color: #404040;
+  background: #333;
 }
 
 .admin-row .email {
-  font-size: 12.5px;
-  color: var(--text-label);
+  font-size: 13.5px;
+  color: #ccc;
+  font-weight: 500;
 }
 
 .admin-row .tag {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--red);
-  background: var(--red-light);
-  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff6b6b;
+  background: rgba(192, 20, 28, 0.12);
+  padding: 4px 10px;
   border-radius: 8px;
+  border: 1px solid rgba(192, 20, 28, 0.2);
 }
 
 /* ── Empty State ── */
 .admin-empty {
   text-align: center;
-  padding: 32px 16px;
-  color: var(--text-muted);
+  padding: 48px 20px;
+  color: #666;
 }
 
 .admin-empty span {
-  font-size: 40px;
+  font-size: 48px;
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 12px;
+  opacity: 0.7;
 }
 
 .admin-empty p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* ── Form Inputs in Admin ── */
+.admin-form-card .form-group {
+  margin-bottom: 18px;
+}
+
+.admin-form-card .form-group label {
+  display: block;
   font-size: 13px;
+  font-weight: 600;
+  color: #bbb;
+  margin-bottom: 7px;
+}
+
+.admin-form-card .form-group input,
+.admin-form-card .form-group textarea,
+.admin-form-card .form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #333;
+  font-size: 14px;
+  color: #f0f0f0;
+  background: #2a2a2a;
+  outline: none;
+  resize: none;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.admin-form-card .form-group input:focus,
+.admin-form-card .form-group textarea:focus,
+.admin-form-card .form-group select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(192, 20, 28, 0.1);
+  background: #333;
+}
+
+.admin-form-card .form-group input::placeholder,
+.admin-form-card .form-group textarea::placeholder {
+  color: #666;
 }
 
 /* ── Mobile Responsive ── */
 @media (max-width: 860px) {
   .admin-sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
+    width: 280px;
   }
 
   .admin-sidebar.open {
@@ -494,4 +611,71 @@ body.dark-mode .btn-delete:hover {
   .admin-main {
     margin-left: 0;
   }
+
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-content {
+    padding: 20px 16px;
+  }
+}
+
+
+
+/* =============================================
+   WHITE SCROLLBAR FIX - Target only the white scrollbar
+   ============================================= */
+
+/* Target the white scrollbar in sidebar specifically */
+.admin-sidebar::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  display: none;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+  display: none;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.admin-sidebar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Remove horizontal scroll from entire page */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Ensure sidebar doesn't scroll horizontally */
+.admin-sidebar {
+  overflow-x: hidden !important;
+  overflow-y: auto;
+}
+
+/* Table wrapper - hide horizontal scroll */
+.table-wrap {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Hide any remaining scrollbars */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
 }

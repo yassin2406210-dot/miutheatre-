@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MIU Theatre Club</title>
@@ -11,8 +10,10 @@
   <link rel="stylesheet" href="pages.css"/>
   <link rel="stylesheet" href="forms.css"/>
   <link rel="stylesheet" href="admin.css"/>
+<base target="_blank">
 </head>
 <body>
+  <script src="web.js"></script>
 
 <nav id="navbar">
   <div class="logo" onclick="showPage('home')">
@@ -33,7 +34,6 @@
         <button onclick="showPage('scripts')">📜 Script Upload</button>
         <button onclick="showPage('exit')">🚪 Exit Interview</button>
         <button onclick="showPage('workshops')">🛠 Workshops</button>
-        <button onclick="showPage('deadlines')">⏰ Deadlines</button>
         <button onclick="showPage('rehearsals')">🎥 Rehearsal Videos</button>
       </div>
     </div>
@@ -56,7 +56,6 @@
   <button onclick="showPage('scripts'); closeMobileMenu()">📜 Script Upload</button>
   <button onclick="showPage('exit'); closeMobileMenu()">🚪 Exit Interview</button>
   <button onclick="showPage('workshops'); closeMobileMenu()">🛠 Workshops</button>
-  <button onclick="showPage('deadlines'); closeMobileMenu()">⏰ Deadlines</button>
   <button onclick="showPage('rehearsals'); closeMobileMenu()">🎥 Rehearsal Videos</button>
   <button onclick="showPage('about'); closeMobileMenu()">About Us</button>
   <button onclick="showPage('contact'); closeMobileMenu()">Contact</button>
@@ -180,15 +179,15 @@
       <h2 class="section-title">Stay Connected</h2>
       <p>Follow us for behind-the-scenes content, announcements, and production highlights.</p>
       <div class="social-buttons">
-        <a id="ttLink" href="https://www.instagram.com/miutheatre?igsh=c2FxdmM1N2JrZXl5" class="social-btn" target="_blank">
+        <a id="igLink" href="https://www.instagram.com/miutheatre?igsh=c2FxdmM1N2JrZXl5" class="social-btn" target="_blank">
         Instagram
         </a>
         <a id="ttLink" href="https://www.tiktok.com/@miu.theatre?_r=1&_t=ZS-95fkDxcUins" class="social-btn" target="_blank">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
-       </svg>
-      TikTok
-       </a>
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+        </svg>
+        TikTok
+        </a>
       </div>
     </div>
   </section>
@@ -250,19 +249,19 @@
           <div id="signinAlert" class="alert" style="display:none"></div>
           <div class="form-group">
             <label for="signinEmail">MIU Email</label>
-            <input type="email" id="signinEmail" placeholder="yourname@miuegypt.edu.eg"/>
+            <input type="email" id="signinEmail" placeholder="yourname@miuegypt.edu.eg" required/>
             <span id="signinEmailError" class="error-msg" style="display:none">Please enter a valid @miuegypt.edu.eg email.</span>
           </div>
           <div class="form-group">
             <label for="signinPw">Password</label>
             <div class="input-wrap">
-              <input type="password" id="signinPw" placeholder="Enter your password"/>
+              <input type="password" id="signinPw" placeholder="Enter your password" required/>
               <button type="button" id="toggleSigninPw" onclick="togglePassword('signinPw', 'toggleSigninPw')">👁</button>
             </div>
             <span id="signinPwError" class="error-msg" style="display:none">Password must be at least 6 characters.</span>
           </div>
           <button class="btn-red full-width" id="signinBtn" onclick="doLogin()">Sign In</button>
-          
+
         </div>
 
         <!-- Sign Up Form -->
@@ -270,25 +269,25 @@
           <div id="signupAlert" class="alert" style="display:none"></div>
           <div class="form-group">
             <label for="signupName">Full Name</label>
-            <input type="text" id="signupName" placeholder="Your full name"/>
+            <input type="text" id="signupName" placeholder="Your full name" required/>
             <span id="signupNameError" class="error-msg" style="display:none">Please enter your name.</span>
           </div>
           <div class="form-group">
             <label for="signupEmail">MIU Email</label>
-            <input type="email" id="signupEmail" placeholder="yourname@miuegypt.edu.eg"/>
+            <input type="email" id="signupEmail" placeholder="yourname@miuegypt.edu.eg" required/>
             <span id="signupEmailError" class="error-msg" style="display:none">Please enter a valid @miuegypt.edu.eg email.</span>
           </div>
           <div class="form-group">
             <label for="signupPw">Password</label>
             <div class="input-wrap">
-              <input type="password" id="signupPw" placeholder="At least 6 characters"/>
+              <input type="password" id="signupPw" placeholder="At least 6 characters" required/>
               <button type="button" id="toggleSignupPw" onclick="togglePassword('signupPw', 'toggleSignupPw')">👁</button>
             </div>
             <span id="signupPwError" class="error-msg" style="display:none">Password must be at least 6 characters.</span>
           </div>
           <div class="form-group">
             <label for="signupPw2">Confirm Password</label>
-            <input type="password" id="signupPw2" placeholder="Re-enter your password"/>
+            <input type="password" id="signupPw2" placeholder="Re-enter your password" required/>
             <span id="signupPw2Error" class="error-msg" style="display:none">Passwords do not match.</span>
           </div>
           <button class="btn-red full-width" id="signupBtn" onclick="doSignup()">Create Account</button>
@@ -392,7 +391,7 @@
 <div class="page" id="page-contact">
   <section class="page-hero">
     <div class="container">
-       <span class="section-tag">Contact</span>
+      <span class="section-tag">Contact</span>
       <h1>Get in <em>Touch</em></h1>
       <p>Have a question or want to know more about the club? We'd love to hear from you.</p>
     </div>
@@ -412,10 +411,10 @@
         <p>Fill in the form and a team member will respond within 1–2 business days.</p>
         <div id="contactAlert" class="alert" style="display:none"></div>
         <div class="form-row-2">
-          <div class="form-group"><label for="ctFirstName">First Name</label><input type="text" id="ctFirstName" placeholder="Sara"/></div>
+          <div class="form-group"><label for="ctFirstName">First Name *</label><input type="text" id="ctFirstName" placeholder="Sara" required/></div>
           <div class="form-group"><label for="ctLastName">Last Name</label><input type="text" id="ctLastName" placeholder="Ahmed"/></div>
         </div>
-        <div class="form-group"><label for="ctEmail">MIU Email</label><input type="email" id="ctEmail" placeholder="yourname@miuegypt.edu.eg"/></div>
+        <div class="form-group"><label for="ctEmail">MIU Email *</label><input type="email" id="ctEmail" placeholder="yourname@miuegypt.edu.eg" required/></div>
         <div class="form-group">
           <label for="ctSubject">Subject</label>
           <select id="ctSubject">
@@ -428,7 +427,7 @@
             <option>Other</option>
           </select>
         </div>
-        <div class="form-group"><label for="ctMessage">Message</label><textarea id="ctMessage" placeholder="Write your message here..."></textarea></div>
+        <div class="form-group"><label for="ctMessage">Message *</label><textarea id="ctMessage" placeholder="Write your message here..." required></textarea></div>
         <button class="btn-red full-width" id="ctBtn" onclick="submitContact()">Send Message</button>
       </div>
     </div>
@@ -464,8 +463,8 @@
         <p>Fill in the form to apply for our next production audition.</p>
         <div id="auditionAlert" class="alert" style="display:none"></div>
         <div class="form-row-2">
-          <div class="form-group"><label for="audName">Full Name *</label><input type="text" id="audName" placeholder="Your full name"/></div>
-          <div class="form-group"><label for="audEmail">MIU Email *</label><input type="email" id="audEmail" placeholder="name@miuegypt.edu.eg"/></div>
+          <div class="form-group"><label for="audName">Full Name *</label><input type="text" id="audName" placeholder="Your full name" required/></div>
+          <div class="form-group"><label for="audEmail">MIU Email *</label><input type="email" id="audEmail" placeholder="name@miuegypt.edu.eg" required/></div>
         </div>
         <div class="form-row-2">
           <div class="form-group"><label for="audId">Student ID</label><input type="text" id="audId" placeholder="e.g. MIU-2022-123"/></div>
@@ -508,12 +507,12 @@
         <p>Apply for a formal acting interview with our directors.</p>
         <div id="actingAlert" class="alert" style="display:none"></div>
         <div class="form-row-2">
-          <div class="form-group"><label for="actName">Full Name *</label><input type="text" id="actName" placeholder="Your full name"/></div>
-          <div class="form-group"><label for="actEmail">MIU Email *</label><input type="email" id="actEmail" placeholder="name@miuegypt.edu.eg"/></div>
+          <div class="form-group"><label for="actName">Full Name *</label><input type="text" id="actName" placeholder="Your full name" required/></div>
+          <div class="form-group"><label for="actEmail">MIU Email *</label><input type="email" id="actEmail" placeholder="name@miuegypt.edu.eg" required/></div>
         </div>
         <div class="form-group">
           <label for="actArabic">Arabic Reading Level *</label>
-          <select id="actArabic">
+          <select id="actArabic" required>
             <option value="">Select your level...</option>
             <option>Excellent — fluent in classical and modern Arabic</option>
             <option>Good — reads standard Arabic with minor difficulty</option>
@@ -569,10 +568,10 @@
         <p>Submit your script for review by the MIU Theatre Club admin team.</p>
         <div id="scriptAlert" class="alert" style="display:none"></div>
         <div class="form-row-2">
-          <div class="form-group"><label for="scrName">Full Name *</label><input type="text" id="scrName" placeholder="Your full name"/></div>
-          <div class="form-group"><label for="scrEmail">MIU Email *</label><input type="email" id="scrEmail" placeholder="name@miuegypt.edu.eg"/></div>
+          <div class="form-group"><label for="scrName">Full Name *</label><input type="text" id="scrName" placeholder="Your full name" required/></div>
+          <div class="form-group"><label for="scrEmail">MIU Email *</label><input type="email" id="scrEmail" placeholder="name@miuegypt.edu.eg" required/></div>
         </div>
-        <div class="form-group"><label for="scrTitle">Script Title *</label><input type="text" id="scrTitle" placeholder="Title of your script"/></div>
+        <div class="form-group"><label for="scrTitle">Script Title *</label><input type="text" id="scrTitle" placeholder="Title of your script" required/></div>
         <div class="form-row-2">
           <div class="form-group"><label for="scrGenre">Genre</label><select id="scrGenre"><option value="">Select...</option><option>Drama</option><option>Comedy</option><option>Tragedy</option><option>Historical</option><option>Musical</option><option>Other</option></select></div>
           <div class="form-group"><label for="scrLanguage">Language</label><select id="scrLanguage"><option value="">Select...</option><option>Arabic</option><option>English</option><option>Mixed</option></select></div>
@@ -580,7 +579,7 @@
         <div class="form-group"><label for="scrDescription">Script Description</label><textarea id="scrDescription" placeholder="Plot summary, characters, themes..."></textarea></div>
         <div class="form-row-2">
           <div class="form-group"><label for="scrCast">Estimated Cast Size</label><input type="text" id="scrCast" placeholder="e.g. 5–8 actors"/></div>
-          <div class="form-group"><label for="scrLink">Script Link (Drive / Dropbox)</label><input type="url" id="scrLink" placeholder="https://..."/></div>
+          <div class="form-group"><label for="scrLink">Script Link (Drive / Dropbox) *</label><input type="url" id="scrLink" placeholder="https://..." required/></div>
         </div>
         <div class="checkbox-group"><input type="checkbox" id="scrCheck1"/><span>I confirm this is my original work and give MIU Theatre Club permission to review and potentially produce it.</span></div>
         <button class="btn-red full-width" onclick="submitScript()">Submit Script</button>
@@ -616,13 +615,13 @@
         <p>Complete this form to begin the exit process from the MIU Theatre Club.</p>
         <div id="exitAlert" class="alert" style="display:none"></div>
         <div class="form-row-2">
-          <div class="form-group"><label for="exitName">Full Name *</label><input type="text" id="exitName" placeholder="Your full name"/></div>
-          <div class="form-group"><label for="exitEmail">MIU Email *</label><input type="email" id="exitEmail" placeholder="name@miuegypt.edu.eg"/></div>
+          <div class="form-group"><label for="exitName">Full Name *</label><input type="text" id="exitName" placeholder="Your full name" required/></div>
+          <div class="form-group"><label for="exitEmail">MIU Email *</label><input type="email" id="exitEmail" placeholder="name@miuegypt.edu.eg" required/></div>
         </div>
         <div class="form-group"><label for="exitDuration">Membership Duration</label><input type="text" id="exitDuration" placeholder="e.g. 2 years, since 2023"/></div>
         <div class="form-group">
           <label for="exitReason">Reason for Leaving *</label>
-          <select id="exitReason">
+          <select id="exitReason" required>
             <option value="">Select reason...</option>
             <option>Academic workload</option>
             <option>Personal reasons</option>
@@ -661,25 +660,6 @@
       <span class="section-tag">Upcoming Sessions</span>
       <h2 class="section-title">All Workshops</h2>
       <div id="workshopsOutput"></div>
-    </div>
-  </section>
-  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('deadlines')">Deadlines</button></div></div><div class="footer-bottom container"><span>© 2026 MIU Theatre Club.</span></div></footer>
-</div>
-
-<!-- ===================== DEADLINES PAGE ===================== -->
-<div class="page" id="page-deadlines">
-  <section class="page-hero">
-    <div class="container">
-      <span class="section-tag">Deadlines</span>
-      <h1>Don't Miss <em>Out</em></h1>
-      <p>Stay ahead of all important registration and submission deadlines.</p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <span class="section-tag">All Dates</span>
-      <h2 class="section-title">Registration Deadlines</h2>
-      <div class="deadlines-grid" id="deadlinesOutput"></div>
     </div>
   </section>
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Quick Links</h4><button onclick="showPage('home')">Home</button><button onclick="showPage('workshops')">Workshops</button></div></div><div class="footer-bottom container"><span>© 2026 MIU Theatre Club.</span></div></footer>
@@ -726,12 +706,11 @@
         <span class="nav-section-label">Content</span>
         <button class="sidebar-btn" id="sb-scripts" onclick="adminGoTo('scripts', this)">📜 Scripts <span class="badge" id="badgeScr">0</span></button>
         <button class="sidebar-btn" id="sb-workshops" onclick="adminGoTo('workshops', this)">🛠 Workshops</button>
-        <button class="sidebar-btn" id="sb-deadlines" onclick="adminGoTo('deadlines', this)">⏰ Deadlines</button>
         <button class="sidebar-btn" id="sb-rehearsals" onclick="adminGoTo('rehearsals', this)">🎥 Rehearsal Videos</button>
         <button class="sidebar-btn" id="sb-social" onclick="adminGoTo('social', this)">📱 Social Links</button>
         <button class="sidebar-btn" id="sb-messages" onclick="adminGoTo('messages', this)">✉️ Contact Messages <span class="badge" id="badgeMsg">0</span></button>
         <span class="nav-section-label">System</span>
-        <button class="sidebar-btn" id="sb-admins" onclick="adminGoTo('admins', this)">🔐 Manage Admins</button>
+        <button class="sidebar-btn" id="sb-users" onclick="adminGoTo('users', this)">👥 Registered Users</button>
       </nav>
       <button class="sidebar-logout" onclick="doLogout()">Sign Out</button>
     </div>
@@ -750,7 +729,7 @@
           <div class="stats-cards" id="dashboardStats"></div>
           <div class="admin-card">
             <div class="admin-card-header"><h3>Welcome to the Admin Panel</h3></div>
-            <div class="admin-card-body">Use the sidebar to navigate. Review and approve/reject applications, manage workshops, deadlines, rehearsal links, social media, and admin accounts.</div>
+            <div class="admin-card-body">Use the sidebar to navigate. Review and approve/reject applications, manage workshops, rehearsal links, social media, and registered users.</div>
           </div>
         </div>
 
@@ -791,8 +770,8 @@
           <div class="admin-form-card">
             <h3>Add New Workshop</h3>
             <div class="form-row-2">
-              <div class="form-group"><label>Title</label><input type="text" id="wsTitle" placeholder="e.g. Voice Training Workshop"/></div>
-              <div class="form-group"><label>Date</label><input type="date" id="wsDate"/></div>
+              <div class="form-group"><label>Title *</label><input type="text" id="wsTitle" placeholder="e.g. Voice Training Workshop" required/></div>
+              <div class="form-group"><label>Date *</label><input type="date" id="wsDate" required/></div>
             </div>
             <div class="form-row-2">
               <div class="form-group"><label>Time</label><input type="text" id="wsTime" placeholder="e.g. 2:00 PM – 4:00 PM"/></div>
@@ -804,29 +783,15 @@
           <div class="admin-card"><div class="admin-card-header"><h3>All Workshops</h3></div><div class="table-wrap" id="tableWs"></div></div>
         </div>
 
-        <!-- DEADLINES PANEL -->
-        <div class="admin-panel" id="adminPanel-deadlines">
-          <div class="admin-form-card">
-            <h3>Add New Deadline</h3>
-            <div class="form-row-2">
-              <div class="form-group"><label>Title</label><input type="text" id="dlTitle" placeholder="e.g. Audition Registration"/></div>
-              <div class="form-group"><label>Category</label><input type="text" id="dlCategory" placeholder="e.g. Auditions"/></div>
-            </div>
-            <div class="form-group"><label>Deadline Date</label><input type="date" id="dlDate"/></div>
-            <button class="btn-red" onclick="addDeadline()">Add Deadline</button>
-          </div>
-          <div class="admin-card"><div class="admin-card-header"><h3>All Deadlines</h3></div><div class="table-wrap" id="tableDl"></div></div>
-        </div>
-
         <!-- REHEARSALS PANEL -->
         <div class="admin-panel" id="adminPanel-rehearsals">
           <div class="admin-form-card">
             <h3>Add Rehearsal Video Link</h3>
             <div class="form-row-2">
-              <div class="form-group"><label>Title</label><input type="text" id="rehTitle" placeholder="e.g. Rehearsal Session 3"/></div>
+              <div class="form-group"><label>Title *</label><input type="text" id="rehTitle" placeholder="e.g. Rehearsal Session 3" required/></div>
               <div class="form-group"><label>Date</label><input type="date" id="rehDate"/></div>
             </div>
-            <div class="form-group"><label>Video Link (YouTube / Drive)</label><input type="url" id="rehLink" placeholder="https://..."/></div>
+            <div class="form-group"><label>Video Link (YouTube / Drive) *</label><input type="url" id="rehLink" placeholder="https://..." required/></div>
             <button class="btn-red" onclick="addRehearsal()">Add Link</button>
           </div>
           <div class="admin-card"><div class="admin-card-header"><h3>All Rehearsal Videos</h3></div><div class="table-wrap" id="tableReh"></div></div>
@@ -852,19 +817,11 @@
           </div>
         </div>
 
-        <!-- MANAGE ADMINS PANEL -->
-        <div class="admin-panel" id="adminPanel-admins">
-          <div class="admin-form-card">
-            <h3>Add New Admin Account</h3>
-            <p>Create a new admin. Only visible and manageable from within this panel.</p>
-            <div class="form-group"><label>Full Name</label><input type="text" id="newAdminName" placeholder="e.g. Sara Ahmed"/></div>
-            <div class="form-group"><label>MIU Email</label><input type="email" id="newAdminEmail" placeholder="name@miuegypt.edu.eg"/></div>
-            <div class="form-group"><label>Password</label><input type="password" id="newAdminPw" placeholder="At least 8 characters"/></div>
-            <button class="btn-red" onclick="addAdmin()">Create Admin</button>
-            <div style="margin-top:24px">
-              <h4>Current Admin Accounts</h4>
-              <div id="adminsList"></div>
-            </div>
+        <!-- REGISTERED USERS PANEL -->
+        <div class="admin-panel" id="adminPanel-users">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Registered Users</h3><span class="count-badge" id="countUsers">0 users</span></div>
+            <div class="table-wrap" id="tableUsers"></div>
           </div>
         </div>
 
@@ -873,7 +830,6 @@
   </div>
 </div>
 
-<script src="web.js"> </script>
+<script src="script.js"></script>
 </body>
 </html>
-

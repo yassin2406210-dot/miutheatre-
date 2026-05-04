@@ -89,10 +89,6 @@ function showPage(pageName) {
         renderWorkshops();
     }
 
-    if (pageName === "deadlines") {
-        renderDeadlinesPage();
-    }
-
     if (pageName === "rehearsals") {
         renderRehearsals();
     }
@@ -366,6 +362,12 @@ function isValidMIUEmail(email) {
     return emailPattern.test(email.trim().toLowerCase());
 }
 
+function isValidURL(url) {
+    // Validate URL format
+    var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    return urlPattern.test(url.trim());
+}
+
 function showAlert(alertId, message, type) {
     var alertBox = document.getElementById(alertId);
     alertBox.style.display = "";
@@ -518,6 +520,12 @@ function doLogin() {
     }
 
     if (foundUser !== null) {
+        // Check if user is blocked
+        if (foundUser.blocked === true) {
+            showAlert("signinAlert", "Your account has been blocked. Please contact the admin.", "error");
+            return;
+        }
+
         saveSession({ email: email, role: "user", name: foundUser.name });
         updateNav();
 
@@ -605,7 +613,7 @@ function doSignup() {
     }
 
     // Save new user
-    users.push({ name: name, email: email, password: password });
+    users.push({ name: name, email: email, password: password, blocked: false });
     saveData("miu_users", users);
 
     // Log in automatically
@@ -809,6 +817,7 @@ function submitScript() {
     var name  = document.getElementById("scrName").value.trim();
     var email = document.getElementById("scrEmail").value.trim().toLowerCase();
     var title = document.getElementById("scrTitle").value.trim();
+    var link  = document.getElementById("scrLink").value.trim();
     var check1 = document.getElementById("scrCheck1").checked;
 
     hideAlert("scriptAlert");
@@ -820,6 +829,12 @@ function submitScript() {
 
     if (!isValidMIUEmail(email)) {
         showAlert("scriptAlert", "Please use your MIU email.", "error");
+        return;
+    }
+
+    // Validate URL
+    if (link !== "" && !isValidURL(link)) {
+        showAlert("scriptAlert", "Please enter a valid URL for the script link.", "error");
         return;
     }
 
@@ -837,7 +852,7 @@ function submitScript() {
         language:    document.getElementById("scrLanguage").value,
         description: document.getElementById("scrDescription").value,
         cast:        document.getElementById("scrCast").value,
-        link:        document.getElementById("scrLink").value,
+        link:        link,
         date:        new Date().toLocaleDateString(),
         status:      "pending"
     });
@@ -926,6 +941,16 @@ function saveSocialLinks() {
     var igValue = document.getElementById("socialIG").value.trim();
     var ttValue = document.getElementById("socialTT").value.trim();
 
+    // Validate URLs if provided
+    if (igValue !== "" && !isValidURL(igValue)) {
+        showToast("⚠️ Please enter a valid Instagram URL", "er");
+        return;
+    }
+    if (ttValue !== "" && !isValidURL(ttValue)) {
+        showToast("⚠️ Please enter a valid TikTok URL", "er");
+        return;
+    }
+
     localStorage.setItem("miu_social", JSON.stringify({ ig: igValue, tt: ttValue }));
 
     loadSocialLinks();
@@ -953,6 +978,33 @@ function formatDate(dateString) {
     var date = new Date(dateString);
     return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
+
+function renderHomeDeadlines() {
+    var container = document.getElementById("deadlinesOutput");
+    if (container === null) { return; }
+
+    var deadlines = getData("deadlines");
+
+    if (deadlines.length === 0) {
+        container.innerHTML = '<div class="empty-state"><span>⏰</span><p>No upcoming deadlines.</p></div>';
+        return;
+    }
+
+    var html = '';
+    for (var i = 0; i < deadlines.length; i++) {
+        var d = deadlines[i];
+        var daysLeft = getDaysLeft(d.date);
+        html += '<div class="deadline-card">';
+        html += '<div class="deadline-label">' + (d.category || "General") + '</div>';
+        html += '<h4>' + d.title + '</h4>';
+        html += '<div class="deadline-date">' + formatDate(d.date) + '</div>';
+        html += '<div class="countdown">' + daysLeft + '<small>days left</small></div>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+
+
 // =============================================
 //   WORKSHOPS RENDERING
 // =============================================
@@ -962,6 +1014,7 @@ function renderWorkshops() {
     if (container === null) { return; }
 
     var workshops = getData("workshops");
+    var deadlines = getData("deadlines");
 
     if (workshops.length === 0) {
         container.innerHTML = '<div class="empty-state"><span>🛠</span><p>No workshops scheduled yet. Check back soon.</p></div>';
@@ -972,10 +1025,37 @@ function renderWorkshops() {
 
     for (var i = 0; i < workshops.length; i++) {
         var w = workshops[i];
+
+        // Find deadline for this workshop
+        var workshopDeadline = null;
+        for (var d = 0; d < deadlines.length; d++) {
+            if (deadlines[d].title.toLowerCase().indexOf(w.title.toLowerCase()) !== -1 ||
+                w.title.toLowerCase().indexOf(deadlines[d].title.toLowerCase()) !== -1) {
+                workshopDeadline = deadlines[d];
+                break;
+            }
+        }
+
         html += '<div class="content-card">';
         html += '<div class="content-card-date">' + (w.date ? formatDate(w.date) : "Date TBA") + '</div>';
         html += '<h3>' + w.title + '</h3>';
         html += '<p>' + (w.desc || "") + '</p>';
+
+        // Show deadline if exists
+        if (workshopDeadline) {
+            var daysLeft = getDaysLeft(workshopDeadline.date);
+            html += '<div class="workshop-deadline">';
+            html += '<span style="color: var(--red); font-size: 11px; font-weight: 600;">⏰ Deadline: ' + formatDate(workshopDeadline.date) + '</span>';
+            if (daysLeft > 0) {
+                html += '<span style="color: var(--red); font-size: 11px;"> (' + daysLeft + ' days left)</span>';
+            } else if (daysLeft === 0) {
+                html += '<span style="color: var(--red); font-size: 11px;"> (Today!)</span>';
+            } else {
+                html += '<span style="color: #666; font-size: 11px;"> (Expired)</span>';
+            }
+            html += '</div>';
+        }
+
         html += '<div class="content-card-meta">';
         if (w.time)     { html += '<span>🕐 ' + w.time + '</span>'; }
         if (w.location) { html += '<span>📍 ' + w.location + '</span>'; }
@@ -1051,11 +1131,10 @@ var adminPanelTitles = {
     exit:       "Exit Interview Requests",
     scripts:    "Script Submissions",
     workshops:  "Workshops",
-    deadlines:  "Deadlines",
     rehearsals: "Rehearsal Videos",
     social:     "Social Links",
     messages:   "Contact Messages",
-    admins:     "Manage Admins"
+    users:      "Registered Users"
 };
 
 function adminGoTo(panelName, button) {
@@ -1100,10 +1179,9 @@ function renderAdminPanel(panelName) {
     if (panelName === "exit")       { renderAdminTable("exit_interviews",    "tableExit",  "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
     if (panelName === "scripts")    { renderAdminScripts(); }
     if (panelName === "workshops")  { renderAdminWorkshops(); }
-    if (panelName === "deadlines")  { renderAdminDeadlines(); }
     if (panelName === "rehearsals") { renderAdminRehearsals(); }
     if (panelName === "messages")   { renderAdminMessages(); }
-    if (panelName === "admins")     { renderAdminAccounts(); }
+    if (panelName === "users")      { renderAdminUsers(); }
 }
 
 function updateAdminBadges() {
@@ -1136,7 +1214,6 @@ function renderDashboard() {
         '<div class="stat-card red"><div class="stat-label">Exit Requests</div><div class="stat-number">' + exitPending + '</div></div>' +
         '<div class="stat-card"><div class="stat-label">Contact Messages</div><div class="stat-number">' + getData("contact_messages").length + '</div></div>' +
         '<div class="stat-card"><div class="stat-label">Workshops</div><div class="stat-number">' + getData("workshops").length + '</div></div>' +
-        '<div class="stat-card"><div class="stat-label">Deadlines</div><div class="stat-number">' + getData("deadlines").length + '</div></div>' +
         '<div class="stat-card"><div class="stat-label">Rehearsal Videos</div><div class="stat-number">' + getData("rehearsals").length + '</div></div>' +
         '<div class="stat-card"><div class="stat-label">Registered Users</div><div class="stat-number">' + getData("miu_users").length + '</div></div>';
 }
@@ -1262,7 +1339,6 @@ function adminDelete(key, index) {
     if (key === "exit_interviews")   { renderAdminTable("exit_interviews",  "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
     if (key === "scripts")           { renderAdminScripts(); }
     if (key === "workshops")         { renderAdminWorkshops(); }
-    if (key === "deadlines")         { renderAdminDeadlines(); }
     if (key === "rehearsals")        { renderAdminRehearsals(); }
 
     updateAdminBadges();
@@ -1282,24 +1358,6 @@ function renderAdminWorkshops() {
     var html = '<table><thead><tr><th>Title</th><th>Date</th><th>Time</th><th>Location</th><th>Actions</th></tr></thead><tbody>';
     for (var i = 0; i < data.length; i++) {
         html += '<tr><td><strong>' + data[i].title + '</strong></td><td>' + (data[i].date || "-") + '</td><td>' + (data[i].time || "-") + '</td><td>' + (data[i].location || "-") + '</td><td><button class="btn-delete" onclick="adminDelete(\'workshops\',' + i + ')">Delete</button></td></tr>';
-    }
-    html += '</tbody></table>';
-    container.innerHTML = html;
-}
-
-function renderAdminDeadlines() {
-    var data      = getData("deadlines");
-    var container = document.getElementById("tableDl");
-    if (container === null) { return; }
-
-    if (data.length === 0) {
-        container.innerHTML = '<div class="admin-empty"><span>⏰</span><p>No deadlines yet.</p></div>';
-        return;
-    }
-
-    var html = '<table><thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
-    for (var i = 0; i < data.length; i++) {
-        html += '<tr><td><strong>' + data[i].title + '</strong></td><td>' + (data[i].category || "-") + '</td><td>' + (data[i].date || "-") + '</td><td><button class="btn-delete" onclick="adminDelete(\'deadlines\',' + i + ')">Delete</button></td></tr>';
     }
     html += '</tbody></table>';
     container.innerHTML = html;
@@ -1330,8 +1388,19 @@ function addWorkshop() {
     var location = document.getElementById("wsLocation").value.trim();
     var desc     = document.getElementById("wsDesc").value.trim();
 
+    // Validate required fields
     if (title === "" || date === "") {
         showToast("⚠️ Title and date are required", "er");
+        return;
+    }
+
+    // Validate date is not in the past
+    var selectedDate = new Date(date);
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+        showToast("⚠️ Please select a future date", "er");
         return;
     }
 
@@ -1350,36 +1419,20 @@ function addWorkshop() {
     showToast("✅ Workshop added!", "ok");
 }
 
-function addDeadline() {
-    var title    = document.getElementById("dlTitle").value.trim();
-    var category = document.getElementById("dlCategory").value.trim();
-    var date     = document.getElementById("dlDate").value;
-
-    if (title === "" || date === "") {
-        showToast("⚠️ Title and date are required", "er");
-        return;
-    }
-
-    var deadlines = getData("deadlines");
-    deadlines.push({ title: title, category: category, date: date });
-    saveData("deadlines", deadlines);
-
-    document.getElementById("dlTitle").value    = "";
-    document.getElementById("dlCategory").value = "";
-    document.getElementById("dlDate").value     = "";
-
-    renderAdminDeadlines();
-    renderDashboard();
-    showToast("✅ Deadline added!", "ok");
-}
-
 function addRehearsal() {
     var title = document.getElementById("rehTitle").value.trim();
     var date  = document.getElementById("rehDate").value;
     var link  = document.getElementById("rehLink").value.trim();
 
+    // Validate required fields
     if (title === "" || link === "") {
         showToast("⚠️ Title and link are required", "er");
+        return;
+    }
+
+    // Validate URL
+    if (!isValidURL(link)) {
+        showToast("⚠️ Please enter a valid URL", "er");
         return;
     }
 
@@ -1441,65 +1494,102 @@ function deleteMessage(index) {
     showToast("🗑 Message deleted", "er");
 }
 
-function renderAdminAccounts() {
-    var container = document.getElementById("adminsList");
+// =============================================
+//   REGISTERED USERS MANAGEMENT
+// =============================================
+
+function renderAdminUsers() {
+    var users = getData("miu_users");
+    var container = document.getElementById("tableUsers");
+
     if (container === null) { return; }
 
-    var extraAdmins = getData("extraAdmins");
-    var html = "";
+    document.getElementById("countUsers").textContent = users.length + " users";
 
-    html += '<div class="admin-row"><span class="email">' + ADMIN_EMAIL + '</span><span class="tag">Built-in</span></div>';
-
-    for (var i = 0; i < extraAdmins.length; i++) {
-        html += '<div class="admin-row"><span class="email">' + extraAdmins[i].email + ' — ' + extraAdmins[i].name + '</span><span class="tag">Admin</span></div>';
+    if (users.length === 0) {
+        container.innerHTML = '<div class="admin-empty"><span>👥</span><p>No registered users yet.</p></div>';
+        return;
     }
 
+    var html = '<table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+
+    for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        var statusBadge = '';
+        var actions = '';
+
+        if (user.blocked === true) {
+            statusBadge = '<span class="status-badge rejected">Blocked</span>';
+            actions = '<button class="btn-approve" onclick="toggleUserBlock(' + i + ')">Unblock</button>';
+        } else {
+            statusBadge = '<span class="status-badge approved">Active</span>';
+            actions = '<button class="btn-reject" onclick="toggleUserBlock(' + i + ')">Block</button>';
+        }
+
+        // Add Make Admin button
+        actions += ' <button class="btn-approve" onclick="promoteToAdmin(' + i + ')">Make Admin</button>';
+
+        html += '<tr>';
+        html += '<td>' + user.name + '</td>';
+        html += '<td>' + user.email + '</td>';
+        html += '<td>' + statusBadge + '</td>';
+        html += '<td><div class="action-buttons">' + actions + '</div></td>';
+        html += '</tr>';
+    }
+
+    html += '</tbody></table>';
     container.innerHTML = html;
 }
 
-function addAdmin() {
-    var name     = document.getElementById("newAdminName").value.trim();
-    var email    = document.getElementById("newAdminEmail").value.trim().toLowerCase();
-    var password = document.getElementById("newAdminPw").value;
+function toggleUserBlock(index) {
+    var users = getData("miu_users");
+    if (users[index]) {
+        users[index].blocked = !users[index].blocked;
+        saveData("miu_users", users);
+        renderAdminUsers();
+        renderDashboard();
 
-    if (name === "" || email === "" || password === "") {
-        showToast("⚠️ All fields are required", "er");
-        return;
-    }
-
-    if (!isValidMIUEmail(email)) {
-        showToast("⚠️ Must use @miuegypt.edu.eg email", "er");
-        return;
-    }
-
-    if (password.length < 8) {
-        showToast("⚠️ Password must be at least 8 characters", "er");
-        return;
-    }
-
-    var extraAdmins = getData("extraAdmins");
-
-    if (email === ADMIN_EMAIL) {
-        showToast("⚠️ This email is already an admin", "er");
-        return;
-    }
-
-    for (var i = 0; i < extraAdmins.length; i++) {
-        if (extraAdmins[i].email === email) {
-            showToast("⚠️ This email is already an admin", "er");
-            return;
+        if (users[index].blocked) {
+            showToast("🚫 User blocked", "er");
+        } else {
+            showToast("✅ User unblocked", "ok");
         }
     }
+}
 
-    extraAdmins.push({ name: name, email: email, password: password });
-    saveData("extraAdmins", extraAdmins);
+function promoteToAdmin(index) {
+    var users = getData("miu_users");
+    if (users[index]) {
+        var user = users[index];
 
-    document.getElementById("newAdminName").value  = "";
-    document.getElementById("newAdminEmail").value = "";
-    document.getElementById("newAdminPw").value    = "";
+        // Check if already admin
+        var extraAdmins = getData("extraAdmins");
+        for (var i = 0; i < extraAdmins.length; i++) {
+            if (extraAdmins[i].email === user.email) {
+                showToast("⚠️ This user is already an admin", "er");
+                return;
+            }
+        }
 
-    renderAdminAccounts();
-    showToast("✅ Admin account created!", "ok");
+        // Add to extra admins
+        extraAdmins.push({ 
+            name: user.name, 
+            email: user.email, 
+            password: user.password 
+        });
+        saveData("extraAdmins", extraAdmins);
+
+        renderAdminUsers();
+        renderDashboard();
+        showToast("✅ User promoted to admin!", "ok");
+    }
+    
+    function doLogout() {
+    clearSession();  // Beyemsah el localStorage
+    updateNav();     // Bey-update el navbar
+    showPage("home"); // Beyro7 le home page
+    showToast("Signed out successfully.", "ok");
+}
 }
 
 
@@ -1507,7 +1597,6 @@ function addAdmin() {
 //   INIT (runs when page loads)
 // =============================================
 
-initDarkMode();
 updateNav();
 loadSocialLinks();
 updateAdminBadges();

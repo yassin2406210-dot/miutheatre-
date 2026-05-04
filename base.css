@@ -33,6 +33,14 @@
   /* Admin Specific UI */
   --admin-card-bg: #1e1e1e;
   --admin-row-bg: #252525;
+  --admin-topbar-bg: #1a1a1a;
+  --stat-card-bg: #1e1e1e;
+  --admin-form-card-bg: #1e1e1e;
+  --table-header-bg: #252525;
+  --table-hover-bg: rgba(192, 20, 28, 0.05);
+  --gray-100: #2a2a2a;
+  --success-card-bg: #1e1e1e;
+  --checkbox-bg: #2a2a2a;
 }
 
 /* ── Base Body ── */
