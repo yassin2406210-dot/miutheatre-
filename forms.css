@@ -1,15 +1,7 @@
-/* =============================================
-   forms.css
-   Forms, Inputs, Alerts, Login Page, Success Cards
-   ============================================= */
-
-/* ── Form Container (centers form on page) ── */
 .form-container {
   max-width: 660px;
   margin: 0 auto;
 }
-
-/* ── Form Card ── */
 .form-card {
   background: #1e1e1e;
   border: 1px solid #333333;
@@ -18,34 +10,28 @@
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s, border-color 0.3s;
 }
-
 .form-card h2 {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 7px;
   color: white;
 }
-
 .form-card > p {
   font-size: 13.5px;
   color: #b0b0b0;
   margin-bottom: 24px;
   line-height: 1.6;
 }
-
-/* ── Form Group (label + input) ── */
 .form-group {
   margin-bottom: 15px;
 }
-
 .form-group label {
   display: block;
   font-size: 12.5px;
   font-weight: 600;
-  color:#a0a0a0;
+  color: #a0a0a0;
   margin-bottom: 5px;
 }
-
 .form-group input,
 .form-group textarea,
 .form-group select {
@@ -54,41 +40,33 @@
   border-radius: 8px;
   border: 1.5px solid #333333;
   font-size: 14px;
-  color:  #ffffff;
+  color: #ffffff;
   background: #1e1e1e;
   outline: none;
   resize: none;
   transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
   font-family: inherit;
 }
-
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color:#ff4444;
-  box-shadow:  0 0 0 3px rgba(255, 68, 68, 0.3);
+  border-color: #ff4444;
+  box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.3);
 }
-
 .form-group textarea {
   height: 95px;
 }
-
-/* ── Two Column Row ── */
 .form-row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 13px;
+  gap: 12px;
 }
-
-/* ── Password Input with Toggle Button ── */
 .input-wrap {
   position: relative;
 }
-
 .input-wrap input {
   padding-right: 42px;
 }
-
 .input-wrap button {
   position: absolute;
   right: 11px;
@@ -102,20 +80,15 @@
   padding: 3px;
   transition: color 0.3s;
 }
-
 .input-wrap button:hover {
-  color:  #ff6666;
+  color: #ff6666;
 }
-
-/* ── Error Message (shown under input) ── */
 .error-msg {
   font-size: 11px;
-  color:#ff8888;
+  color: #ff8888;
   margin-top: 4px;
   display: block;
 }
-
-/* ── Alert Box ── */
 .alert {
   padding: 11px 14px;
   border-radius: 8px;
@@ -123,32 +96,26 @@
   margin-bottom: 16px;
   line-height: 1.5;
 }
-
 .alert.error {
-  background:  #2a0a0b;
+  background: #2a0a0b;
   border: 1px solid #7f1d1d;
-  color:#fca5a5;
+  color: #fca5a5;
 }
-
 .alert.success {
-  background:  #f0fdf4;
+  background: #f0fdf4;
   border: 1px solid #86efac;
   color: #15803d;
 }
-
 body.dark-mode .alert.error {
   background: #2a0a0b;
   border-color: #7f1d1d;
   color: #fca5a5;
 }
-
 body.dark-mode .alert.success {
   background: #052e16;
   border-color: #166534;
   color: #86efac;
 }
-
-/* ── Checkbox Group ── */
 .checkbox-group {
   display: flex;
   align-items: flex-start;
@@ -160,7 +127,6 @@ body.dark-mode .alert.success {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .checkbox-group input[type="checkbox"] {
   margin-top: 3px;
   accent-color: #ff4444;
@@ -168,21 +134,17 @@ body.dark-mode .alert.success {
   height: 14px;
   flex-shrink: 0;
 }
-
 .checkbox-group span {
   font-size: 12.5px;
   color: #b0b0b0;
   line-height: 1.55;
 }
-
 .commitment-title {
   font-size: 12.5px;
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 9px;
 }
-
-/* ── Info Banner (above form) ── */
 .info-banner {
   background: #fee2e2;
   border: 1px solid #f5c0c0;
@@ -190,37 +152,31 @@ body.dark-mode .alert.success {
   padding: 13px 16px;
   margin-bottom: 22px;
   font-size: 13px;
-  color: var(--red-dark);
+  color: #8B0E14;
   line-height: 1.6;
   transition: background-color 0.3s;
 }
-
 body.dark-mode .info-banner {
   background: #2a0a0b;
   border-color: #7f1d1d;
   color: #fca5a5;
 }
-
 .info-banner strong {
   display: block;
   margin-bottom: 3px;
   font-size: 13.5px;
 }
-
 .info-banner.warning {
   background: #fef2f2;
   border-color: #fca5a5;
 }
-
 body.dark-mode .info-banner.warning {
   background: #2a0a0b;
   border-color: #7f1d1d;
 }
-
-/* ── Success Card (shown after form submission) ── */
 .success-card {
-  background: var(--success-card-bg);
-  border: 1px solid var(--border-color);
+  background: #1e1e1e;
+  border: 1px solid #333333;
   border-radius: 20px;
   padding: 60px 40px;
   text-align: center;
@@ -228,38 +184,31 @@ body.dark-mode .info-banner.warning {
   margin: 0 auto;
   transition: background-color 0.3s, border-color 0.3s;
 }
-
 .success-card span {
   font-size: 56px;
   display: block;
   margin-bottom: 16px;
 }
-
 .success-card h2 {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 9px;
-  color: var(--text-main);
+  color: #f0f0f0;
 }
-
 .success-card p {
   font-size: 14.5px;
-  color: var(--text-muted);
+  color: #888888;
   line-height: 1.7;
   margin-bottom: 20px;
 }
-
-/* ── Login Page ── */
 .login-wrap {
   display: flex;
-  min-height: calc(100vh - var(--nav-height));
-  padding-top: var(--nav-height);
+  min-height: calc(100vh - 70px);
+  padding-top: 70px;
 }
-
-/* Left side (red panel) */
 .login-left {
   width: 44%;
-  background: var(--red);
+  background: #1e1e1e;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -268,7 +217,6 @@ body.dark-mode .info-banner.warning {
   position: relative;
   overflow: hidden;
 }
-
 .login-left::before {
   content: '';
   position: absolute;
@@ -277,9 +225,8 @@ body.dark-mode .info-banner.warning {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.05);
 }
-
 .login-left::after {
   content: '';
   position: absolute;
@@ -290,7 +237,6 @@ body.dark-mode .info-banner.warning {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
 }
-
 .login-left-content {
   position: relative;
   z-index: 2;
@@ -299,14 +245,12 @@ body.dark-mode .info-banner.warning {
   width: 100%;
   max-width: 290px;
 }
-
 .login-left-content h2 {
   font-size: clamp(20px, 2.3vw, 32px);
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 12px;
 }
-
 .login-left-content p {
   font-size: 13.5px;
   line-height: 1.75;
@@ -314,7 +258,6 @@ body.dark-mode .info-banner.warning {
   max-width: 260px;
   margin: 0 auto;
 }
-
 .login-badges {
   display: flex;
   flex-direction: column;
@@ -322,7 +265,6 @@ body.dark-mode .info-banner.warning {
   margin-top: 28px;
   width: 100%;
 }
-
 .badge {
   display: flex;
   align-items: center;
@@ -332,96 +274,80 @@ body.dark-mode .info-banner.warning {
   padding: 11px 14px;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
-
 .badge span {
   font-size: 17px;
   width: 26px;
   text-align: center;
 }
-
 .badge strong {
   display: block;
   font-size: 12.5px;
   font-weight: 600;
   color: #ffffff;
 }
-
 .badge small {
   font-size: 11px;
   opacity: 0.75;
   color: #ffffff;
 }
-
-/* Right side (form panel) */
 .login-right {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 56px 46px;
-  background: var(--bg-body);
+  background: #1e1e1e;
   transition: background-color 0.3s;
 }
-
 .login-box {
   width: 100%;
   max-width: 390px;
 }
-
-/* Sign In / Sign Up Tabs */
 .login-tabs {
   display: flex;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 2px solid #333333;
   margin-bottom: 24px;
 }
-
 .tab {
   flex: 1;
-  padding: 9px;
+  padding: 8px;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: #888888;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
   transition: all 0.2s;
 }
-
 .tab.active {
-  color: var(--red);
-  border-bottom-color: var(--red);
+  color: #ff4444;
+  border-bottom-color: #ff4444;
 }
-
-/* MIU note below login form */
 .miu-note {
-  background: var(--checkbox-bg);
+  background: #252525;
   border-radius: 8px;
   padding: 12px 14px;
   font-size: 12px;
-  color: var(--text-label);
+  color: #bbbbbb;
   line-height: 1.6;
   margin-top: 16px;
-  border-left: 3px solid var(--red);
+  border-left: 3px solid #C0141C;
   transition: background-color 0.3s;
 }
-
-/* ── Mobile Responsive ── */
 @media (max-width: 860px) {
   .login-left {
     display: none;
   }
-
   .login-right {
     padding: 36px 20px;
   }
-
   .form-row-2 {
     grid-template-columns: 1fr;
   }
-
   .form-card {
     padding: 24px 16px;
   }
 }
+
