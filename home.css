@@ -390,3 +390,17 @@ body.dark-mode .hero-tag {
     gap: 32px;
   }
 }
+
+/* ===== FOOTER LOGO SIZE FIX ===== */
+.footer-brand img {
+  max-width: 80px;
+  height: auto;
+  display: block;
+}
+
+/* ===== NAVBAR LOGO SIZE FIX ===== */
+.logo img {
+  max-height: 40px;
+  width: auto;
+  display: block;
+}
