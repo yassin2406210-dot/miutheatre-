@@ -1,35 +1,20 @@
 // =============================================
-//   MIU Theatre Club - script.js
+//   MIU Theatre Club - script.js (Updated with Deadlines)
 // =============================================
 
-
-// ── Admin Credentials (hidden from UI) ──
 var ADMIN_EMAIL    = "theatreadmin@miuegypt.edu.eg";
 var ADMIN_PASSWORD = "MIUTheatre2025!";
 var ADMIN_NAME     = "Theatre Admin";
 
-
-
-// =============================================
-//   PAGE NAVIGATION
-// =============================================
-
 var currentPage = "home";
 
 function showPage(pageName) {
-
-    // Close mobile menu
     closeMobileMenu();
-
-    // Pages that require login
     var protectedPages = ["auditions", "acting", "scripts", "exit", "rehearsals", "admin"];
-
     var session = getSession();
 
-    // If page requires login and user is not logged in — redirect to login
     for (var p = 0; p < protectedPages.length; p++) {
         if (pageName === protectedPages[p] && session === null) {
-            // Save the page they wanted to go to
             localStorage.setItem("miu_redirect", pageName);
             showPage("login");
             showToast("Please sign in to access this page.", "er");
@@ -37,7 +22,6 @@ function showPage(pageName) {
         }
     }
 
-    // Admin guard — logged in but not admin
     if (pageName === "admin") {
         if (session === null || session.role !== "admin") {
             showPage("login");
@@ -45,686 +29,410 @@ function showPage(pageName) {
         }
     }
 
-    // *** Block admin from accessing non-admin pages ***
     if (session !== null && session.role === "admin") {
         var adminOnlyPages = ["admin", "login"];
         var allowed = false;
         for (var a = 0; a < adminOnlyPages.length; a++) {
-            if (pageName === adminOnlyPages[a]) {
-                allowed = true;
-            }
+            if (pageName === adminOnlyPages[a]) { allowed = true; }
         }
-        if (!allowed) {
-            showPage("admin");
-            return;
-        }
+        if (!allowed) { showPage("admin"); return; }
     }
 
-    // Hide all pages
     var allPages = document.querySelectorAll(".page");
     for (var i = 0; i < allPages.length; i++) {
         allPages[i].classList.remove("active");
     }
 
-    // Show the selected page
     var selectedPage = document.getElementById("page-" + pageName);
-    if (selectedPage === null) {
-        console.log("Page not found: " + pageName);
-        return;
-    }
+    if (selectedPage === null) { console.log("Page not found: " + pageName); return; }
     selectedPage.classList.add("active");
-
-    // Scroll to top
     window.scrollTo(0, 0);
-
     currentPage = pageName;
 
-    // Run page-specific functions
-    if (pageName === "home") {
-        renderHomeDeadlines();
-        loadSocialLinks();
-    }
+    if (pageName === "home") { renderHomeDeadlines(); loadSocialLinks(); }
+    if (pageName === "workshops") { renderWorkshops(); }
+    if (pageName === "rehearsals") { renderRehearsals(); }
+    if (pageName === "admin") { initAdminPage(); renderAdminPanel("dashboard"); }
+    if (pageName === "login") { clearLoginForm(); }
+    if (pageName === "contact") { autoFillContactEmail(); }
 
-    if (pageName === "workshops") {
-        renderWorkshops();
-    }
-
-    if (pageName === "rehearsals") {
-        renderRehearsals();
-    }
-
-    if (pageName === "admin") {
-        initAdminPage();
-        renderAdminPanel("dashboard");
-    }
-
-    // When login page opens — clear the form fields
-    if (pageName === "login") {
-        clearLoginForm();
-    }
-
-    // When contact page opens — auto-fill email if logged in
-    if (pageName === "contact") {
-        autoFillContactEmail();
-    }
-
-    // Reset feature forms when re-visiting
-    if (pageName === "auditions") {
-        resetForm("auditionForm", "auditionSuccess");
-        autoFillForms();
-    }
-    if (pageName === "acting") {
-        resetForm("actingForm", "actingSuccess");
-        autoFillForms();
-    }
-    if (pageName === "scripts") {
-        resetForm("scriptForm", "scriptSuccess");
-        autoFillForms();
-    }
-    if (pageName === "exit") {
-        resetForm("exitForm", "exitSuccess");
-        autoFillForms();
-    }
+    if (pageName === "auditions") { resetForm("auditionForm", "auditionSuccess"); autoFillForms(); renderAuditionDeadline(); }
+    if (pageName === "acting") { resetForm("actingForm", "actingSuccess"); autoFillForms(); renderActingDeadline(); }
+    if (pageName === "scripts") { resetForm("scriptForm", "scriptSuccess"); autoFillForms(); renderScriptDeadline(); }
+    if (pageName === "exit") { resetForm("exitForm", "exitSuccess"); autoFillForms(); }
 }
 
 function resetForm(formId, successId) {
     var form = document.getElementById(formId);
     var success = document.getElementById(successId);
-
     if (form !== null) {
         form.style.display = "";
         var inputs = form.querySelectorAll("input, textarea, select");
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type === "checkbox") {
-                inputs[i].checked = false;
-            } else {
-                inputs[i].value = "";
-            }
+            if (inputs[i].type === "checkbox") { inputs[i].checked = false; }
+            else { inputs[i].value = ""; }
         }
     }
-
-    if (success !== null) {
-        success.style.display = "none";
-    }
+    if (success !== null) { success.style.display = "none"; }
 }
 
-// Clear login form fields (called every time login page opens)
 function clearLoginForm() {
     var emailInput = document.getElementById("signinEmail");
     var pwInput    = document.getElementById("signinPw");
+    if (emailInput !== null) { emailInput.value = ""; emailInput.style.borderColor = ""; }
+    if (pwInput !== null) { pwInput.value = ""; pwInput.style.borderColor = ""; }
 
-    if (emailInput !== null) {
-        emailInput.value = "";
-        emailInput.style.borderColor = "";
-    }
-    if (pwInput !== null) {
-        pwInput.value = "";
-        pwInput.style.borderColor = "";
-    }
-
-    // Also clear signup form
     var suName  = document.getElementById("signupName");
     var suEmail = document.getElementById("signupEmail");
     var suPw    = document.getElementById("signupPw");
     var suPw2   = document.getElementById("signupPw2");
-
     if (suName  !== null) { suName.value  = ""; suName.style.borderColor  = ""; }
     if (suEmail !== null) { suEmail.value = ""; suEmail.style.borderColor = ""; }
     if (suPw    !== null) { suPw.value    = ""; suPw.style.borderColor    = ""; }
     if (suPw2   !== null) { suPw2.value   = ""; suPw2.style.borderColor   = ""; }
 
-    // Hide all alerts and error messages
-    hideAlert("signinAlert");
-    hideAlert("signupAlert");
-    hideErrorMsg("signinEmailError");
-    hideErrorMsg("signinPwError");
-    hideErrorMsg("signupNameError");
-    hideErrorMsg("signupEmailError");
-    hideErrorMsg("signupPwError");
-    hideErrorMsg("signupPw2Error");
+    hideAlert("signinAlert"); hideAlert("signupAlert");
+    hideErrorMsg("signinEmailError"); hideErrorMsg("signinPwError");
+    hideErrorMsg("signupNameError"); hideErrorMsg("signupEmailError");
+    hideErrorMsg("signupPwError"); hideErrorMsg("signupPw2Error");
 }
 
-// Auto-fill contact email if user is logged in
 function autoFillContactEmail() {
     var session  = getSession();
     var emailInput = document.getElementById("ctEmail");
-
-    if (emailInput === null) {
-        return;
-    }
-
+    if (emailInput === null) return;
     if (session !== null) {
-        // Fill the email and make it read-only
-        emailInput.value    = session.email;
+        emailInput.value = session.email;
         emailInput.readOnly = true;
-        emailInput.style.backgroundColor = "";
-        emailInput.style.color           = "";
     } else {
-        // Not logged in — field is editable and requires MIU email
-        emailInput.value    = "";
+        emailInput.value = "";
         emailInput.readOnly = false;
-        emailInput.style.backgroundColor = "";
-        emailInput.style.color           = "";
     }
 }
 
-
-// =============================================
-//   NAVBAR
-// =============================================
-
-// Update nav buttons based on login state
+// NAVBAR
 function updateNav() {
     var session = getSession();
-
-    var loginBtn        = document.getElementById("loginBtn");
-    var logoutBtn       = document.getElementById("logoutBtn");
-    var mobileLoginBtn  = document.getElementById("mobileLoginBtn");
+    var loginBtn = document.getElementById("loginBtn");
+    var logoutBtn = document.getElementById("logoutBtn");
+    var mobileLoginBtn = document.getElementById("mobileLoginBtn");
     var mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-    var navLinks        = document.getElementById("navLinks");
+    var navLinks = document.getElementById("navLinks");
 
-    // Add/remove logged-in class on body for CSS control
-    if (session !== null) {
-        document.body.classList.add("logged-in");
-    } else {
-        document.body.classList.remove("logged-in");
-    }
+    if (session !== null) { document.body.classList.add("logged-in"); }
+    else { document.body.classList.remove("logged-in"); }
 
     if (session !== null) {
-        // User is logged in
-        loginBtn.style.display  = "none";
-        logoutBtn.style.display = "";
-        mobileLoginBtn.style.display  = "none";
-        mobileLogoutBtn.style.display = "";
-
+        loginBtn.style.display = "none"; logoutBtn.style.display = "";
+        mobileLoginBtn.style.display = "none"; mobileLogoutBtn.style.display = "";
         if (session.role === "admin") {
-            logoutBtn.textContent       = "⚙️ " + session.name + " — Sign Out";
+            logoutBtn.textContent = "⚙️ " + session.name + " — Sign Out";
             mobileLogoutBtn.textContent = "⚙️ " + session.name + " — Sign Out";
-
-            // Hide all regular nav buttons except login/logout
             var allNavBtns = navLinks.querySelectorAll("button:not(#loginBtn):not(#logoutBtn):not(#darkModeBtn), .dropdown");
-            for (var i = 0; i < allNavBtns.length; i++) {
-                allNavBtns[i].style.display = "none";
-            }
-
-            // Add Admin Panel button if not already there
+            for (var i = 0; i < allNavBtns.length; i++) { allNavBtns[i].style.display = "none"; }
             if (!document.getElementById("adminPanelBtn")) {
                 var adminBtn = document.createElement("button");
-                adminBtn.id = "adminPanelBtn";
-                adminBtn.textContent = "⚙️ Admin Panel";
+                adminBtn.id = "adminPanelBtn"; adminBtn.textContent = "⚙️ Admin Panel";
                 adminBtn.onclick = function() { showPage("admin"); };
                 navLinks.insertBefore(adminBtn, logoutBtn);
             }
-
         } else {
-            logoutBtn.textContent       = "👤 " + session.name + " — Sign Out";
+            logoutBtn.textContent = "👤 " + session.name + " — Sign Out";
             mobileLogoutBtn.textContent = "👤 " + session.name + " — Sign Out";
         }
-
     } else {
-        // User is not logged in
-        loginBtn.style.display  = "";
-        logoutBtn.style.display = "none";
-        mobileLoginBtn.style.display  = "";
-        mobileLogoutBtn.style.display = "none";
-
-        // Restore all hidden nav buttons
+        loginBtn.style.display = ""; logoutBtn.style.display = "none";
+        mobileLoginBtn.style.display = ""; mobileLogoutBtn.style.display = "none";
         var allNavBtns2 = navLinks.querySelectorAll("button, .dropdown");
-        for (var k = 0; k < allNavBtns2.length; k++) {
-            allNavBtns2[k].style.display = "";
-        }
-
-        // Remove Admin Panel button if present
+        for (var k = 0; k < allNavBtns2.length; k++) { allNavBtns2[k].style.display = ""; }
         var adminBtn2 = document.getElementById("adminPanelBtn");
-        if (adminBtn2 !== null) {
-            adminBtn2.parentNode.removeChild(adminBtn2);
-        }
+        if (adminBtn2 !== null) { adminBtn2.parentNode.removeChild(adminBtn2); }
     }
 }
 
-// Scroll shadow on navbar
 window.addEventListener("scroll", function() {
     var navbar = document.getElementById("navbar");
-    if (window.scrollY > 20) {
-        navbar.classList.add("scrolled");
-    } else {
-        navbar.classList.remove("scrolled");
-    }
+    if (window.scrollY > 20) { navbar.classList.add("scrolled"); }
+    else { navbar.classList.remove("scrolled"); }
 });
 
-// Mobile menu toggle
 function toggleMobileMenu() {
     var menu = document.getElementById("mobileMenu");
     menu.classList.toggle("open");
 }
-
 function closeMobileMenu() {
     var menu = document.getElementById("mobileMenu");
     menu.classList.remove("open");
 }
 
-
-// =============================================
-//   TOAST NOTIFICATION
-// =============================================
-
+// TOAST
 function showToast(message, type) {
     var toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.className = "show";
-
-    if (type === "ok") {
-        toast.classList.add("ok");
-    } else if (type === "er") {
-        toast.classList.add("er");
-    }
-
-    setTimeout(function() {
-        toast.className = "";
-    }, 3200);
+    toast.textContent = message; toast.className = "show";
+    if (type === "ok") { toast.classList.add("ok"); }
+    else if (type === "er") { toast.classList.add("er"); }
+    setTimeout(function() { toast.className = ""; }, 3200);
 }
 
-
-// =============================================
-//   SESSION (localStorage)
-// =============================================
-
+// SESSION
 function getSession() {
     var data = localStorage.getItem("miu_session");
-    if (data === null) {
-        return null;
-    }
+    if (data === null) return null;
     return JSON.parse(data);
 }
+function saveSession(sessionData) { localStorage.setItem("miu_session", JSON.stringify(sessionData)); }
+function clearSession() { localStorage.removeItem("miu_session"); }
 
-function saveSession(sessionData) {
-    localStorage.setItem("miu_session", JSON.stringify(sessionData));
-}
-
-function clearSession() {
-    localStorage.removeItem("miu_session");
-}
-
-
-// =============================================
-//   DATA HELPERS (localStorage)
-// =============================================
-
+// DATA HELPERS
 function getData(key) {
     var data = localStorage.getItem(key);
-    if (data === null) {
-        return [];
-    }
+    if (data === null) return [];
     return JSON.parse(data);
 }
+function saveData(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 
-function saveData(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
-}
-
-
-// =============================================
-//   VALIDATION HELPERS
-// =============================================
-
+// VALIDATION
 function isValidMIUEmail(email) {
-    // Email must end with @miuegypt.edu.eg
     var emailPattern = /^[^ ]+@miuegypt\.edu\.eg$/;
     return emailPattern.test(email.trim().toLowerCase());
 }
-
 function isValidURL(url) {
-    // Validate URL format
     var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
     return urlPattern.test(url.trim());
 }
-
 function showAlert(alertId, message, type) {
     var alertBox = document.getElementById(alertId);
-    alertBox.style.display = "";
-    alertBox.className = "alert " + type;
-
-    if (type === "error") {
-        alertBox.innerHTML = "⚠️ " + message;
-    } else {
-        alertBox.innerHTML = "✅ " + message;
-    }
+    alertBox.style.display = ""; alertBox.className = "alert " + type;
+    if (type === "error") { alertBox.innerHTML = "⚠️ " + message; }
+    else { alertBox.innerHTML = "✅ " + message; }
 }
-
 function hideAlert(alertId) {
     var alertBox = document.getElementById(alertId);
-    alertBox.style.display = "none";
-    alertBox.className = "alert";
+    alertBox.style.display = "none"; alertBox.className = "alert";
 }
+function showErrorMsg(elementId) { document.getElementById(elementId).style.display = "block"; }
+function hideErrorMsg(elementId) { document.getElementById(elementId).style.display = "none"; }
+function markError(inputId) { document.getElementById(inputId).style.borderColor = "#e24b4a"; }
+function clearError(inputId) { document.getElementById(inputId).style.borderColor = ""; }
 
-function showErrorMsg(elementId) {
-    document.getElementById(elementId).style.display = "block";
-}
-
-function hideErrorMsg(elementId) {
-    document.getElementById(elementId).style.display = "none";
-}
-
-function markError(inputId) {
-    document.getElementById(inputId).style.borderColor = "#e24b4a";
-}
-
-function clearError(inputId) {
-    document.getElementById(inputId).style.borderColor = "";
-}
-
-
-// =============================================
-//   TOGGLE PASSWORD VISIBILITY
-// =============================================
-
+// PASSWORD TOGGLE
 function togglePassword(inputId, buttonId) {
-    var input  = document.getElementById(inputId);
+    var input = document.getElementById(inputId);
     var button = document.getElementById(buttonId);
-
-    if (input.type === "password") {
-        input.type = "text";
-        button.textContent = "🙈";
-    } else {
-        input.type = "password";
-        button.textContent = "👁";
-    }
+    if (input.type === "password") { input.type = "text"; button.textContent = "🙈"; }
+    else { input.type = "password"; button.textContent = "👁"; }
 }
 
-
-// =============================================
-//   LOGIN TABS
-// =============================================
-
+// LOGIN TABS
 function switchLoginTab(tab) {
     var formSignIn = document.getElementById("formSignIn");
     var formSignUp = document.getElementById("formSignUp");
     var tabSignIn  = document.getElementById("tabSignIn");
     var tabSignUp  = document.getElementById("tabSignUp");
-
     if (tab === "signin") {
-        formSignIn.style.display = "";
-        formSignUp.style.display = "none";
-        tabSignIn.classList.add("active");
-        tabSignUp.classList.remove("active");
+        formSignIn.style.display = ""; formSignUp.style.display = "none";
+        tabSignIn.classList.add("active"); tabSignUp.classList.remove("active");
     } else {
-        formSignIn.style.display = "none";
-        formSignUp.style.display = "";
-        tabSignIn.classList.remove("active");
-        tabSignUp.classList.add("active");
+        formSignIn.style.display = "none"; formSignUp.style.display = "";
+        tabSignIn.classList.remove("active"); tabSignUp.classList.add("active");
     }
-
-    hideAlert("signinAlert");
-    hideAlert("signupAlert");
+    hideAlert("signinAlert"); hideAlert("signupAlert");
 }
 
-
-// =============================================
-//   SIGN IN
-// =============================================
-
+// SIGN IN
 function doLogin() {
-
-    // Get values from form
-    var email    = document.getElementById("signinEmail").value.trim().toLowerCase();
+    var email = document.getElementById("signinEmail").value.trim().toLowerCase();
     var password = document.getElementById("signinPw").value;
-
-    // Clear previous errors
-    hideAlert("signinAlert");
-    hideErrorMsg("signinEmailError");
-    hideErrorMsg("signinPwError");
-    clearError("signinEmail");
-    clearError("signinPw");
-
-    // Validate email
+    hideAlert("signinAlert"); hideErrorMsg("signinEmailError"); hideErrorMsg("signinPwError");
+    clearError("signinEmail"); clearError("signinPw");
     var valid = true;
+    if (email === "" || !isValidMIUEmail(email)) { showErrorMsg("signinEmailError"); markError("signinEmail"); valid = false; }
+    if (password.length < 6) { showErrorMsg("signinPwError"); markError("signinPw"); valid = false; }
+    if (valid === false) return;
 
-    if (email === "" || !isValidMIUEmail(email)) {
-        showErrorMsg("signinEmailError");
-        markError("signinEmail");
-        valid = false;
-    }
-
-    // Validate password length
-    if (password.length < 6) {
-        showErrorMsg("signinPwError");
-        markError("signinPw");
-        valid = false;
-    }
-
-    // Stop if validation failed
-    if (valid === false) {
-        return;
-    }
-
-    // Check if admin
     var extraAdmins = getData("extraAdmins");
     var adminAccount = null;
-
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        adminAccount = { email: ADMIN_EMAIL, name: ADMIN_NAME };
-    }
-
-    // Check extra admins
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) { adminAccount = { email: ADMIN_EMAIL, name: ADMIN_NAME }; }
     for (var i = 0; i < extraAdmins.length; i++) {
-        if (extraAdmins[i].email === email && extraAdmins[i].password === password) {
-            adminAccount = extraAdmins[i];
-        }
+        if (extraAdmins[i].email === email && extraAdmins[i].password === password) { adminAccount = extraAdmins[i]; }
     }
-
     if (adminAccount !== null) {
         saveSession({ email: email, role: "admin", name: adminAccount.name });
-        updateNav();
-        localStorage.removeItem("miu_redirect");
-        showPage("admin");
-        return;
+        updateNav(); localStorage.removeItem("miu_redirect"); showPage("admin"); return;
     }
 
-    // Check regular users
     var users = getData("miu_users");
     var foundUser = null;
-
     for (var j = 0; j < users.length; j++) {
-        if (users[j].email === email && users[j].password === password) {
-            foundUser = users[j];
-        }
+        if (users[j].email === email && users[j].password === password) { foundUser = users[j]; }
     }
-
     if (foundUser !== null) {
-        // Check if user is blocked
-        if (foundUser.blocked === true) {
-            showAlert("signinAlert", "Your account has been blocked. Please contact the admin.", "error");
-            return;
-        }
-
+        if (foundUser.blocked === true) { showAlert("signinAlert", "Your account has been blocked. Please contact the admin.", "error"); return; }
         saveSession({ email: email, role: "user", name: foundUser.name });
         updateNav();
-
-        // Go to the page they were trying to visit, or home
         var redirect = localStorage.getItem("miu_redirect");
         localStorage.removeItem("miu_redirect");
-
-        if (redirect !== null) {
-            showPage(redirect);
-        } else {
-            showPage("home");
-        }
-
-        showToast("Welcome back, " + foundUser.name + " 🎭", "ok");
-        return;
+        if (redirect !== null) { showPage(redirect); } else { showPage("home"); }
+        showToast("Welcome back, " + foundUser.name + " 🎭", "ok"); return;
     }
-
-    // If nothing matched
     showAlert("signinAlert", "Incorrect email or password. Please try again.", "error");
 }
 
-
-// =============================================
-//   SIGN UP
-// =============================================
-
+// SIGN UP
 function doSignup() {
-
-    // Get values from form
-    var name      = document.getElementById("signupName").value.trim();
-    var email     = document.getElementById("signupEmail").value.trim().toLowerCase();
-    var password  = document.getElementById("signupPw").value;
+    var name = document.getElementById("signupName").value.trim();
+    var email = document.getElementById("signupEmail").value.trim().toLowerCase();
+    var password = document.getElementById("signupPw").value;
     var password2 = document.getElementById("signupPw2").value;
-
-    // Clear previous errors
-    hideAlert("signupAlert");
-    hideErrorMsg("signupNameError");
-    hideErrorMsg("signupEmailError");
-    hideErrorMsg("signupPwError");
-    hideErrorMsg("signupPw2Error");
-    clearError("signupName");
-    clearError("signupEmail");
-    clearError("signupPw");
-    clearError("signupPw2");
-
-    // Validate
+    hideAlert("signupAlert"); hideErrorMsg("signupNameError"); hideErrorMsg("signupEmailError");
+    hideErrorMsg("signupPwError"); hideErrorMsg("signupPw2Error");
+    clearError("signupName"); clearError("signupEmail"); clearError("signupPw"); clearError("signupPw2");
     var valid = true;
+    if (name === "") { showErrorMsg("signupNameError"); markError("signupName"); valid = false; }
+    if (email === "" || !isValidMIUEmail(email)) { showErrorMsg("signupEmailError"); markError("signupEmail"); valid = false; }
+    if (password.length < 6) { showErrorMsg("signupPwError"); markError("signupPw"); valid = false; }
+    if (password !== password2) { showErrorMsg("signupPw2Error"); markError("signupPw2"); valid = false; }
+    if (valid === false) return;
 
-    if (name === "") {
-        showErrorMsg("signupNameError");
-        markError("signupName");
-        valid = false;
-    }
-
-    if (email === "" || !isValidMIUEmail(email)) {
-        showErrorMsg("signupEmailError");
-        markError("signupEmail");
-        valid = false;
-    }
-
-    if (password.length < 6) {
-        showErrorMsg("signupPwError");
-        markError("signupPw");
-        valid = false;
-    }
-
-    if (password !== password2) {
-        showErrorMsg("signupPw2Error");
-        markError("signupPw2");
-        valid = false;
-    }
-
-    if (valid === false) {
-        return;
-    }
-
-    // Check if email already registered
     var users = getData("miu_users");
-
     for (var i = 0; i < users.length; i++) {
-        if (users[i].email === email) {
-            showAlert("signupAlert", "This email is already registered. Please sign in.", "error");
-            return;
-        }
+        if (users[i].email === email) { showAlert("signupAlert", "This email is already registered. Please sign in.", "error"); return; }
     }
-
-    // Save new user
     users.push({ name: name, email: email, password: password, blocked: false });
     saveData("miu_users", users);
-
-    // Log in automatically
     saveSession({ email: email, role: "user", name: name });
     updateNav();
-
-    // Go to the page they were trying to visit, or home
     var redirect = localStorage.getItem("miu_redirect");
     localStorage.removeItem("miu_redirect");
-
-    if (redirect !== null) {
-        showPage(redirect);
-    } else {
-        showPage("home");
-    }
-
+    if (redirect !== null) { showPage(redirect); } else { showPage("home"); }
     showToast("Account created! Welcome, " + name + " 🎭", "ok");
 }
 
+// LOGOUT
+function doLogout() { clearSession(); updateNav(); showPage("home"); showToast("Signed out successfully.", "ok"); }
 
-// =============================================
-//   LOGOUT
-// =============================================
-
-function doLogout() {
-    clearSession();
-    updateNav();
-    showPage("home");
-    showToast("Signed out successfully.", "ok");
-}
-
-
-// =============================================
-//   CONTACT FORM
-// =============================================
-
+// CONTACT
 function submitContact() {
-
     var firstName = document.getElementById("ctFirstName").value.trim();
     var lastName = document.getElementById("ctLastName").value.trim();
-    var email     = document.getElementById("ctEmail").value.trim();
+    var email = document.getElementById("ctEmail").value.trim();
     var subject = document.getElementById("ctSubject").value;
-    var message   = document.getElementById("ctMessage").value.trim();
-
+    var message = document.getElementById("ctMessage").value.trim();
     hideAlert("contactAlert");
-
-    // Validate ALL fields (required + optional to be filled)
     if (firstName === "" || lastName === "" || email === "" || subject === "" || message === "") {
-        showAlert("contactAlert", "Please fill in ALL fields to send your message.", "error");
-        return;
+        showAlert("contactAlert", "Please fill in ALL fields to send your message.", "error"); return;
     }
-
-    // If user is NOT logged in — validate the email they typed
     var session = getSession();
     if (session === null) {
-        if (email === "") {
-            showAlert("contactAlert", "Please enter your MIU email.", "error");
-            return;
-        }
-        if (!isValidMIUEmail(email)) {
-            showAlert("contactAlert", "Please use your MIU email (@miuegypt.edu.eg).", "error");
-            return;
-        }
+        if (!isValidMIUEmail(email)) { showAlert("contactAlert", "Please use your MIU email (@miuegypt.edu.eg).", "error"); return; }
     }
-
-    // Success — save message to localStorage
     var messages = getData("contact_messages");
-    messages.push({
-        firstName: firstName,
-        lastName:  lastName,
-        email:     email,
-        subject:   document.getElementById("ctSubject").value,
-        message:   message,
-        date:      new Date().toLocaleDateString()
-    });
+    messages.push({ firstName: firstName, lastName: lastName, email: email, subject: subject, message: message, date: new Date().toLocaleDateString() });
     saveData("contact_messages", messages);
-
     showAlert("contactAlert", "Your message has been sent! We'll get back to you within 1–2 business days.", "success");
     updateAdminBadges();
-
-    // Clear form (but keep email if logged in)
     document.getElementById("ctFirstName").value = "";
-    document.getElementById("ctLastName").value  = "";
-    document.getElementById("ctSubject").value   = "";
-    document.getElementById("ctMessage").value   = "";
+    document.getElementById("ctLastName").value = "";
+    document.getElementById("ctSubject").value = "";
+    document.getElementById("ctMessage").value = "";
+    if (session === null) { document.getElementById("ctEmail").value = ""; }
+}
 
-    // Only clear email if user typed it themselves (not auto-filled)
-    if (session === null) {
-        document.getElementById("ctEmail").value = "";
+
+// =============================================
+//   DEADLINE MANAGEMENT (NEW FEATURE)
+// =============================================
+
+function getDeadline(type) {
+    var deadlines = getData("deadlines");
+    for (var i = 0; i < deadlines.length; i++) {
+        if (deadlines[i].type === type) { return deadlines[i]; }
+    }
+    return null;
+}
+
+function isDeadlinePassed(deadlineDate) {
+    if (!deadlineDate) return false;
+    var deadline = new Date(deadlineDate);
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today > deadline;
+}
+
+function renderAuditionDeadline() {
+    var container = document.getElementById("auditionDeadlineBanner");
+    if (!container) return;
+    var deadline = getDeadline("auditions");
+    if (!deadline) { container.innerHTML = ""; container.style.display = "none"; return; }
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+    var html = '<div class="deadline-banner ' + (isExpired ? 'expired' : 'active') + '">';
+    html += '<div class="deadline-icon">⏰</div><div class="deadline-info">';
+    html += '<h4>Application Deadline</h4><p>' + formatDate(deadline.date);
+    if (isExpired) { html += ' <span class="deadline-status">(Closed)</span>'; }
+    else if (daysLeft === 0) { html += ' <span class="deadline-status urgent">(Today!)</span>'; }
+    else { html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>'; }
+    html += '</p></div></div>';
+    container.innerHTML = html; container.style.display = "block";
+    var form = document.getElementById("auditionForm");
+    if (form && isExpired) {
+        form.style.display = "none";
+        var closedMsg = document.getElementById("auditionClosed");
+        if (closedMsg) closedMsg.style.display = "block";
     }
 }
 
+function renderActingDeadline() {
+    var container = document.getElementById("actingDeadlineBanner");
+    if (!container) return;
+    var deadline = getDeadline("acting");
+    if (!deadline) { container.innerHTML = ""; container.style.display = "none"; return; }
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+    var html = '<div class="deadline-banner ' + (isExpired ? 'expired' : 'active') + '">';
+    html += '<div class="deadline-icon">⏰</div><div class="deadline-info">';
+    html += '<h4>Application Deadline</h4><p>' + formatDate(deadline.date);
+    if (isExpired) { html += ' <span class="deadline-status">(Closed)</span>'; }
+    else if (daysLeft === 0) { html += ' <span class="deadline-status urgent">(Today!)</span>'; }
+    else { html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>'; }
+    html += '</p></div></div>';
+    container.innerHTML = html; container.style.display = "block";
+    var form = document.getElementById("actingForm");
+    if (form && isExpired) {
+        form.style.display = "none";
+        var closedMsg = document.getElementById("actingClosed");
+        if (closedMsg) closedMsg.style.display = "block";
+    }
+}
+
+function renderScriptDeadline() {
+    var container = document.getElementById("scriptDeadlineBanner");
+    if (!container) return;
+    var deadline = getDeadline("scripts");
+    if (!deadline) { container.innerHTML = ""; container.style.display = "none"; return; }
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+    var html = '<div class="deadline-banner ' + (isExpired ? 'expired' : 'active') + '">';
+    html += '<div class="deadline-icon">⏰</div><div class="deadline-info">';
+    html += '<h4>Submission Deadline</h4><p>' + formatDate(deadline.date);
+    if (isExpired) { html += ' <span class="deadline-status">(Closed)</span>'; }
+    else if (daysLeft === 0) { html += ' <span class="deadline-status urgent">(Today!)</span>'; }
+    else { html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>'; }
+    html += '</p></div></div>';
+    container.innerHTML = html; container.style.display = "block";
+    var form = document.getElementById("scriptForm");
+    if (form && isExpired) {
+        form.style.display = "none";
+        var closedMsg = document.getElementById("scriptClosed");
+        if (closedMsg) closedMsg.style.display = "block";
+    }
+}
 
 // =============================================
 //   AUDITIONS FORM
 // =============================================
-
 function submitAudition() {
-
-    var name  = document.getElementById("audName").value.trim();
+    var name = document.getElementById("audName").value.trim();
     var email = document.getElementById("audEmail").value.trim().toLowerCase();
     var studentId = document.getElementById("audId").value.trim();
     var faculty = document.getElementById("audFaculty").value.trim();
@@ -732,55 +440,30 @@ function submitAudition() {
     var why = document.getElementById("audWhy").value.trim();
     var check1 = document.getElementById("audCheck1").checked;
     var check2 = document.getElementById("audCheck2").checked;
-
     hideAlert("auditionAlert");
-
-    // Validate ALL fields (required + optional to be filled)
+    var deadline = getDeadline("auditions");
+    if (deadline && isDeadlinePassed(deadline.date)) {
+        showAlert("auditionAlert", "Applications are now closed. The deadline has passed.", "error"); return;
+    }
     if (name === "" || email === "" || studentId === "" || faculty === "" || experience === "" || why === "") {
-        showAlert("auditionAlert", "Please fill in ALL fields to complete your application.", "error");
-        return;
+        showAlert("auditionAlert", "Please fill in ALL fields to complete your application.", "error"); return;
     }
-
-    if (!isValidMIUEmail(email)) {
-        showAlert("auditionAlert", "Please use your MIU email.", "error");
-        return;
-    }
-
-    if (check1 === false || check2 === false) {
-        showAlert("auditionAlert", "Please confirm both commitment checkboxes.", "error");
-        return;
-    }
-
-    // Save to localStorage
+    if (!isValidMIUEmail(email)) { showAlert("auditionAlert", "Please use your MIU email.", "error"); return; }
+    if (check1 === false || check2 === false) { showAlert("auditionAlert", "Please confirm both commitment checkboxes.", "error"); return; }
     var applications = getData("auditions");
-    applications.push({
-        name:       name,
-        email:      email,
-        faculty:    document.getElementById("audFaculty").value,
-        experience: document.getElementById("audExperience").value,
-        why:        document.getElementById("audWhy").value,
-        date:       new Date().toLocaleDateString(),
-        status:     "pending"
-    });
+    applications.push({ name: name, email: email, faculty: faculty, experience: experience, why: why, date: new Date().toLocaleDateString(), status: "pending" });
     saveData("auditions", applications);
-
-    // Show success screen
-    document.getElementById("auditionForm").style.display    = "none";
+    document.getElementById("auditionForm").style.display = "none";
     document.getElementById("auditionSuccess").style.display = "block";
-
-    // Update admin badges
     updateAdminBadges();
 }
-
 
 // =============================================
 //   ACTING INTERVIEW FORM
 // =============================================
-
 function submitActing() {
-
-    var name   = document.getElementById("actName").value.trim();
-    var email  = document.getElementById("actEmail").value.trim().toLowerCase();
+    var name = document.getElementById("actName").value.trim();
+    var email = document.getElementById("actEmail").value.trim().toLowerCase();
     var arabic = document.getElementById("actArabic").value;
     var experience = document.getElementById("actExperience").value.trim();
     var role = document.getElementById("actRole").value;
@@ -788,153 +471,77 @@ function submitActing() {
     var check1 = document.getElementById("actCheck1").checked;
     var check2 = document.getElementById("actCheck2").checked;
     var check3 = document.getElementById("actCheck3").checked;
-
     hideAlert("actingAlert");
-
-    // Validate ALL fields (required + optional to be filled)
+    var deadline = getDeadline("acting");
+    if (deadline && isDeadlinePassed(deadline.date)) {
+        showAlert("actingAlert", "Applications are now closed. The deadline has passed.", "error"); return;
+    }
     if (name === "" || email === "" || arabic === "" || experience === "" || role === "" || availability === "") {
-        showAlert("actingAlert", "Please fill in ALL fields to complete your application.", "error");
-        return;
+        showAlert("actingAlert", "Please fill in ALL fields to complete your application.", "error"); return;
     }
-
-    if (!isValidMIUEmail(email)) {
-        showAlert("actingAlert", "Please use your MIU email.", "error");
-        return;
-    }
-
-    if (check1 === false || check2 === false || check3 === false) {
-        showAlert("actingAlert", "Please confirm all commitment checkboxes.", "error");
-        return;
-    }
-
+    if (!isValidMIUEmail(email)) { showAlert("actingAlert", "Please use your MIU email.", "error"); return; }
+    if (check1 === false || check2 === false || check3 === false) { showAlert("actingAlert", "Please confirm all commitment checkboxes.", "error"); return; }
     var applications = getData("acting_interviews");
-    applications.push({
-        name:         name,
-        email:        email,
-        arabic:       arabic,
-        commitment:   "Confirmed",
-        experience:   document.getElementById("actExperience").value,
-        role:         document.getElementById("actRole").value,
-        availability: document.getElementById("actAvailability").value,
-        date:         new Date().toLocaleDateString(),
-        status:       "pending"
-    });
+    applications.push({ name: name, email: email, arabic: arabic, commitment: "Confirmed", experience: experience, role: role, availability: availability, date: new Date().toLocaleDateString(), status: "pending" });
     saveData("acting_interviews", applications);
-
-    document.getElementById("actingForm").style.display    = "none";
+    document.getElementById("actingForm").style.display = "none";
     document.getElementById("actingSuccess").style.display = "block";
-
     updateAdminBadges();
 }
-
 
 // =============================================
 //   SCRIPT SUBMISSION FORM
 // =============================================
-
 function submitScript() {
-
-    var name  = document.getElementById("scrName").value.trim();
+    var name = document.getElementById("scrName").value.trim();
     var email = document.getElementById("scrEmail").value.trim().toLowerCase();
     var title = document.getElementById("scrTitle").value.trim();
     var genre = document.getElementById("scrGenre").value;
     var language = document.getElementById("scrLanguage").value;
     var description = document.getElementById("scrDescription").value.trim();
     var cast = document.getElementById("scrCast").value.trim();
-    var link  = document.getElementById("scrLink").value.trim();
+    var link = document.getElementById("scrLink").value.trim();
     var check1 = document.getElementById("scrCheck1").checked;
-
     hideAlert("scriptAlert");
-
-    // Validate ALL fields (required + optional to be filled)
+    var deadline = getDeadline("scripts");
+    if (deadline && isDeadlinePassed(deadline.date)) {
+        showAlert("scriptAlert", "Submissions are now closed. The deadline has passed.", "error"); return;
+    }
     if (name === "" || email === "" || title === "" || genre === "" || language === "" || description === "" || cast === "" || link === "") {
-        showAlert("scriptAlert", "Please fill in ALL fields to complete your submission.", "error");
-        return;
+        showAlert("scriptAlert", "Please fill in ALL fields to complete your submission.", "error"); return;
     }
-
-    if (!isValidMIUEmail(email)) {
-        showAlert("scriptAlert", "Please use your MIU email.", "error");
-        return;
-    }
-
-    // Validate URL
-    if (!isValidURL(link)) {
-        showAlert("scriptAlert", "Please enter a valid URL for the script link.", "error");
-        return;
-    }
-
-    if (check1 === false) {
-        showAlert("scriptAlert", "Please confirm the ownership checkbox.", "error");
-        return;
-    }
-
+    if (!isValidMIUEmail(email)) { showAlert("scriptAlert", "Please use your MIU email.", "error"); return; }
+    if (!isValidURL(link)) { showAlert("scriptAlert", "Please enter a valid URL for the script link.", "error"); return; }
+    if (check1 === false) { showAlert("scriptAlert", "Please confirm the ownership checkbox.", "error"); return; }
     var scripts = getData("scripts");
-    scripts.push({
-        name:        name,
-        email:       email,
-        title:       title,
-        genre:       document.getElementById("scrGenre").value,
-        language:    document.getElementById("scrLanguage").value,
-        description: document.getElementById("scrDescription").value,
-        cast:        document.getElementById("scrCast").value,
-        link:        link,
-        date:        new Date().toLocaleDateString(),
-        status:      "pending"
-    });
+    scripts.push({ name: name, email: email, title: title, genre: genre, language: language, description: description, cast: cast, link: link, date: new Date().toLocaleDateString(), status: "pending" });
     saveData("scripts", scripts);
-
-    document.getElementById("scriptForm").style.display    = "none";
+    document.getElementById("scriptForm").style.display = "none";
     document.getElementById("scriptSuccess").style.display = "block";
-
     updateAdminBadges();
 }
-
 
 // =============================================
 //   EXIT INTERVIEW FORM
 // =============================================
-
 function submitExit() {
-
-    var name   = document.getElementById("exitName").value.trim();
-    var email  = document.getElementById("exitEmail").value.trim().toLowerCase();
+    var name = document.getElementById("exitName").value.trim();
+    var email = document.getElementById("exitEmail").value.trim().toLowerCase();
     var duration = document.getElementById("exitDuration").value.trim();
     var reason = document.getElementById("exitReason").value;
     var comments = document.getElementById("exitComments").value.trim();
     var check1 = document.getElementById("exitCheck1").checked;
-
     hideAlert("exitAlert");
-
-    // Validate required fields only (comments is optional)
     if (name === "" || email === "" || duration === "" || reason === "") {
-        showAlert("exitAlert", "Please fill in all required fields to complete your exit request.", "error");
-        return;
+        showAlert("exitAlert", "Please fill in all required fields to complete your exit request.", "error"); return;
     }
-
-    if (!isValidMIUEmail(email)) {
-        showAlert("exitAlert", "Please use your MIU email.", "error");
-        return;
-    }
-
-    if (check1 === false) {
-        showAlert("exitAlert", "Please confirm the checkbox.", "error");
-        return;
-    }
-
+    if (!isValidMIUEmail(email)) { showAlert("exitAlert", "Please use your MIU email.", "error"); return; }
+    if (check1 === false) { showAlert("exitAlert", "Please confirm the checkbox.", "error"); return; }
     var exits = getData("exit_interviews");
-    exits.push({
-        name:     name,
-        email:    email,
-        reason:   reason,
-        comments: document.getElementById("exitComments").value,
-        date:     new Date().toLocaleDateString(),
-        status:   "pending"
-    });
+    exits.push({ name: name, email: email, reason: reason, comments: comments, date: new Date().toLocaleDateString(), status: "pending" });
     saveData("exit_interviews", exits);
-
-    document.getElementById("exitForm").style.display    = "none";
+    document.getElementById("exitForm").style.display = "none";
     document.getElementById("exitSuccess").style.display = "block";
-
     updateAdminBadges();
 }
 
@@ -942,82 +549,51 @@ function submitExit() {
 // =============================================
 //   SOCIAL LINKS
 // =============================================
-
 function getSocialLinks() {
     var data = localStorage.getItem("miu_social");
-    if (data === null) {
-        return { ig: "#", tt: "#" };
-    }
+    if (data === null) return { ig: "#", tt: "#" };
     return JSON.parse(data);
 }
-
 function loadSocialLinks() {
     var social = getSocialLinks();
-
     var igLink = document.getElementById("igLink");
     var ttLink = document.getElementById("ttLink");
-
-    if (igLink !== null) {
-        igLink.href = social.ig || "#";
-    }
-    if (ttLink !== null) {
-        ttLink.href = social.tt || "#";
-    }
+    if (igLink !== null) { igLink.href = social.ig || "#"; }
+    if (ttLink !== null) { ttLink.href = social.tt || "#"; }
 }
-
 function saveSocialLinks() {
     var igValue = document.getElementById("socialIG").value.trim();
     var ttValue = document.getElementById("socialTT").value.trim();
-
-    // Validate URLs if provided
-    if (igValue !== "" && !isValidURL(igValue)) {
-        showToast("⚠️ Please enter a valid Instagram URL", "er");
-        return;
-    }
-    if (ttValue !== "" && !isValidURL(ttValue)) {
-        showToast("⚠️ Please enter a valid TikTok URL", "er");
-        return;
-    }
-
+    if (igValue !== "" && !isValidURL(igValue)) { showToast("⚠️ Please enter a valid Instagram URL", "er"); return; }
+    if (ttValue !== "" && !isValidURL(ttValue)) { showToast("⚠️ Please enter a valid TikTok URL", "er"); return; }
     localStorage.setItem("miu_social", JSON.stringify({ ig: igValue, tt: ttValue }));
-
     loadSocialLinks();
     showToast("✅ Social links saved!", "ok");
 }
 
-
 // =============================================
 //   DEADLINES RENDERING
 // =============================================
-
 function getDaysLeft(dateString) {
     var deadline = new Date(dateString);
-    var today    = new Date();
-    var diff     = deadline - today;
-    var days     = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    if (days < 0) {
-        return 0;
-    }
+    var today = new Date();
+    var diff = deadline - today;
+    var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    if (days < 0) return 0;
     return days;
 }
-
 function formatDate(dateString) {
     var date = new Date(dateString);
     return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
-
 function renderHomeDeadlines() {
     var container = document.getElementById("deadlinesOutput");
-    if (container === null) { return; }
-
+    if (container === null) return;
     var deadlines = getData("deadlines");
-
     if (deadlines.length === 0) {
         container.innerHTML = '<div class="empty-state"><span>⏰</span><p>No upcoming deadlines.</p></div>';
         return;
     }
-
     var html = '';
     for (var i = 0; i < deadlines.length; i++) {
         var d = deadlines[i];
@@ -1032,87 +608,62 @@ function renderHomeDeadlines() {
     container.innerHTML = html;
 }
 
-
 // =============================================
 //   WORKSHOPS RENDERING
 // =============================================
-
 function renderWorkshops() {
     var container = document.getElementById("workshopsOutput");
-    if (container === null) { return; }
-
+    if (container === null) return;
     var workshops = getData("workshops");
     var deadlines = getData("deadlines");
-
     if (workshops.length === 0) {
         container.innerHTML = '<div class="empty-state"><span>🛠</span><p>No workshops scheduled yet. Check back soon.</p></div>';
         return;
     }
-
     var html = '<div class="content-grid">';
-
     for (var i = 0; i < workshops.length; i++) {
         var w = workshops[i];
-
-        // Find deadline for this workshop
         var workshopDeadline = null;
         for (var d = 0; d < deadlines.length; d++) {
             if (deadlines[d].title.toLowerCase().indexOf(w.title.toLowerCase()) !== -1 ||
                 w.title.toLowerCase().indexOf(deadlines[d].title.toLowerCase()) !== -1) {
-                workshopDeadline = deadlines[d];
-                break;
+                workshopDeadline = deadlines[d]; break;
             }
         }
-
         html += '<div class="content-card">';
         html += '<div class="content-card-date">' + (w.date ? formatDate(w.date) : "Date TBA") + '</div>';
         html += '<h3>' + w.title + '</h3>';
         html += '<p>' + (w.desc || "") + '</p>';
-
-        // Show deadline if exists
         if (workshopDeadline) {
             var daysLeft = getDaysLeft(workshopDeadline.date);
             html += '<div class="workshop-deadline">';
             html += '<span style="color: var(--red); font-size: 11px; font-weight: 600;">⏰ Deadline: ' + formatDate(workshopDeadline.date) + '</span>';
-            if (daysLeft > 0) {
-                html += '<span style="color: var(--red); font-size: 11px;"> (' + daysLeft + ' days left)</span>';
-            } else if (daysLeft === 0) {
-                html += '<span style="color: var(--red); font-size: 11px;"> (Today!)</span>';
-            } else {
-                html += '<span style="color: #666; font-size: 11px;"> (Expired)</span>';
-            }
+            if (daysLeft > 0) { html += '<span style="color: var(--red); font-size: 11px;"> (' + daysLeft + ' days left)</span>'; }
+            else if (daysLeft === 0) { html += '<span style="color: var(--red); font-size: 11px;"> (Today!)</span>'; }
+            else { html += '<span style="color: #666; font-size: 11px;"> (Expired)</span>'; }
             html += '</div>';
         }
-
         html += '<div class="content-card-meta">';
-        if (w.time)     { html += '<span>🕐 ' + w.time + '</span>'; }
+        if (w.time) { html += '<span>🕐 ' + w.time + '</span>'; }
         if (w.location) { html += '<span>📍 ' + w.location + '</span>'; }
-        html += '</div>';
-        html += '</div>';
+        html += '</div></div>';
     }
-
     html += '</div>';
     container.innerHTML = html;
 }
 
-
 // =============================================
 //   REHEARSALS RENDERING
 // =============================================
-
 function renderRehearsals() {
     var container = document.getElementById("rehearsalsOutput");
-    if (container === null) { return; }
-
+    if (container === null) return;
     var rehearsals = getData("rehearsals");
-
     if (rehearsals.length === 0) {
         container.innerHTML = '<div class="empty-state"><span>🎥</span><p>No rehearsal videos added yet.</p></div>';
         return;
     }
-
     var html = '<div class="content-grid">';
-
     for (var i = 0; i < rehearsals.length; i++) {
         var r = rehearsals[i];
         html += '<div class="content-card">';
@@ -1121,120 +672,81 @@ function renderRehearsals() {
         html += '<a href="' + r.link + '" target="_blank" class="watch-btn">▶ Watch Recording</a>';
         html += '</div>';
     }
-
     html += '</div>';
     container.innerHTML = html;
 }
 
-
 // =============================================
 //   ADMIN PAGE
 // =============================================
-
 function initAdminPage() {
     var session = getSession();
-    if (session === null || session.role !== "admin") { return; }
-
+    if (session === null || session.role !== "admin") return;
     var emailBadge = document.getElementById("adminEmailBadge");
-    if (emailBadge !== null) {
-        emailBadge.textContent = session.email;
-    }
-
-    // Load social link values into inputs
+    if (emailBadge !== null) { emailBadge.textContent = session.email; }
     var social = getSocialLinks();
     var igInput = document.getElementById("socialIG");
     var ttInput = document.getElementById("socialTT");
     if (igInput !== null) { igInput.value = social.ig || ""; }
     if (ttInput !== null) { ttInput.value = social.tt || ""; }
-
-    // Always refresh badges and dashboard with latest data
+    loadDeadlineInputs();
     updateAdminBadges();
     renderDashboard();
 }
 
 var adminPanelTitles = {
-    dashboard:  "Dashboard",
-    auditions:  "Audition Applications",
-    acting:     "Acting Interview Applications",
-    exit:       "Exit Interview Requests",
-    scripts:    "Script Submissions",
-    workshops:  "Workshops",
-    rehearsals: "Rehearsal Videos",
-    social:     "Social Links",
-    messages:   "Contact Messages",
-    users:      "Registered Users"
+    dashboard: "Dashboard", auditions: "Audition Applications", acting: "Acting Interview Applications",
+    exit: "Exit Interview Requests", scripts: "Script Submissions", workshops: "Workshops",
+    rehearsals: "Rehearsal Videos", social: "Social Links", messages: "Contact Messages",
+    users: "Registered Users", deadlines: "Application Deadlines"
 };
 
 function adminGoTo(panelName, button) {
-
-    // Hide all panels
     var allPanels = document.querySelectorAll(".admin-panel");
-    for (var i = 0; i < allPanels.length; i++) {
-        allPanels[i].classList.remove("active");
-    }
-
-    // Remove active from all sidebar buttons
+    for (var i = 0; i < allPanels.length; i++) { allPanels[i].classList.remove("active"); }
     var allBtns = document.querySelectorAll(".sidebar-btn");
-    for (var j = 0; j < allBtns.length; j++) {
-        allBtns[j].classList.remove("active");
-    }
-
-    // Show selected panel
+    for (var j = 0; j < allBtns.length; j++) { allBtns[j].classList.remove("active"); }
     var panel = document.getElementById("adminPanel-" + panelName);
-    if (panel !== null) {
-        panel.classList.add("active");
-    }
-
-    // Activate clicked button
-    if (button !== null) {
-        button.classList.add("active");
-    }
-
-    // Update title
+    if (panel !== null) { panel.classList.add("active"); }
+    if (button !== null) { button.classList.add("active"); }
     var titleEl = document.getElementById("adminPanelTitle");
-    if (titleEl !== null) {
-        titleEl.textContent = adminPanelTitles[panelName] || panelName;
-    }
-
-    // Render the selected panel
+    if (titleEl !== null) { titleEl.textContent = adminPanelTitles[panelName] || panelName; }
     renderAdminPanel(panelName);
 }
 
 function renderAdminPanel(panelName) {
-    if (panelName === "dashboard")  { renderDashboard(); }
-    if (panelName === "auditions")  { renderAdminTable("auditions",         "tableAud",   "countAud",  ["Name","Email","Faculty","Date","Status","Actions"]); }
-    if (panelName === "acting")     { renderAdminTable("acting_interviews",  "tableAct",   "countAct",  ["Name","Email","Arabic Level","Date","Status","Actions"]); }
-    if (panelName === "exit")       { renderAdminTable("exit_interviews",    "tableExit",  "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
-    if (panelName === "scripts")    { renderAdminScripts(); }
-    if (panelName === "workshops")  { renderAdminWorkshops(); }
+    if (panelName === "dashboard") { renderDashboard(); }
+    if (panelName === "auditions") { renderAdminTable("auditions", "tableAud", "countAud", ["Name","Email","Faculty","Date","Status","Actions"]); }
+    if (panelName === "acting") { renderAdminTable("acting_interviews", "tableAct", "countAct", ["Name","Email","Arabic Level","Date","Status","Actions"]); }
+    if (panelName === "exit") { renderAdminTable("exit_interviews", "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
+    if (panelName === "scripts") { renderAdminScripts(); }
+    if (panelName === "workshops") { renderAdminWorkshops(); }
     if (panelName === "rehearsals") { renderAdminRehearsals(); }
-    if (panelName === "messages")   { renderAdminMessages(); }
-    if (panelName === "users")      { renderAdminUsers(); }
+    if (panelName === "messages") { renderAdminMessages(); }
+    if (panelName === "users") { renderAdminUsers(); }
+    if (panelName === "deadlines") { renderAdminDeadlines(); }
 }
 
 function updateAdminBadges() {
-    var audBadge  = document.getElementById("badgeAud");
-    var actBadge  = document.getElementById("badgeAct");
+    var audBadge = document.getElementById("badgeAud");
+    var actBadge = document.getElementById("badgeAct");
     var exitBadge = document.getElementById("badgeExit");
-    var scrBadge  = document.getElementById("badgeScr");
-    var msgBadge  = document.getElementById("badgeMsg");
-
-    if (audBadge  !== null) { audBadge.textContent  = getData("auditions").filter(function(x) { return x.status === "pending"; }).length; }
-    if (actBadge  !== null) { actBadge.textContent  = getData("acting_interviews").filter(function(x) { return x.status === "pending"; }).length; }
+    var scrBadge = document.getElementById("badgeScr");
+    var msgBadge = document.getElementById("badgeMsg");
+    if (audBadge !== null) { audBadge.textContent = getData("auditions").filter(function(x) { return x.status === "pending"; }).length; }
+    if (actBadge !== null) { actBadge.textContent = getData("acting_interviews").filter(function(x) { return x.status === "pending"; }).length; }
     if (exitBadge !== null) { exitBadge.textContent = getData("exit_interviews").filter(function(x) { return x.status === "pending"; }).length; }
-    if (scrBadge  !== null) { scrBadge.textContent  = getData("scripts").filter(function(x) { return x.status === "pending"; }).length; }
-    if (msgBadge  !== null) { msgBadge.textContent  = getData("contact_messages").length; }
+    if (scrBadge !== null) { scrBadge.textContent = getData("scripts").filter(function(x) { return x.status === "pending"; }).length; }
+    if (msgBadge !== null) { msgBadge.textContent = getData("contact_messages").length; }
 }
 
 function renderDashboard() {
-    var audPending  = getData("auditions").filter(function(x) { return x.status === "pending"; }).length;
-    var actPending  = getData("acting_interviews").filter(function(x) { return x.status === "pending"; }).length;
-    var scrPending  = getData("scripts").filter(function(x) { return x.status === "pending"; }).length;
+    var audPending = getData("auditions").filter(function(x) { return x.status === "pending"; }).length;
+    var actPending = getData("acting_interviews").filter(function(x) { return x.status === "pending"; }).length;
+    var scrPending = getData("scripts").filter(function(x) { return x.status === "pending"; }).length;
     var exitPending = getData("exit_interviews").filter(function(x) { return x.status === "pending"; }).length;
-
     var container = document.getElementById("dashboardStats");
-    if (container === null) { return; }
-
+    if (container === null) return;
     container.innerHTML =
         '<div class="stat-card red"><div class="stat-label">Pending Auditions</div><div class="stat-number">' + audPending + '</div></div>' +
         '<div class="stat-card red"><div class="stat-label">Pending Acting</div><div class="stat-number">' + actPending + '</div></div>' +
@@ -1246,42 +758,33 @@ function renderDashboard() {
         '<div class="stat-card"><div class="stat-label">Registered Users</div><div class="stat-number">' + getData("miu_users").length + '</div></div>';
 }
 
+
 function renderAdminTable(key, containerId, countId, headers) {
-    var data    = getData(key);
+    var data = getData(key);
     var pending = data.filter(function(x) { return x.status === "pending"; }).length;
-
     document.getElementById(countId).textContent = pending + " pending";
-
     var container = document.getElementById(containerId);
-    if (container === null) { return; }
-
+    if (container === null) return;
     if (data.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>📋</span><p>No submissions yet.</p></div>';
         return;
     }
-
     var html = '<table><thead><tr>';
-    for (var h = 0; h < headers.length; h++) {
-        html += '<th>' + headers[h] + '</th>';
-    }
+    for (var h = 0; h < headers.length; h++) { html += '<th>' + headers[h] + '</th>'; }
     html += '</tr></thead><tbody>';
-
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
         var statusBadge = '<span class="status-badge ' + item.status + '">' + item.status + '</span>';
-
         var actions = "";
         if (item.status === "pending") {
             actions = '<div class="action-buttons">' +
                       '<button class="btn-approve" onclick="adminAction(\'' + key + '\',' + i + ',\'approved\')">Approve</button>' +
-                      '<button class="btn-reject"  onclick="adminAction(\'' + key + '\',' + i + ',\'rejected\')">Reject</button>' +
+                      '<button class="btn-reject" onclick="adminAction(\'' + key + '\',' + i + ',\'rejected\')">Reject</button>' +
                       '</div>';
         } else {
             actions = '<button class="btn-delete" onclick="adminDelete(\'' + key + '\',' + i + ')">Delete</button>';
         }
-
         html += '<tr>';
-
         if (key === "auditions") {
             html += '<td>' + item.name + '</td><td>' + item.email + '</td><td>' + (item.faculty || "-") + '</td><td>' + (item.date || "-") + '</td><td>' + statusBadge + '</td><td>' + actions + '</td>';
         }
@@ -1291,48 +794,38 @@ function renderAdminTable(key, containerId, countId, headers) {
         if (key === "exit_interviews") {
             html += '<td>' + item.name + '</td><td>' + item.email + '</td><td>' + (item.reason || "-") + '</td><td>' + (item.date || "-") + '</td><td>' + statusBadge + '</td><td>' + actions + '</td>';
         }
-
         html += '</tr>';
     }
-
     html += '</tbody></table>';
     container.innerHTML = html;
 }
 
 function renderAdminScripts() {
-    var data    = getData("scripts");
+    var data = getData("scripts");
     var pending = data.filter(function(x) { return x.status === "pending"; }).length;
-
     document.getElementById("countScr").textContent = pending + " pending";
-
     var container = document.getElementById("tableScr");
-    if (container === null) { return; }
-
+    if (container === null) return;
     if (data.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>📜</span><p>No scripts yet.</p></div>';
         return;
     }
-
     var html = '<table><thead><tr><th>Title</th><th>Author</th><th>Genre</th><th>Language</th><th>Link</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
-
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
         var statusBadge = '<span class="status-badge ' + item.status + '">' + item.status + '</span>';
         var linkHtml = item.link ? '<a href="' + item.link + '" target="_blank" style="color:var(--red); font-size:12px;">View ↗</a>' : '-';
-
         var actions = "";
         if (item.status === "pending") {
             actions = '<div class="action-buttons">' +
                       '<button class="btn-approve" onclick="adminAction(\'scripts\',' + i + ',\'approved\')">Approve → OOA</button>' +
-                      '<button class="btn-reject"  onclick="adminAction(\'scripts\',' + i + ',\'rejected\')">Reject</button>' +
+                      '<button class="btn-reject" onclick="adminAction(\'scripts\',' + i + ',\'rejected\')">Reject</button>' +
                       '</div>';
         } else {
             actions = '<button class="btn-delete" onclick="adminDelete(\'scripts\',' + i + ')">Delete</button>';
         }
-
         html += '<tr><td><strong>' + item.title + '</strong></td><td>' + item.name + '</td><td>' + (item.genre || "-") + '</td><td>' + (item.language || "-") + '</td><td>' + linkHtml + '</td><td>' + statusBadge + '</td><td>' + actions + '</td></tr>';
     }
-
     html += '</tbody></table>';
     container.innerHTML = html;
 }
@@ -1341,48 +834,38 @@ function adminAction(key, index, status) {
     var data = getData(key);
     data[index].status = status;
     saveData(key, data);
-
-    if (key === "auditions")        { renderAdminTable("auditions",        "tableAud",  "countAud",  ["Name","Email","Faculty","Date","Status","Actions"]); }
-    if (key === "acting_interviews") { renderAdminTable("acting_interviews","tableAct",  "countAct",  ["Name","Email","Arabic Level","Date","Status","Actions"]); }
-    if (key === "exit_interviews")   { renderAdminTable("exit_interviews",  "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
-    if (key === "scripts")           { renderAdminScripts(); }
-
+    if (key === "auditions") { renderAdminTable("auditions", "tableAud", "countAud", ["Name","Email","Faculty","Date","Status","Actions"]); }
+    if (key === "acting_interviews") { renderAdminTable("acting_interviews", "tableAct", "countAct", ["Name","Email","Arabic Level","Date","Status","Actions"]); }
+    if (key === "exit_interviews") { renderAdminTable("exit_interviews", "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
+    if (key === "scripts") { renderAdminScripts(); }
     updateAdminBadges();
     renderDashboard();
-
-    if (status === "approved") {
-        showToast("✅ Approved!", "ok");
-    } else {
-        showToast("❌ Rejected", "er");
-    }
+    if (status === "approved") { showToast("✅ Approved!", "ok"); }
+    else { showToast("❌ Rejected", "er"); }
 }
 
 function adminDelete(key, index) {
     var data = getData(key);
     data.splice(index, 1);
     saveData(key, data);
-
-    if (key === "auditions")        { renderAdminTable("auditions",        "tableAud",  "countAud",  ["Name","Email","Faculty","Date","Status","Actions"]); }
-    if (key === "acting_interviews") { renderAdminTable("acting_interviews","tableAct",  "countAct",  ["Name","Email","Arabic Level","Date","Status","Actions"]); }
-    if (key === "exit_interviews")   { renderAdminTable("exit_interviews",  "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
-    if (key === "scripts")           { renderAdminScripts(); }
-    if (key === "workshops")         { renderAdminWorkshops(); }
-    if (key === "rehearsals")        { renderAdminRehearsals(); }
-
+    if (key === "auditions") { renderAdminTable("auditions", "tableAud", "countAud", ["Name","Email","Faculty","Date","Status","Actions"]); }
+    if (key === "acting_interviews") { renderAdminTable("acting_interviews", "tableAct", "countAct", ["Name","Email","Arabic Level","Date","Status","Actions"]); }
+    if (key === "exit_interviews") { renderAdminTable("exit_interviews", "tableExit", "countExit", ["Name","Email","Reason","Date","Status","Actions"]); }
+    if (key === "scripts") { renderAdminScripts(); }
+    if (key === "workshops") { renderAdminWorkshops(); }
+    if (key === "rehearsals") { renderAdminRehearsals(); }
     updateAdminBadges();
     showToast("🗑 Deleted", "er");
 }
 
 function renderAdminWorkshops() {
-    var data      = getData("workshops");
+    var data = getData("workshops");
     var container = document.getElementById("tableWs");
-    if (container === null) { return; }
-
+    if (container === null) return;
     if (data.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>🛠</span><p>No workshops yet.</p></div>';
         return;
     }
-
     var html = '<table><thead><tr><th>Title</th><th>Date</th><th>Time</th><th>Location</th><th>Actions</th></tr></thead><tbody>';
     for (var i = 0; i < data.length; i++) {
         html += '<tr><td><strong>' + data[i].title + '</strong></td><td>' + (data[i].date || "-") + '</td><td>' + (data[i].time || "-") + '</td><td>' + (data[i].location || "-") + '</td><td><button class="btn-delete" onclick="adminDelete(\'workshops\',' + i + ')">Delete</button></td></tr>';
@@ -1392,15 +875,13 @@ function renderAdminWorkshops() {
 }
 
 function renderAdminRehearsals() {
-    var data      = getData("rehearsals");
+    var data = getData("rehearsals");
     var container = document.getElementById("tableReh");
-    if (container === null) { return; }
-
+    if (container === null) return;
     if (data.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>🎥</span><p>No videos yet.</p></div>';
         return;
     }
-
     var html = '<table><thead><tr><th>Title</th><th>Date</th><th>Link</th><th>Actions</th></tr></thead><tbody>';
     for (var i = 0; i < data.length; i++) {
         html += '<tr><td><strong>' + data[i].title + '</strong></td><td>' + (data[i].date || "-") + '</td><td><a href="' + data[i].link + '" target="_blank" style="color:var(--red); font-size:12px;">Open ↗</a></td><td><button class="btn-delete" onclick="adminDelete(\'rehearsals\',' + i + ')">Delete</button></td></tr>';
@@ -1410,38 +891,24 @@ function renderAdminRehearsals() {
 }
 
 function addWorkshop() {
-    var title    = document.getElementById("wsTitle").value.trim();
-    var date     = document.getElementById("wsDate").value;
-    var time     = document.getElementById("wsTime").value.trim();
+    var title = document.getElementById("wsTitle").value.trim();
+    var date = document.getElementById("wsDate").value;
+    var time = document.getElementById("wsTime").value.trim();
     var location = document.getElementById("wsLocation").value.trim();
-    var desc     = document.getElementById("wsDesc").value.trim();
-
-    // Validate required fields
-    if (title === "" || date === "") {
-        showToast("⚠️ Title and date are required", "er");
-        return;
-    }
-
-    // Validate date is not in the past
+    var desc = document.getElementById("wsDesc").value.trim();
+    if (title === "" || date === "") { showToast("⚠️ Title and date are required", "er"); return; }
     var selectedDate = new Date(date);
     var today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    if (selectedDate < today) {
-        showToast("⚠️ Please select a future date", "er");
-        return;
-    }
-
+    if (selectedDate < today) { showToast("⚠️ Please select a future date", "er"); return; }
     var workshops = getData("workshops");
     workshops.push({ title: title, date: date, time: time, location: location, desc: desc });
     saveData("workshops", workshops);
-
-    document.getElementById("wsTitle").value    = "";
-    document.getElementById("wsDate").value     = "";
-    document.getElementById("wsTime").value     = "";
+    document.getElementById("wsTitle").value = "";
+    document.getElementById("wsDate").value = "";
+    document.getElementById("wsTime").value = "";
     document.getElementById("wsLocation").value = "";
-    document.getElementById("wsDesc").value     = "";
-
+    document.getElementById("wsDesc").value = "";
     renderAdminWorkshops();
     renderDashboard();
     showToast("✅ Workshop added!", "ok");
@@ -1449,65 +916,36 @@ function addWorkshop() {
 
 function addRehearsal() {
     var title = document.getElementById("rehTitle").value.trim();
-    var date  = document.getElementById("rehDate").value;
-    var link  = document.getElementById("rehLink").value.trim();
-
-    // Validate required fields
-    if (title === "" || link === "") {
-        showToast("⚠️ Title and link are required", "er");
-        return;
-    }
-
-    // Validate URL
-    if (!isValidURL(link)) {
-        showToast("⚠️ Please enter a valid URL", "er");
-        return;
-    }
-
+    var date = document.getElementById("rehDate").value;
+    var link = document.getElementById("rehLink").value.trim();
+    if (title === "" || link === "") { showToast("⚠️ Title and link are required", "er"); return; }
+    if (!isValidURL(link)) { showToast("⚠️ Please enter a valid URL", "er"); return; }
     var rehearsals = getData("rehearsals");
     rehearsals.push({ title: title, date: date, link: link });
     saveData("rehearsals", rehearsals);
-
     document.getElementById("rehTitle").value = "";
-    document.getElementById("rehDate").value  = "";
-    document.getElementById("rehLink").value  = "";
-
+    document.getElementById("rehDate").value = "";
+    document.getElementById("rehLink").value = "";
     renderAdminRehearsals();
     renderDashboard();
     showToast("✅ Video link added!", "ok");
 }
 
 function renderAdminMessages() {
-    var data      = getData("contact_messages");
+    var data = getData("contact_messages");
     var container = document.getElementById("tableMsg");
-
-    if (container === null) { return; }
-
+    if (container === null) return;
     document.getElementById("countMsg").textContent = data.length + " messages";
-
     if (data.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>✉️</span><p>No contact messages yet.</p></div>';
         return;
     }
-
-    var html = '<table><thead><tr>';
-    html += '<th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th>';
-    html += '</tr></thead><tbody>';
-
+    var html = '<table><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
     for (var i = 0; i < data.length; i++) {
-        var item     = data[i];
+        var item = data[i];
         var fullName = item.firstName + (item.lastName ? " " + item.lastName : "");
-
-        html += '<tr>';
-        html += '<td>' + fullName + '</td>';
-        html += '<td>' + item.email + '</td>';
-        html += '<td>' + (item.subject || "-") + '</td>';
-        html += '<td style="max-width:220px; font-size:11.5px;">' + item.message + '</td>';
-        html += '<td>' + (item.date || "-") + '</td>';
-        html += '<td><button class="btn-delete" onclick="deleteMessage(' + i + ')">Delete</button></td>';
-        html += '</tr>';
+        html += '<tr><td>' + fullName + '</td><td>' + item.email + '</td><td>' + (item.subject || "-") + '</td><td style="max-width:220px; font-size:11.5px;">' + item.message + '</td><td>' + (item.date || "-") + '</td><td><button class="btn-delete" onclick="deleteMessage(' + i + ')">Delete</button></td></tr>';
     }
-
     html += '</tbody></table>';
     container.innerHTML = html;
 }
@@ -1522,30 +960,137 @@ function deleteMessage(index) {
     showToast("🗑 Message deleted", "er");
 }
 
+
+// =============================================
+//   DEADLINES ADMIN PANEL (NEW)
+// =============================================
+function loadDeadlineInputs() {
+    var audDate = document.getElementById("deadlineAudDate");
+    var actDate = document.getElementById("deadlineActDate");
+    var scrDate = document.getElementById("deadlineScrDate");
+
+    var audDeadline = getDeadline("auditions");
+    var actDeadline = getDeadline("acting");
+    var scrDeadline = getDeadline("scripts");
+
+    if (audDate && audDeadline) audDate.value = audDeadline.date;
+    if (actDate && actDeadline) actDate.value = actDeadline.date;
+    if (scrDate && scrDeadline) scrDate.value = scrDeadline.date;
+}
+
+function saveDeadline(type) {
+    var dateInput, title;
+    if (type === "auditions") {
+        dateInput = document.getElementById("deadlineAudDate");
+        title = "Audition Applications";
+    } else if (type === "acting") {
+        dateInput = document.getElementById("deadlineActDate");
+        title = "Acting Interview Applications";
+    } else if (type === "scripts") {
+        dateInput = document.getElementById("deadlineScrDate");
+        title = "Script Submissions";
+    }
+
+    if (!dateInput || dateInput.value === "") {
+        showToast("⚠️ Please select a date", "er");
+        return;
+    }
+
+    var deadlines = getData("deadlines");
+    var found = false;
+    for (var i = 0; i < deadlines.length; i++) {
+        if (deadlines[i].type === type) {
+            deadlines[i].date = dateInput.value;
+            deadlines[i].title = title;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        deadlines.push({ type: type, title: title, date: dateInput.value, category: "Applications" });
+    }
+    saveData("deadlines", deadlines);
+    renderAdminDeadlines();
+    renderDashboard();
+    showToast("✅ Deadline saved!", "ok");
+}
+
+function clearDeadline(type) {
+    var deadlines = getData("deadlines");
+    for (var i = 0; i < deadlines.length; i++) {
+        if (deadlines[i].type === type) {
+            deadlines.splice(i, 1);
+            break;
+        }
+    }
+    saveData("deadlines", deadlines);
+
+    var dateInput;
+    if (type === "auditions") dateInput = document.getElementById("deadlineAudDate");
+    else if (type === "acting") dateInput = document.getElementById("deadlineActDate");
+    else if (type === "scripts") dateInput = document.getElementById("deadlineScrDate");
+    if (dateInput) dateInput.value = "";
+
+    renderAdminDeadlines();
+    renderDashboard();
+    showToast("🗑 Deadline removed", "er");
+}
+
+function renderAdminDeadlines() {
+    var container = document.getElementById("tableDeadlines");
+    if (container === null) return;
+
+    var deadlines = getData("deadlines");
+    var appDeadlines = [];
+    for (var i = 0; i < deadlines.length; i++) {
+        if (deadlines[i].type === "auditions" || deadlines[i].type === "acting" || deadlines[i].type === "scripts") {
+            appDeadlines.push(deadlines[i]);
+        }
+    }
+
+    if (appDeadlines.length === 0) {
+        container.innerHTML = '<div class="admin-empty"><span>⏰</span><p>No application deadlines set yet.</p></div>';
+        return;
+    }
+
+    var html = '<table><thead><tr><th>Type</th><th>Deadline Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+    for (var j = 0; j < appDeadlines.length; j++) {
+        var d = appDeadlines[j];
+        var isExpired = isDeadlinePassed(d.date);
+        var daysLeft = getDaysLeft(d.date);
+        var statusBadge = isExpired ? 
+            '<span class="status-badge rejected">Expired</span>' : 
+            '<span class="status-badge approved">Active (' + daysLeft + ' days left)</span>';
+
+        var typeLabel = d.type === "auditions" ? "🎭 Auditions" : 
+                       d.type === "acting" ? "🎬 Acting Interview" : "📜 Script Upload";
+
+        html += '<tr><td><strong>' + typeLabel + '</strong></td>';
+        html += '<td>' + formatDate(d.date) + '</td>';
+        html += '<td>' + statusBadge + '</td>';
+        html += '<td><button class="btn-delete" onclick="clearDeadline(\'' + d.type + '\')">Remove</button></td></tr>';
+    }
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
 // =============================================
 //   REGISTERED USERS MANAGEMENT
 // =============================================
-
 function renderAdminUsers() {
     var users = getData("miu_users");
     var container = document.getElementById("tableUsers");
-
-    if (container === null) { return; }
-
+    if (container === null) return;
     document.getElementById("countUsers").textContent = users.length + " users";
-
     if (users.length === 0) {
         container.innerHTML = '<div class="admin-empty"><span>👥</span><p>No registered users yet.</p></div>';
         return;
     }
-
     var html = '<table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
-
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
         var statusBadge = '';
         var actions = '';
-
         if (user.blocked === true) {
             statusBadge = '<span class="status-badge rejected">Blocked</span>';
             actions = '<button class="btn-approve" onclick="toggleUserBlock(' + i + ')">Unblock</button>';
@@ -1553,18 +1098,9 @@ function renderAdminUsers() {
             statusBadge = '<span class="status-badge approved">Active</span>';
             actions = '<button class="btn-reject" onclick="toggleUserBlock(' + i + ')">Block</button>';
         }
-
-        // Add Make Admin button
         actions += ' <button class="btn-approve" onclick="promoteToAdmin(' + i + ')">Make Admin</button>';
-
-        html += '<tr>';
-        html += '<td>' + user.name + '</td>';
-        html += '<td>' + user.email + '</td>';
-        html += '<td>' + statusBadge + '</td>';
-        html += '<td><div class="action-buttons">' + actions + '</div></td>';
-        html += '</tr>';
+        html += '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + statusBadge + '</td><td><div class="action-buttons">' + actions + '</div></td></tr>';
     }
-
     html += '</tbody></table>';
     container.innerHTML = html;
 }
@@ -1576,12 +1112,8 @@ function toggleUserBlock(index) {
         saveData("miu_users", users);
         renderAdminUsers();
         renderDashboard();
-
-        if (users[index].blocked) {
-            showToast("🚫 User blocked", "er");
-        } else {
-            showToast("✅ User unblocked", "ok");
-        }
+        if (users[index].blocked) { showToast("🚫 User blocked", "er"); }
+        else { showToast("✅ User unblocked", "ok"); }
     }
 }
 
@@ -1589,8 +1121,6 @@ function promoteToAdmin(index) {
     var users = getData("miu_users");
     if (users[index]) {
         var user = users[index];
-
-        // Check if already admin
         var extraAdmins = getData("extraAdmins");
         for (var i = 0; i < extraAdmins.length; i++) {
             if (extraAdmins[i].email === user.email) {
@@ -1598,57 +1128,36 @@ function promoteToAdmin(index) {
                 return;
             }
         }
-
-        // Add to extra admins
-        extraAdmins.push({ 
-            name: user.name, 
-            email: user.email, 
-            password: user.password 
-        });
+        extraAdmins.push({ name: user.name, email: user.email, password: user.password });
         saveData("extraAdmins", extraAdmins);
-
         renderAdminUsers();
         renderDashboard();
         showToast("✅ User promoted to admin!", "ok");
     }
-    
 }
-
-
 
 // =============================================
 //   AUTO-FILL FORMS WHEN LOGGED IN
 // =============================================
-
 function autoFillForms() {
     var session = getSession();
     if (session === null) return;
-
-    // Audition form
     var audName = document.getElementById("audName");
     var audEmail = document.getElementById("audEmail");
     if (audName) audName.value = session.name || "";
     if (audEmail) audEmail.value = session.email || "";
-
-    // Acting interview form
     var actName = document.getElementById("actName");
     var actEmail = document.getElementById("actEmail");
     if (actName) actName.value = session.name || "";
     if (actEmail) actEmail.value = session.email || "";
-
-    // Script submission form
     var scrName = document.getElementById("scrName");
     var scrEmail = document.getElementById("scrEmail");
     if (scrName) scrName.value = session.name || "";
     if (scrEmail) scrEmail.value = session.email || "";
-
-    // Exit interview form
     var exitName = document.getElementById("exitName");
     var exitEmail = document.getElementById("exitEmail");
     if (exitName) exitName.value = session.name || "";
     if (exitEmail) exitEmail.value = session.email || "";
-
-    // Contact form (name only - email is handled separately)
     var ctFirstName = document.getElementById("ctFirstName");
     if (ctFirstName && session.name) {
         var nameParts = session.name.split(" ");
@@ -1656,10 +1165,194 @@ function autoFillForms() {
     }
 }
 
+
+// =============================================
+//   DEADLINE MANAGEMENT (UPDATED - Form hidden until admin sets deadline)
+// =============================================
+
+function getDeadline(type) {
+    var deadlines = getData("deadlines");
+    for (var i = 0; i < deadlines.length; i++) {
+        if (deadlines[i].type === type) { return deadlines[i]; }
+    }
+    return null;
+}
+
+function isDeadlinePassed(deadlineDate) {
+    if (!deadlineDate) return false;
+    var deadline = new Date(deadlineDate);
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today > deadline;
+}
+
+// Render deadline banner for Auditions page
+function renderAuditionDeadline() {
+    var container = document.getElementById("auditionDeadlineBanner");
+    var form = document.getElementById("auditionForm");
+    var closedMsg = document.getElementById("auditionClosed");
+    var notOpenMsg = document.getElementById("auditionNotOpen");
+
+    if (!container || !form || !closedMsg || !notOpenMsg) return;
+
+    var deadline = getDeadline("auditions");
+
+    // No deadline set - show "Not Yet Open" message, hide form
+    if (!deadline) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "none";
+        notOpenMsg.style.display = "block";
+        return;
+    }
+
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+
+    // Deadline expired - show closed message, hide form
+    if (isExpired) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "block";
+        notOpenMsg.style.display = "none";
+        return;
+    }
+
+    // Deadline active - show banner and form
+    var html = '<div class="deadline-banner active">';
+    html += '<div class="deadline-icon">⏰</div>';
+    html += '<div class="deadline-info">';
+    html += '<h4>Application Deadline</h4>';
+    html += '<p>' + formatDate(deadline.date);
+    if (daysLeft === 0) {
+        html += ' <span class="deadline-status urgent">(Today!)</span>';
+    } else {
+        html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>';
+    }
+    html += '</p>';
+    html += '</div></div>';
+
+    container.innerHTML = html;
+    container.style.display = "block";
+    form.style.display = "block";
+    closedMsg.style.display = "none";
+    notOpenMsg.style.display = "none";
+}
+
+// Render deadline banner for Acting Interview page
+function renderActingDeadline() {
+    var container = document.getElementById("actingDeadlineBanner");
+    var form = document.getElementById("actingForm");
+    var closedMsg = document.getElementById("actingClosed");
+    var notOpenMsg = document.getElementById("actingNotOpen");
+
+    if (!container || !form || !closedMsg || !notOpenMsg) return;
+
+    var deadline = getDeadline("acting");
+
+    // No deadline set - show "Not Yet Open" message, hide form
+    if (!deadline) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "none";
+        notOpenMsg.style.display = "block";
+        return;
+    }
+
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+
+    // Deadline expired - show closed message, hide form
+    if (isExpired) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "block";
+        notOpenMsg.style.display = "none";
+        return;
+    }
+
+    // Deadline active - show banner and form
+    var html = '<div class="deadline-banner active">';
+    html += '<div class="deadline-icon">⏰</div>';
+    html += '<div class="deadline-info">';
+    html += '<h4>Application Deadline</h4>';
+    html += '<p>' + formatDate(deadline.date);
+    if (daysLeft === 0) {
+        html += ' <span class="deadline-status urgent">(Today!)</span>';
+    } else {
+        html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>';
+    }
+    html += '</p>';
+    html += '</div></div>';
+
+    container.innerHTML = html;
+    container.style.display = "block";
+    form.style.display = "block";
+    closedMsg.style.display = "none";
+    notOpenMsg.style.display = "none";
+}
+
+// Render deadline banner for Script Upload page
+function renderScriptDeadline() {
+    var container = document.getElementById("scriptDeadlineBanner");
+    var form = document.getElementById("scriptForm");
+    var closedMsg = document.getElementById("scriptClosed");
+    var notOpenMsg = document.getElementById("scriptNotOpen");
+
+    if (!container || !form || !closedMsg || !notOpenMsg) return;
+
+    var deadline = getDeadline("scripts");
+
+    // No deadline set - show "Not Yet Open" message, hide form
+    if (!deadline) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "none";
+        notOpenMsg.style.display = "block";
+        return;
+    }
+
+    var daysLeft = getDaysLeft(deadline.date);
+    var isExpired = isDeadlinePassed(deadline.date);
+
+    // Deadline expired - show closed message, hide form
+    if (isExpired) {
+        container.innerHTML = "";
+        container.style.display = "none";
+        form.style.display = "none";
+        closedMsg.style.display = "block";
+        notOpenMsg.style.display = "none";
+        return;
+    }
+
+    // Deadline active - show banner and form
+    var html = '<div class="deadline-banner active">';
+    html += '<div class="deadline-icon">⏰</div>';
+    html += '<div class="deadline-info">';
+    html += '<h4>Submission Deadline</h4>';
+    html += '<p>' + formatDate(deadline.date);
+    if (daysLeft === 0) {
+        html += ' <span class="deadline-status urgent">(Today!)</span>';
+    } else {
+        html += ' <span class="deadline-status">(' + daysLeft + ' days left)</span>';
+    }
+    html += '</p>';
+    html += '</div></div>';
+
+    container.innerHTML = html;
+    container.style.display = "block";
+    form.style.display = "block";
+    closedMsg.style.display = "none";
+    notOpenMsg.style.display = "none";
+}
 // =============================================
 //   INIT (runs when page loads)
 // =============================================
-
 updateNav();
 loadSocialLinks();
 updateAdminBadges();
