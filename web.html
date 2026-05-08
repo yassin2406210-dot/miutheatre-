@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="admin.css"/>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
   <style>
@@ -1123,6 +1124,62 @@
     background: rgba(192, 20, 28, 0.4);
     color: #ffffff;
   }
+
+  /* ===== DEADLINE BANNER STYLES ===== */
+  .deadline-banner {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.1));
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideDown 0.4s ease;
+  }
+  .deadline-banner.active {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(32, 201, 151, 0.1));
+    border-color: rgba(40, 167, 69, 0.4);
+  }
+  .deadline-banner.expired {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.15), rgba(255, 107, 107, 0.1));
+    border-color: rgba(220, 53, 69, 0.4);
+  }
+  .deadline-banner .deadline-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+  .deadline-banner .deadline-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .deadline-banner .deadline-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #cccccc !important;
+  }
+  .deadline-banner .deadline-status {
+    font-weight: 700;
+    color: #ff6b6b;
+  }
+  .deadline-banner .deadline-status.urgent {
+    color: #ff3333;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  /* Closed message styling */
+  #auditionClosed, #actingClosed, #scriptClosed {
+    animation: slideDown 0.4s ease;
+  }
+
 </style>
 <script src="web.js"></script>
 
@@ -1588,6 +1645,24 @@
         <strong>📋 Before You Apply</strong>
         Auditions are open to all MIU students. You must be available for rehearsals and committed to the full production schedule.
       </div>
+      <!-- DEADLINE BANNER -->
+      <div id="auditionDeadlineBanner" style="display:none;"></div>
+      <!-- NO DEADLINE SET MESSAGE -->
+      <div id="auditionNotOpen" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
+          <h3 style="color:#ffc107; margin-bottom:10px;">Applications Not Yet Open</h3>
+          <p style="color:#cccccc;">Audition applications are not open yet. Please check back later for updates!</p>
+        </div>
+      </div>
+      <!-- CLOSED MESSAGE -->
+      <div id="auditionClosed" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
+          <h3 style="color:#ff6b6b; margin-bottom:10px;">Applications Closed</h3>
+          <p style="color:#cccccc;">The deadline for audition applications has passed. Check back later for future productions!</p>
+        </div>
+      </div>
       <div class="form-card" id="auditionForm">
         <h2>Audition Application</h2>
         <p>Fill in the form to apply for our next production audition.</p>
@@ -1631,6 +1706,24 @@
       <div class="info-banner warning">
         <strong>⚠️ Requirements</strong>
         Strong Arabic reading skills and full commitment to the club's schedule are required.
+      </div>
+      <!-- DEADLINE BANNER -->
+      <div id="actingDeadlineBanner" style="display:none;"></div>
+      <!-- NO DEADLINE SET MESSAGE -->
+      <div id="actingNotOpen" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
+          <h3 style="color:#ffc107; margin-bottom:10px;">Applications Not Yet Open</h3>
+          <p style="color:#cccccc;">Acting interview applications are not open yet. Please check back later for updates!</p>
+        </div>
+      </div>
+      <!-- CLOSED MESSAGE -->
+      <div id="actingClosed" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
+          <h3 style="color:#ff6b6b; margin-bottom:10px;">Applications Closed</h3>
+          <p style="color:#cccccc;">The deadline for acting interview applications has passed. Check back later for future opportunities!</p>
+        </div>
       </div>
       <div class="form-card" id="actingForm">
         <h2>Acting Interview Application</h2>
@@ -1692,6 +1785,24 @@
       <div class="info-banner">
         <strong>📜 How It Works</strong>
         Submit your script details below. Admin will review it. If approved, it will be shared with the team.
+      </div>
+      <!-- DEADLINE BANNER -->
+      <div id="scriptDeadlineBanner" style="display:none;"></div>
+      <!-- NO DEADLINE SET MESSAGE -->
+      <div id="scriptNotOpen" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
+          <h3 style="color:#ffc107; margin-bottom:10px;">Submissions Not Yet Open</h3>
+          <p style="color:#cccccc;">Script submissions are not open yet. Please check back later for updates!</p>
+        </div>
+      </div>
+      <!-- CLOSED MESSAGE -->
+      <div id="scriptClosed" style="display:none;">
+        <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
+          <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
+          <h3 style="color:#ff6b6b; margin-bottom:10px;">Submissions Closed</h3>
+          <p style="color:#cccccc;">The deadline for script submissions has passed. Check back later for future submission periods!</p>
+        </div>
       </div>
       <div class="form-card" id="scriptForm">
         <h2>Script Submission</h2>
@@ -1840,6 +1951,7 @@
         <button class="sidebar-btn" id="sb-social" onclick="adminGoTo('social', this)">📱 Social Links</button>
         <button class="sidebar-btn" id="sb-messages" onclick="adminGoTo('messages', this)">✉️ Contact Messages <span class="badge" id="badgeMsg">0</span></button>
         <span class="nav-section-label">System</span>
+        <button class="sidebar-btn" id="sb-deadlines" onclick="adminGoTo('deadlines', this)">⏰ Application Deadlines</button>
         <button class="sidebar-btn" id="sb-users" onclick="adminGoTo('users', this)">👥 Registered Users</button>
       </nav>
       <button class="sidebar-logout" onclick="doLogout()">Sign Out</button>
@@ -1952,6 +2064,61 @@
           <div class="admin-card">
             <div class="admin-card-header"><h3>Registered Users</h3><span class="count-badge" id="countUsers">0 users</span></div>
             <div class="table-wrap" id="tableUsers"></div>
+          </div>
+        </div>
+
+        <!-- DEADLINES PANEL (NEW) -->
+        <div class="admin-panel" id="adminPanel-deadlines">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>⏰ Application Deadlines</h3></div>
+            <div class="admin-card-body">
+              <p style="color:#aaa; margin-bottom:20px;">Set deadlines for applications. Once a deadline passes, the form will automatically close for users.</p>
+
+              <!-- Auditions Deadline -->
+              <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
+                <h4 style="color:#ff8e8e; margin-bottom:15px;">🎭 Auditions</h4>
+                <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
+                  <div class="form-group" style="margin:0;">
+                    <label style="font-size:12px; color:#aaa;">Deadline Date</label>
+                    <input type="date" id="deadlineAudDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
+                  </div>
+                  <button class="btn-red" onclick="saveDeadline('auditions')" style="padding:10px 20px; font-size:13px;">Save</button>
+                  <button class="btn-delete" onclick="clearDeadline('auditions')" style="padding:10px 20px; font-size:13px;">Remove</button>
+                </div>
+              </div>
+
+              <!-- Acting Deadline -->
+              <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
+                <h4 style="color:#ff8e8e; margin-bottom:15px;">🎬 Acting Interview</h4>
+                <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
+                  <div class="form-group" style="margin:0;">
+                    <label style="font-size:12px; color:#aaa;">Deadline Date</label>
+                    <input type="date" id="deadlineActDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
+                  </div>
+                  <button class="btn-red" onclick="saveDeadline('acting')" style="padding:10px 20px; font-size:13px;">Save</button>
+                  <button class="btn-delete" onclick="clearDeadline('acting')" style="padding:10px 20px; font-size:13px;">Remove</button>
+                </div>
+              </div>
+
+              <!-- Scripts Deadline -->
+              <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
+                <h4 style="color:#ff8e8e; margin-bottom:15px;">📜 Script Upload</h4>
+                <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
+                  <div class="form-group" style="margin:0;">
+                    <label style="font-size:12px; color:#aaa;">Deadline Date</label>
+                    <input type="date" id="deadlineScrDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
+                  </div>
+                  <button class="btn-red" onclick="saveDeadline('scripts')" style="padding:10px 20px; font-size:13px;">Save</button>
+                  <button class="btn-delete" onclick="clearDeadline('scripts')" style="padding:10px 20px; font-size:13px;">Remove</button>
+                </div>
+              </div>
+
+              <!-- Current Deadlines Table -->
+              <div style="margin-top:25px;">
+                <h4 style="color:#fff; margin-bottom:15px;">Current Deadlines</h4>
+                <div id="tableDeadlines"></div>
+              </div>
+            </div>
           </div>
         </div>
 
