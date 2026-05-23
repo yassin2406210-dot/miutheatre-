@@ -1858,7 +1858,6 @@
         <button class="sidebar-btn active" id="sb-dashboard" onclick="adminGoTo('dashboard', this)">📊 Dashboard</button>
         <span class="nav-section-label">Applications</span>
         <button class="sidebar-btn" id="sb-auditions" onclick="adminGoTo('auditions', this)">🎤 Auditions <span class="badge" id="badgeAud">0</span></button>
-        <button class="sidebar-btn" id="sb-acting" onclick="adminGoTo('acting', this)">🎬 Acting Interviews <span class="badge" id="badgeAct">0</span></button>
         <button class="sidebar-btn" id="sb-exit" onclick="adminGoTo('exit', this)">🚪 Exit Interviews <span class="badge" id="badgeExit">0</span></button>
         <span class="nav-section-label">Content</span>
         <button class="sidebar-btn" id="sb-scripts" onclick="adminGoTo('scripts', this)">📜 Scripts <span class="badge" id="badgeScr">0</span></button>
@@ -1899,13 +1898,7 @@
           </div>
         </div>
 
-        <!-- ACTING PANEL -->
-        <div class="admin-panel" id="adminPanel-acting">
-          <div class="admin-card">
-            <div class="admin-card-header"><h3>Acting Interview Applications</h3><span class="count-badge" id="countAct">0 pending</span></div>
-            <div class="table-wrap" id="tableAct"></div>
-          </div>
-        </div>
+       
 
         <!-- EXIT PANEL -->
         <div class="admin-panel" id="adminPanel-exit">
@@ -2042,18 +2035,7 @@
                 </div>
               </div>
 
-              <!-- Acting Deadline -->
-              <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
-                <h4 style="color:#ff8e8e; margin-bottom:15px;">🎬 Acting Interview</h4>
-                <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
-                  <div class="form-group" style="margin:0;">
-                    <label style="font-size:12px; color:#aaa;">Deadline Date</label>
-                    <input type="date" id="deadlineActDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
-                  </div>
-                  <button class="btn-red" onclick="saveDeadline('acting')" style="padding:10px 20px; font-size:13px;">Save</button>
-                  <button class="btn-delete" onclick="clearDeadline('acting')" style="padding:10px 20px; font-size:13px;">Remove</button>
-                </div>
-              </div>
+             
 
               <!-- Scripts Deadline -->
               <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
