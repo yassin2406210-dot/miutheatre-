@@ -13,6 +13,8 @@
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
   <style>
@@ -1181,8 +1183,6 @@
   }
 
 </style>
-<script src="web.js"></script>
-
 <nav id="navbar">
   <div class="logo" onclick="showPage('home')">
     <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU Logo"/>
@@ -1198,7 +1198,6 @@
       <button>Features ▾</button>
       <div class="dropdown-menu">
         <button onclick="showPage('auditions')">🎤 Auditions</button>
-        <button onclick="showPage('acting')">🎬 Acting Interview</button>
         <button onclick="showPage('scripts')">📜 Script Upload</button>
         <button onclick="showPage('exit')">🚪 Exit Interview</button>
         <button onclick="showPage('workshops')">🛠 Workshops</button>
@@ -1220,7 +1219,6 @@
 <div id="mobileMenu">
   <button onclick="showPage('home'); closeMobileMenu()">Home</button>
   <button onclick="showPage('auditions'); closeMobileMenu()">🎤 Auditions</button>
-  <button onclick="showPage('acting'); closeMobileMenu()">🎬 Acting Interview</button>
   <button onclick="showPage('scripts'); closeMobileMenu()">📜 Script Upload</button>
   <button onclick="showPage('exit'); closeMobileMenu()">🚪 Exit Interview</button>
   <button onclick="showPage('workshops'); closeMobileMenu()">🛠 Workshops</button>
@@ -1246,7 +1244,7 @@
         <h1>Where Every <em>Story</em><br>Finds Its Stage</h1>
         <p>Join the most passionate performing arts community at Misr International University. Audition, rehearse, create — and bring characters to life.</p>
         <div class="hero-buttons">
-          <button class="btn-red" onclick="showPage('auditions')">Apply Now</button>
+          <button class="btn-red" onclick="showPage('workshops')">View Workshops</button>
           <button class="btn-outline" onclick="showPage('about')">Learn More</button>
         </div>
       </div>
@@ -1263,6 +1261,9 @@
     </div>
   </section>
 
+  <!-- Featured Workshops Preview -->
+  <div id="homeWorkshopsPreview"></div>
+
   <!-- Features Section -->
   <section class="section">
     <div class="container">
@@ -1271,28 +1272,22 @@
       <p class="section-sub">From auditions to full productions — our club gives you all the tools to grow as a performer.</p>
       <div class="features-grid">
         <div class="feature-card">
+          <div class="feature-icon">🛠</div>
+          <h3>Workshops</h3>
+          <p>Regular workshops on acting, voice training, and stage direction. Join now!</p>
+          <button class="link-btn" onclick="showPage('workshops')">View All →</button>
+        </div>
+        <div class="feature-card">
           <div class="feature-icon">🎤</div>
           <h3>Open Auditions</h3>
           <p>Anyone can audition. No experience required — just passion and dedication.</p>
           <button class="link-btn" onclick="showPage('auditions')">Apply →</button>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🎬</div>
-          <h3>Acting Interviews</h3>
-          <p>Serious about acting? Requires strong Arabic reading and full commitment.</p>
-          <button class="link-btn" onclick="showPage('acting')">Apply →</button>
-        </div>
-        <div class="feature-card">
           <div class="feature-icon">📜</div>
           <h3>Script Submissions</h3>
           <p>Upload your script for admin review. Approved scripts go to the OOA room.</p>
           <button class="link-btn" onclick="showPage('scripts')">Submit →</button>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛠</div>
-          <h3>Workshops</h3>
-          <p>Regular workshops on acting, voice training, and stage direction.</p>
-          <button class="link-btn" onclick="showPage('workshops')">View All →</button>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🎥</div>
@@ -1692,85 +1687,6 @@
   <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2026 MIU Theatre Club.</span></div></footer>
 </div>
 
-<!-- ===================== ACTING INTERVIEW PAGE ===================== -->
-<div class="page" id="page-acting">
-  <section class="page-hero">
-    <div class="container">
-      <span class="section-tag">Acting Interview</span>
-      <h1>Prove Your <em>Skills</em></h1>
-      <p>Apply for a formal acting interview. For serious performers committed to the theatre club.</p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container form-container">
-      <div class="info-banner warning">
-        <strong>⚠️ Requirements</strong>
-        Strong Arabic reading skills and full commitment to the club's schedule are required.
-      </div>
-      <!-- DEADLINE BANNER -->
-      <div id="actingDeadlineBanner" style="display:none;"></div>
-      <!-- NO DEADLINE SET MESSAGE -->
-      <div id="actingNotOpen" style="display:none;">
-        <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
-          <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
-          <h3 style="color:#ffc107; margin-bottom:10px;">Applications Not Yet Open</h3>
-          <p style="color:#cccccc;">Acting interview applications are not open yet. Please check back later for updates!</p>
-        </div>
-      </div>
-      <!-- CLOSED MESSAGE -->
-      <div id="actingClosed" style="display:none;">
-        <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
-          <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
-          <h3 style="color:#ff6b6b; margin-bottom:10px;">Applications Closed</h3>
-          <p style="color:#cccccc;">The deadline for acting interview applications has passed. Check back later for future opportunities!</p>
-        </div>
-      </div>
-      <div class="form-card" id="actingForm">
-        <h2>Acting Interview Application</h2>
-        <p>Apply for a formal acting interview with our directors.</p>
-        <div id="actingAlert" class="alert" style="display:none"></div>
-        <div class="form-row-2">
-          <div class="form-group"><label for="actName">Full Name *</label><input type="text" id="actName" placeholder="Your full name" required/></div>
-          <div class="form-group"><label for="actEmail">MIU Email *</label><input type="email" id="actEmail" placeholder="name@miuegypt.edu.eg" required/></div>
-        </div>
-        <div class="form-group">
-          <label for="actArabic">Arabic Reading Level *</label>
-          <select id="actArabic" required>
-            <option value="">Select your level...</option>
-            <option>Excellent — fluent in classical and modern Arabic</option>
-            <option>Good — reads standard Arabic with minor difficulty</option>
-            <option>Intermediate — may need support with classical text</option>
-          </select>
-        </div>
-        <div class="form-group"><label for="actExperience">Previous Acting Experience</label><textarea id="actExperience" placeholder="School plays, previous club work, workshops attended..."></textarea></div>
-        <div class="form-group">
-          <label for="actRole">Preferred Role Type</label>
-          <select id="actRole">
-            <option value="">Select...</option>
-            <option>Lead / Main character</option>
-            <option>Supporting role</option>
-            <option>Ensemble</option>
-            <option>No preference</option>
-          </select>
-        </div>
-        <div class="form-group"><label for="actAvailability">Rehearsal Availability</label><textarea id="actAvailability" placeholder="Your weekly availability (days and hours)..."></textarea></div>
-        <p class="commitment-title">Please confirm all commitments:</p>
-        <div class="checkbox-group"><input type="checkbox" id="actCheck1"/><span>I have strong Arabic reading skills and am prepared to read scripts in Arabic during the interview.</span></div>
-        <div class="checkbox-group"><input type="checkbox" id="actCheck2"/><span>I commit to attending all rehearsals, workshops, and productions as required.</span></div>
-        <div class="checkbox-group"><input type="checkbox" id="actCheck3"/><span>I understand this is a serious commitment and will notify the club of any conflicts in advance.</span></div>
-        <button class="btn-red full-width" onclick="submitActing()">Submit Application</button>
-      </div>
-      <div id="actingSuccess" class="success-card" style="display:none">
-        <span>🎬</span>
-        <h2>Application Submitted!</h2>
-        <p>Our directors will review your application and schedule your interview. Check your MIU email for updates.</p>
-        <button class="btn-red" onclick="showPage('home')">Back to Home</button>
-      </div>
-    </div>
-  </section>
-  <footer><div class="footer-grid container"><div class="footer-brand"><img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/><p>MIU Theatre Club.</p></div><div class="footer-col"><h4>Features</h4><button onclick="showPage('auditions')">Auditions</button><button onclick="showPage('acting')">Acting Interview</button></div></div><div class="footer-bottom container"><span>© 2026 MIU Theatre Club.</span></div></footer>
-</div>
-
 <!-- ===================== SCRIPTS PAGE ===================== -->
 <div class="page" id="page-scripts">
   <section class="page-hero">
@@ -2009,8 +1925,10 @@
 
         <!-- WORKSHOPS PANEL -->
         <div class="admin-panel" id="adminPanel-workshops">
-          <div class="admin-form-card">
-            <h3>Add New Workshop</h3>
+
+          <!-- ADD WORKSHOP FORM -->
+          <div class="admin-form-card" id="addWorkshopForm">
+            <h3>⭐ Add New Workshop</h3>
             <div class="form-row-2">
               <div class="form-group"><label>Title *</label><input type="text" id="wsTitle" placeholder="e.g. Voice Training Workshop" required/></div>
               <div class="form-group"><label>Date *</label><input type="date" id="wsDate" required/></div>
@@ -2019,9 +1937,46 @@
               <div class="form-group"><label>Time</label><input type="text" id="wsTime" placeholder="e.g. 2:00 PM – 4:00 PM"/></div>
               <div class="form-group"><label>Location</label><input type="text" id="wsLocation" placeholder="e.g. OOA Room"/></div>
             </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Instructor Name</label><input type="text" id="wsInstructor" placeholder="e.g. Prof. Ahmed Hassan"/></div>
+              <div class="form-group"><label>Max Spots</label><input type="number" id="wsMaxSpots" value="20" min="1" max="500"/></div>
+            </div>
+            <div class="form-group"><label>Image URL (optional)</label><input type="url" id="wsImage" placeholder="https://..."/></div>
             <div class="form-group"><label>Description</label><textarea id="wsDesc" placeholder="Brief description..."></textarea></div>
+            <div class="checkbox-group" style="margin-bottom:15px;">
+              <input type="checkbox" id="wsFeatured"/>
+              <span>⭐ Mark as Featured (shows on homepage)</span>
+            </div>
             <button class="btn-red" onclick="addWorkshop()">Add Workshop</button>
           </div>
+
+          <!-- EDIT WORKSHOP FORM (hidden by default) -->
+          <div class="admin-form-card" id="editWorkshopForm" style="display:none;">
+            <h3>✏️ Edit Workshop</h3>
+            <div class="form-row-2">
+              <div class="form-group"><label>Title *</label><input type="text" id="editWsTitle" required/></div>
+              <div class="form-group"><label>Date *</label><input type="date" id="editWsDate" required/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Time</label><input type="text" id="editWsTime"/></div>
+              <div class="form-group"><label>Location</label><input type="text" id="editWsLocation"/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Instructor Name</label><input type="text" id="editWsInstructor"/></div>
+              <div class="form-group"><label>Max Spots</label><input type="number" id="editWsMaxSpots" min="1" max="500"/></div>
+            </div>
+            <div class="form-group"><label>Image URL</label><input type="url" id="editWsImage"/></div>
+            <div class="form-group"><label>Description</label><textarea id="editWsDesc"></textarea></div>
+            <div class="checkbox-group" style="margin-bottom:15px;">
+              <input type="checkbox" id="editWsFeatured"/>
+              <span>⭐ Mark as Featured</span>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn-red" onclick="saveEditWorkshop()">💾 Save Changes</button>
+              <button class="btn-delete" onclick="cancelEditWorkshop()">❌ Cancel</button>
+            </div>
+          </div>
+
           <div class="admin-card"><div class="admin-card-header"><h3>All Workshops</h3></div><div class="table-wrap" id="tableWs"></div></div>
         </div>
 
@@ -2127,6 +2082,7 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+
+<script src="web.js"></script>
 </body>
 </html>
