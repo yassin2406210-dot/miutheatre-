@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+<link rel="stylesheet" href="/css/navbar.css"/>
+<link rel="stylesheet" href="/css/home.css"/>
+<link rel="stylesheet" href="/css/pages.css"/>
+<link rel="stylesheet" href="/css/forms.css"/>
+<link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<section class="hero">
+  <div class="hero-shape"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-tag">MIU Theatre Club</div>
+      <h1>Where Every <em>Story</em><br>Finds Its Stage</h1>
+      <p>Join the most passionate performing arts community at Misr International University. Audition, rehearse, create — and bring characters to life.</p>
+      <div class="hero-buttons">
+        <button class="btn-red" onclick="window.location.href='/workshops'">View Workshops</button>
+        <button class="btn-outline" onclick="window.location.href='/about'">Learn More</button>
+      </div>
+    </div>
+    <div class="hero-card">
+      <span class="hero-emoji">🎭</span>
+      <h3>MIU Theatre Club</h3>
+      <p>Performing Arts</p>
+      <div class="hero-stats">
+        <div class="stat"><strong>120+</strong><small>Members</small></div>
+        <div class="stat"><strong>15+</strong><small>Productions</small></div>
+        <div class="stat"><strong>8+</strong><small>Years</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="homeDeadlines"></div>
+<div id="homeWorkshopsPreview"></div>
+
+
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">Everything You Need to Shine on Stage</h2>
+    <p class="section-sub">From auditions to full productions — our club gives you all the tools to grow as a performer.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛠</div>
+        <h3>Workshops</h3>
+        <p>Regular workshops on acting, voice training, and stage direction. Join now!</p>
+        <button class="link-btn" onclick="window.location.href='/workshops'">View All →</button>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎤</div>
+        <h3>Open Auditions</h3>
+        <p>Anyone can audition. No experience required — just passion and dedication.</p>
+        <button class="link-btn" onclick="window.location.href='/auditions'">Apply →</button>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        <h3>Script Submissions</h3>
+        <p>Upload your script for admin review. Approved scripts go to the OOA room.</p>
+        <button class="link-btn" onclick="window.location.href='/scripts'">Submit →</button>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎥</div>
+        <h3>Rehearsal Videos</h3>
+        <p>Access links to all rehearsal recordings to catch up or review.</p>
+        <button class="link-btn" onclick="window.location.href='/rehearsals'">Watch →</button>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚪</div>
+        <h3>Exit Interviews</h3>
+        <p>Planning to leave? Complete an exit interview to wrap up properly.</p>
+        <button class="link-btn" onclick="window.location.href='/exit'">Learn More →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-strip">
+  <div class="container about-grid">
+    <div class="about-text">
+      <h2>A Legacy of <em>Performance</em> at MIU</h2>
+      <p>The MIU Theatre Club has been a cornerstone of student life at Misr International University. From humble beginnings to full-scale university productions, we've built a community rooted in creativity and storytelling.</p>
+      <p>Our members perform at university events, national competitions, and beyond.</p>
+      <button class="link-btn-white" onclick="window.location.href='/about'">Read our full history →</button>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="tl-year">2016</span>
+        <div class="tl-body"><strong>Club Founded</strong><span>Started at MIU</span></div>
+      </div>
+      <div class="timeline-item">
+        <span class="tl-year">2018</span>
+        <div class="tl-body"><strong>First Major Production</strong><span>Sold-out university audience</span></div>
+      </div>
+      <div class="timeline-item">
+        <span class="tl-year">2020</span>
+        <div class="tl-body"><strong>Online Expansion</strong><span>Digital rehearsals and workshops</span></div>
+      </div>
+      <div class="timeline-item">
+        <span class="tl-year">2025</span>
+        <div class="tl-body"><strong>120+ Active Members</strong><span>Largest cohort in club history</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container text-center">
+    <span class="section-tag">Follow Us</span>
+    <h2 class="section-title">Stay Connected</h2>
+    <p>Follow us for behind-the-scenes content, announcements, and production highlights.</p>
+    <div class="social-buttons">
+      <a id="igLink" href="https://www.instagram.com/miutheatre" class="social-btn" target="_blank">Instagram</a>
+      <a id="ttLink" href="https://www.tiktok.com/@miu.theatre" class="social-btn" target="_blank">TikTok</a>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/web.js"></script>
+</body>
+</html>

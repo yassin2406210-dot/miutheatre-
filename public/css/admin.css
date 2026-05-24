@@ -1,0 +1,497 @@
+/* =============================================
+   admin.css
+   Admin Layout, Sidebar, Panels, Tables, Stat Cards
+   ============================================= */
+
+/* ── Admin Page Layout ── */
+.admin-layout {
+  display: flex;
+  padding-top: var(--nav-height);
+  min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.admin-sidebar {
+  width: 225px;
+  background: #0d0d0d;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  padding: 14px 17px;
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.sidebar-logo img {
+  height: 30px;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  display: block;
+}
+
+.sidebar-sub {
+  font-size: 9px;
+  color: #444444;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Sidebar Navigation ── */
+.sidebar-nav {
+  flex: 1;
+  padding: 10px 0;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333333;
+  padding: 13px 17px 5px;
+  display: block;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 17px;
+  font-size: 12.5px;
+  color: #777777;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.sidebar-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-btn.active {
+  color: #ffffff;
+  background: rgba(192, 20, 28, 0.2);
+  border-right: 3px solid var(--red);
+}
+
+/* Badge (pending count) on sidebar buttons */
+.badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  min-width: 17px;
+  text-align: center;
+}
+
+/* Sign Out button at bottom of sidebar */
+.sidebar-logout {
+  width: calc(100% - 26px);
+  margin: 13px;
+  padding: 8px;
+  border-radius: 7px;
+  background: rgba(192, 20, 28, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(192, 20, 28, 0.3);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar-logout:hover {
+  background: rgba(192, 20, 28, 0.25);
+}
+
+/* ── Admin Main Area ── */
+.admin-main {
+  margin-left: 225px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--nav-height));
+  background: var(--bg-body);
+  transition: background-color 0.3s;
+}
+
+/* Top bar with title and email badge */
+.admin-topbar {
+  background: var(--admin-topbar-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 26px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 50;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.admin-topbar h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.admin-email-badge {
+  background: var(--red-light);
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 16px;
+  border: 1px solid #f5c0c0;
+}
+
+body.dark-mode .admin-email-badge {
+  border-color: #7f1d1d;
+}
+
+/* ── Admin Content Area ── */
+.admin-content {
+  padding: 22px 26px;
+  flex: 1;
+}
+
+/* ── Admin Panels ── */
+.admin-panel {
+  display: none;
+}
+
+.admin-panel.active {
+  display: block;
+}
+
+/* ── Dashboard Stat Cards ── */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: var(--stat-card-bg);
+  border-radius: 11px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.stat-card .stat-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 5px;
+}
+
+.stat-card .stat-number {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Red number for pending items */
+.stat-card.red .stat-number {
+  color: var(--red);
+}
+
+/* ── Admin Cards ── */
+.admin-card {
+  background: var(--admin-card-bg);
+  border-radius: 13px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  margin-bottom: 17px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.admin-card-header {
+  padding: 13px 19px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-card-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.count-badge {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--gray-100);
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.admin-card-body {
+  padding: 18px;
+  font-size: 13px;
+  color: var(--text-label);
+  line-height: 1.75;
+}
+
+/* ── Admin Form Cards (add workshop, deadline, etc.) ── */
+.admin-form-card {
+  background: var(--admin-form-card-bg);
+  border-radius: 13px;
+  border: 1px solid var(--border-color);
+  padding: 22px;
+  margin-bottom: 18px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.admin-form-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--text-main);
+}
+
+.admin-form-card p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* ── Tables ── */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+}
+
+th {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  padding: 8px 15px;
+  text-align: left;
+  background: var(--table-header-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  padding: 10px 15px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+  color: var(--text-label);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: var(--table-hover-bg);
+}
+
+/* ── Status Badges ── */
+.status-badge {
+  display: inline-flex;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 16px;
+}
+
+.status-badge.pending {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+body.dark-mode .status-badge.pending {
+  background: #2d2000;
+  color: #fbbf24;
+}
+
+body.dark-mode .status-badge.approved {
+  background: #052e16;
+  color: #86efac;
+}
+
+body.dark-mode .status-badge.rejected {
+  background: #2a0a0b;
+  color: #fca5a5;
+}
+
+/* ── Action Buttons (approve, reject, delete) ── */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-approve,
+.btn-reject,
+.btn-delete {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: inherit;
+}
+
+.btn-approve {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.btn-approve:hover {
+  background: #bbf7d0;
+}
+
+.btn-reject {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-reject:hover {
+  background: #fecaca;
+}
+
+.btn-delete {
+  background: var(--gray-100);
+  color: var(--text-label);
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+body.dark-mode .btn-approve {
+  background: #052e16;
+  color: #86efac;
+}
+
+body.dark-mode .btn-approve:hover {
+  background: #14532d;
+}
+
+body.dark-mode .btn-reject {
+  background: #2a0a0b;
+  color: #fca5a5;
+}
+
+body.dark-mode .btn-reject:hover {
+  background: #450a0a;
+}
+
+body.dark-mode .btn-delete:hover {
+  background: #2a0a0b;
+  color: #fca5a5;
+}
+
+/* ── Admin Accounts List ── */
+.admin-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  background: var(--admin-row-bg);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.admin-row .email {
+  font-size: 12.5px;
+  color: var(--text-label);
+}
+
+.admin-row .tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--red);
+  background: var(--red-light);
+  padding: 2px 7px;
+  border-radius: 8px;
+}
+
+/* ── Empty State ── */
+.admin-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-muted);
+}
+
+.admin-empty span {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 9px;
+}
+
+.admin-empty p {
+  font-size: 13px;
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 860px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+}
