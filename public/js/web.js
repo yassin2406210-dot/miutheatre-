@@ -183,10 +183,10 @@ function togglePassword(inputId, buttonId) {
     if (!input) return;
     if (input.type === "password") {
         input.type = "text";
-        if (button) button.textContent = "ðŸ™ˆ";
+        if (button) button.textContent = "Hide";
     } else {
         input.type = "password";
-        if (button) button.textContent = "ðŸ‘";
+        if (button) button.textContent = "Show";
     }
 }
  
