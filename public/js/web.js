@@ -165,8 +165,8 @@ function showAlert(alertId, message, type) {
     if (!alertBox) return;
     alertBox.style.display = "";
     alertBox.className = "alert " + type;
-    alertBox.innerHTML = (type === "error" ? "âš ï¸ " : "âœ… ") + message;
-}
+    alertBox.innerHTML = message;
+} 
 function hideAlert(alertId) {
     var a = document.getElementById(alertId);
     if (a) { a.style.display = "none"; a.className = "alert"; }
