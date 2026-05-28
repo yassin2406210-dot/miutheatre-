@@ -44,5 +44,18 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 })
+const auth = require('../middleware/auth')
+const adminOnly = require('../middleware/adminOnly')
+
+router.get('/users', auth, adminOnly, async (req, res) => {
+  try {
+    const users = await User.find({}, '-password').sort({ createdAt: -1 })
+    res.json(users)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+
 
 module.exports = router

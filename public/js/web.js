@@ -320,8 +320,10 @@ function getSocialLinks() {
 }
 function loadSocialLinks() {
     var social = getSocialLinks();
-    var ig = document.getElementById("igLink"); if (ig) ig.href = social.ig;
-    var tt = document.getElementById("ttLink"); if (tt) tt.href = social.tt;
+    var ig = document.getElementById("igLink"); 
+    if (ig && social.ig && social.ig !== "#") ig.href = social.ig;
+    var tt = document.getElementById("ttLink"); 
+    if (tt && social.tt && social.tt !== "#") tt.href = social.tt;
 }
 function saveSocialLinks() {
     var ig = document.getElementById("socialIG").value.trim();
@@ -724,6 +726,7 @@ function renderAdminPanel(panelName) {
     if (panelName==="rehearsals") renderAdminRehearsals();
     if (panelName==="messages")   renderAdminMessages();
     if (panelName==="deadlines")  renderAdminDeadlines();
+    if (panelName==="users")      renderAdminUsers();
 }
  
 function updateAdminBadges() {
@@ -1079,6 +1082,27 @@ function addRehearsal() {
     .catch(function(){ showToast("Something went wrong","er"); });
 }
  
+function renderAdminUsers() {
+    var container = document.getElementById("tableUsers"); if (!container) return;
+    var headers = Object.assign({ "Content-Type": "application/json" }, authHeader());
+    fetch("/api/auth/users", { headers: headers })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        var countEl = document.getElementById("countUsers");
+        if (countEl) countEl.textContent = data.length + " users";
+        if (!data.length) { container.innerHTML = '<div class="admin-empty"><span>👥</span><p>No registered users yet.</p></div>'; return; }
+        var html = '<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead><tbody>';
+        for (var i = 0; i < data.length; i++) {
+            var u = data[i];
+            html += '<tr><td>' + u.name + '</td><td>' + u.email + '</td><td><span class="status-badge ' + (u.role === "admin" ? "approved" : "pending") + '">' + u.role + '</span></td><td>' + (u.createdAt ? formatDate(u.createdAt) : "-") + '</td></tr>';
+        }
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    })
+    .catch(function() { container.innerHTML = '<div class="admin-empty"><p>Could not load users.</p></div>'; });
+}
+
+
 // ── Storage (kept for social links only) ──────────────────────
 function getData(key) { var d=localStorage.getItem("miu_"+key); return d===null?[]:JSON.parse(d); }
 function saveData(key,data) { localStorage.setItem("miu_"+key,JSON.stringify(data)); }
@@ -1092,6 +1116,8 @@ document.addEventListener("click", function(e) {
     else if (action==="edit")   { e.preventDefault(); editWorkshop(id); }
     else if (action==="delete") { e.preventDefault(); if(confirm("Delete this workshop?")) adminDeleteWorkshop(id); }
 });
+
+
  
 // ── Init ──────────────────────────────────────────────────────
 // ── Init ──────────────────────────────────────────────────────
