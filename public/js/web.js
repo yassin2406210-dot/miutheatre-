@@ -1,4 +1,4 @@
-// ── Single Page App Navigation ────────────────────────────────
+// â”€â”€ Single Page App Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showPage(pageName) {
     document.querySelectorAll('.page').forEach(function(p) {
         p.classList.remove('active');
@@ -15,7 +15,11 @@ function showPage(pageName) {
         if (!session) { showPage('login'); return; }
         renderRehearsals();
     }
-    if (pageName === 'auditions')  loadDeadlinesFromAPI(function() { renderAuditionDeadline(); });
+    if (pageName === 'auditions') {
+        var session = getSession();
+        if (!session) { localStorage.setItem("miu_redirect", "auditions"); showPage('login'); return; }
+        loadDeadlinesFromAPI(function() { renderAuditionDeadline(); });
+    }
     if (pageName === 'scripts')    loadDeadlinesFromAPI(function() { renderScriptDeadline(); });
     if (pageName === 'admin') {
         var session = getSession();
@@ -32,7 +36,7 @@ function showPage(pageName) {
         if (session) { showPage(session.role === 'admin' ? 'admin' : 'home'); return; }
     }
 }
-// ── Navigation ───────────────────────────────────────────────
+// â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function navigate(path) {
     window.location.href = path;
 }
@@ -46,7 +50,7 @@ function closeMobileMenu() {
     if (menu) menu.classList.remove("open");
 }
  
-// ── Navbar scroll effect ──────────────────────────────────────
+// â”€â”€ Navbar scroll effect â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 window.addEventListener("scroll", function() {
     var navbar = document.getElementById("navbar");
     if (!navbar) return;
@@ -54,7 +58,7 @@ window.addEventListener("scroll", function() {
     else navbar.classList.remove("scrolled");
 });
  
-// ── Session ───────────────────────────────────────────────────
+// â”€â”€ Session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getSession() {
     var d = localStorage.getItem("miu_session");
     return d === null ? null : JSON.parse(d);
@@ -62,14 +66,25 @@ function getSession() {
 function saveSession(s) { localStorage.setItem("miu_session", JSON.stringify(s)); }
 function clearSession() { localStorage.removeItem("miu_session"); }
  
-// ── Auth Header ───────────────────────────────────────────────
+// â”€â”€ Auth Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function authHeader() {
     var session = getSession();
     if (!session || !session.token) return {};
     return { "Authorization": "Bearer " + session.token };
 }
- 
-// ── Update Nav ────────────────────────────────────────────────
+ function fillSignedInUser(nameId, emailId) {
+    var session = getSession();
+    if (!session) return;
+
+    var nameInput = document.getElementById(nameId);
+    var emailInput = document.getElementById(emailId);
+
+    if (nameInput) nameInput.value = session.name || "";
+    if (emailInput) {
+        emailInput.value = session.email || "";
+        emailInput.readOnly = true;
+    }
+}
 function updateNav() {
     var session     = getSession();
     var loginBtn    = document.getElementById("loginBtn");
@@ -77,21 +92,21 @@ function updateNav() {
     var mobileLoginBtn  = document.getElementById("mobileLoginBtn");
     var mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
     var navLinks    = document.getElementById("navLinks");
- 
+
     if (session !== null) {
         document.body.classList.add("logged-in");
     } else {
         document.body.classList.remove("logged-in");
     }
- 
+
     if (!loginBtn || !logoutBtn) return;
- 
+
     if (session !== null) {
         loginBtn.style.display  = "none";
         logoutBtn.style.display = "";
         if (mobileLoginBtn)  mobileLoginBtn.style.display  = "none";
         if (mobileLogoutBtn) mobileLogoutBtn.style.display = "";
- 
+
         if (session.role === "admin") {
             logoutBtn.textContent = "⚙️ " + session.name + " — Sign Out";
             if (mobileLogoutBtn) mobileLogoutBtn.textContent = "⚙️ " + session.name + " — Sign Out";
@@ -123,8 +138,9 @@ function updateNav() {
         if (adminBtn2) adminBtn2.parentNode.removeChild(adminBtn2);
     }
 }
+
  
-// ── Toast ─────────────────────────────────────────────────────
+// â”€â”€ Toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showToast(message, type) {
     var toast = document.getElementById("toast");
     if (!toast) return;
@@ -135,7 +151,7 @@ function showToast(message, type) {
     setTimeout(function() { toast.className = ""; }, 3200);
 }
  
-// ── Validation ────────────────────────────────────────────────
+// â”€â”€ Validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function isValidMIUEmail(email) {
     return /^[^ ]+@miuegypt\.edu\.eg$/.test(email.trim().toLowerCase());
 }
@@ -143,13 +159,13 @@ function isValidURL(url) {
     return /^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(url.trim());
 }
  
-// ── Alerts & Errors ───────────────────────────────────────────
+// â”€â”€ Alerts & Errors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showAlert(alertId, message, type) {
     var alertBox = document.getElementById(alertId);
     if (!alertBox) return;
     alertBox.style.display = "";
     alertBox.className = "alert " + type;
-    alertBox.innerHTML = (type === "error" ? "⚠️ " : "✅ ") + message;
+    alertBox.innerHTML = (type === "error" ? "âš ï¸ " : "âœ… ") + message;
 }
 function hideAlert(alertId) {
     var a = document.getElementById(alertId);
@@ -159,22 +175,22 @@ function showErrorMsg(id) { var el = document.getElementById(id); if (el) el.sty
 function hideErrorMsg(id) { var el = document.getElementById(id); if (el) el.style.display = "none"; }
 function markError(id)    { var el = document.getElementById(id); if (el) el.style.borderColor = "#e24b4a"; }
 function clearError(id)   { var el = document.getElementById(id); if (el) el.style.borderColor = ""; }
- 
-// ── Password Toggle ───────────────────────────────────────────
+
+// â”€â”€ Password Toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function togglePassword(inputId, buttonId) {
     var input  = document.getElementById(inputId);
     var button = document.getElementById(buttonId);
     if (!input) return;
     if (input.type === "password") {
         input.type = "text";
-        if (button) button.textContent = "🙈";
+        if (button) button.textContent = "ðŸ™ˆ";
     } else {
         input.type = "password";
-        if (button) button.textContent = "👁";
+        if (button) button.textContent = "ðŸ‘";
     }
 }
  
-// ── Login Tabs ────────────────────────────────────────────────
+// â”€â”€ Login Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function switchLoginTab(tab) {
     var formSignIn = document.getElementById("formSignIn");
     var formSignUp = document.getElementById("formSignUp");
@@ -193,7 +209,7 @@ function switchLoginTab(tab) {
     hideAlert("signinAlert"); hideAlert("signupAlert");
 }
  
-// ── Auth ──────────────────────────────────────────────────────
+// â”€â”€ Auth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function doLogin() {
     var email    = document.getElementById("signinEmail").value.trim().toLowerCase();
     var password = document.getElementById("signinPw").value;
@@ -240,7 +256,7 @@ function doSignup() {
     if (password.length < 6)              { showErrorMsg("signupPwError");    markError("signupPw");    valid = false; }
     if (password !== password2)           { showErrorMsg("signupPw2Error");   markError("signupPw2");   valid = false; }
     if (!valid) return;
- 
+
     fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -367,8 +383,17 @@ function renderAuditionDeadline() {
         (daysLeft === 0 ? ' <span class="deadline-status urgent">(Today!)</span>' : ' <span class="deadline-status">(' + daysLeft + ' days left)</span>') + '</p></div></div>';
     container.style.display = "block"; form.style.display = "block";
     closedMsg.style.display = "none"; notOpenMsg.style.display = "none";
-}
- 
+    var session = getSession();
+    if (!session) { localStorage.setItem("miu_redirect", "auditions"); navigate("/login"); return; }
+    var audName = document.getElementById("audName");
+    var audEmail = document.getElementById("audEmail");
+    if (audName) audName.value = session.name || "";
+    if (audEmail) {
+        audEmail.value = session.email || "";
+        audEmail.readOnly = true; } }
+
+
+
 function renderScriptDeadline() {
     var container  = document.getElementById("scriptDeadlineBanner");
     var form       = document.getElementById("scriptForm");
@@ -389,6 +414,7 @@ function renderScriptDeadline() {
         (daysLeft === 0 ? ' <span class="deadline-status urgent">(Today!)</span>' : ' <span class="deadline-status">(' + daysLeft + ' days left)</span>') + '</p></div></div>';
     container.style.display = "block"; form.style.display = "block";
     closedMsg.style.display = "none"; notOpenMsg.style.display = "none";
+    fillSignedInUser("scrName", "scrEmail");
 }
  
 // ── Form Submissions ──────────────────────────────────────────
@@ -410,7 +436,7 @@ function submitAudition() {
  
     fetch("/api/auditions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: Object.assign({ "Content-Type": "application/json" }, authHeader()),
         body: JSON.stringify({ name: name, email: email, phone: studentId, year: faculty, experience: experience, whyJoin: why })
     })
     .then(function(r) { return r.json(); })
@@ -453,6 +479,8 @@ function submitScript() {
     })
     .catch(function() { showAlert("scriptAlert", "Something went wrong. Try again.", "error"); });
 }
+
+
  
 function submitExit() {
     var name     = document.getElementById("exitName").value.trim();
@@ -484,14 +512,15 @@ function submitExit() {
 function getSpotsLeft(workshop) { return Math.max(0, workshop.maxSpots - (workshop.joinedUsers ? workshop.joinedUsers.length : 0)); }
  
 function getUserJoinedWorkshops() {
-    var session = getSession(); if (!session) return [];
-    var data = localStorage.getItem("miu_joined_workshops_" + session.email);
-    return data === null ? [] : JSON.parse(data);
+    return [];
 }
-function saveUserJoinedWorkshops(email, joined) { localStorage.setItem("miu_joined_workshops_" + email, JSON.stringify(joined)); }
-function hasUserJoined(workshopId) {
-    var session = getSession(); if (!session) return false;
-    return getUserJoinedWorkshops().indexOf(workshopId) !== -1;
+function saveUserJoinedWorkshops(email, joined) {
+}
+function hasUserJoined(workshopId, workshop) {
+    var session = getSession(); if (!session || !workshop || !workshop.joinedUsers) return false;
+    return workshop.joinedUsers.some(function(user) {
+        return user.email === session.email;
+    });
 }
  
 function openJoinForm(workshopId) {
@@ -522,25 +551,47 @@ function closeJoinModal() {
     var modal = document.getElementById("joinModal");
     if (modal) { modal.style.opacity = "0"; setTimeout(function() { modal.remove(); }, 300); }
 }
+
  
 function submitJoinForm(workshopId) {
     var name      = document.getElementById("joinName").value.trim();
     var studentId = document.getElementById("joinStudentId").value.trim();
-    if (!name || !studentId) { showToast("Name and Student ID are required", "er"); return; }
+    var faculty   = document.getElementById("joinFaculty").value.trim();
     var session = getSession();
-    var userJoined = getUserJoinedWorkshops(); userJoined.push(workshopId);
-    saveUserJoinedWorkshops(session.email, userJoined);
-    closeJoinModal();
-    showToast("Welcome to the workshop!", "ok");
-    renderWorkshops();
+    if (!session) { showToast("Please sign in to join workshops", "er"); navigate("/login"); return; }
+    if (!name || !studentId) { showToast("Name and Student ID are required", "er"); return; }
+
+    fetch("/api/workshops/" + workshopId + "/join", {
+        method: "POST",
+        headers: Object.assign({ "Content-Type": "application/json" }, authHeader()),
+        body: JSON.stringify({ name: name, email: session.email, studentId: studentId, faculty: faculty })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.error) { showToast(data.error, "er"); return; }
+        closeJoinModal();
+        showToast("Welcome to the workshop!", "ok");
+        renderWorkshops();
+        renderHomeWorkshops();
+    })
+    .catch(function() { showToast("Something went wrong. Try again.", "er"); });
 }
  
 function leaveWorkshop(workshopId) {
     var session = getSession(); if (!session) return;
-    var userJoined = getUserJoinedWorkshops().filter(function(id) { return id !== workshopId; });
-    saveUserJoinedWorkshops(session.email, userJoined);
-    showToast("You left the workshop", "ok");
-    renderWorkshops();
+
+    fetch("/api/workshops/" + workshopId + "/leave", {
+        method: "POST",
+        headers: authHeader()
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.error) { showToast(data.error, "er"); return; }
+        showToast("You left the workshop", "ok");
+        renderWorkshops();
+        renderHomeWorkshops();
+    })
+    .catch(function() { showToast("Something went wrong. Try again.", "er"); });
 }
  
 function renderWorkshops() {
@@ -554,7 +605,7 @@ function renderWorkshops() {
         var html = '<div class="workshops-grid">';
         for (var i = 0; i < workshops.length; i++) {
             var w = workshops[i]; var spotsLeft = getSpotsLeft(w); var isFull = spotsLeft===0;
-            var userJoined = hasUserJoined(w._id); var pct = Math.round(((w.maxSpots-spotsLeft)/w.maxSpots)*100);
+            var userJoined = hasUserJoined(w._id, w); var pct = Math.round(((w.maxSpots-spotsLeft)/w.maxSpots)*100);
             html += '<div class="content-card'+(w.featured?' workshop-spotlight':'')+'" style="position:relative;">';
             if (w.featured) html += '<div class="workshop-featured-label">⭐ Featured</div>';
             html += w.image ? '<img src="'+w.image+'" class="workshop-image" onerror="this.style.display=\'none\'"/>' : '<div class="workshop-image-placeholder"><span>🛠</span></div>';
@@ -572,6 +623,7 @@ function renderWorkshops() {
     })
     .catch(function() { container.innerHTML = '<div class="empty-state"><span>🛠</span><p>Could not load workshops.</p></div>'; });
 }
+
  
 function renderHomeWorkshops() {
     var container = document.getElementById("homeWorkshopsPreview"); if (!container) return;
@@ -583,7 +635,7 @@ function renderHomeWorkshops() {
         if (!featured.length) { container.innerHTML=''; return; }
         var html = '<div class="section"><div class="container"><span class="section-tag">Main Feature</span><h2 class="section-title">Upcoming <em>Workshops</em></h2><div class="workshops-grid">';
         for (var i = 0; i < Math.min(featured.length,2); i++) {
-            var w = featured[i]; var spotsLeft = getSpotsLeft(w); var isFull = spotsLeft===0; var userJoined = hasUserJoined(w._id);
+            var w = featured[i]; var spotsLeft = getSpotsLeft(w); var isFull = spotsLeft===0; var userJoined = hasUserJoined(w._id, w);
             html += '<div class="content-card workshop-spotlight" style="position:relative;"><div class="workshop-featured-label">⭐ Featured</div>';
             html += w.image ? '<img src="'+w.image+'" class="workshop-image"/>' : '<div class="workshop-image-placeholder"><span>🛠</span></div>';
             html += '<div class="workshop-content"><div class="instructor-section"><div class="instructor-avatar">👤</div><div class="instructor-info"><span class="instructor-label">Instructor</span><span class="instructor-name">'+(w.instructor||"TBA")+'</span></div></div>';
@@ -661,6 +713,7 @@ function adminGoTo(panelName, button) {
     var titleEl = document.getElementById("adminPanelTitle"); if (titleEl) titleEl.textContent = adminPanelTitles[panelName]||panelName;
     renderAdminPanel(panelName);
 }
+
  
 function renderAdminPanel(panelName) {
     if (panelName==="dashboard")  renderDashboard();
@@ -776,7 +829,7 @@ function renderAdminScripts() {
         html += '</tbody></table>'; container.innerHTML = html;
     }).catch(function(){ container.innerHTML='<div class="admin-empty"><p>Could not load data.</p></div>'; });
 }
- 
+
 function adminAction(route, id, status) {
     var headers = Object.assign({ "Content-Type": "application/json" }, authHeader());
     fetch("/api/" + route + "/" + id, {
@@ -897,11 +950,17 @@ function renderAdminWorkshops() {
     .then(function(r){return r.json();})
     .then(function(data) {
         if(!data.length){container.innerHTML='<div class="admin-empty"><span>🛠</span><p>No workshops yet.</p></div>';return;}
-        var html='<table><thead><tr><th>Title</th><th>Instructor</th><th>Date</th><th>Spots</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+        var html='<table><thead><tr><th>Title</th><th>Instructor</th><th>Date</th><th>Spots</th><th>Joined Users</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
         for(var i=0;i<data.length;i++){
             var w=data[i],sl=getSpotsLeft(w);
+            var joinedUsers = w.joinedUsers || [];
+            var joinedHtml = joinedUsers.length
+                ? joinedUsers.map(function(user) {
+                    return '<div style="margin-bottom:6px;"><strong>'+(user.name || "-")+'</strong><br><span style="font-size:11px;color:#aaa;">'+(user.email || "-")+'</span></div>';
+                }).join("")
+                : '<span style="color:#aaa;">No users yet</span>';
             var sb=w.featured?'<span class="status-badge approved">⭐ Featured</span>':'<span class="status-badge pending">Standard</span>';
-            html+='<tr><td><strong>'+w.title+'</strong></td><td>'+(w.instructor||"-")+'</td><td>'+(w.date?formatDate(w.date):"-")+'</td><td>'+sl+'/'+w.maxSpots+'</td><td>'+sb+'</td>';
+            html+='<tr><td><strong>'+w.title+'</strong></td><td>'+(w.instructor||"-")+'</td><td>'+(w.date?formatDate(w.date):"-")+'</td><td>'+sl+'/'+w.maxSpots+'</td><td>'+joinedHtml+'</td><td>'+sb+'</td>';
             html+='<td><div class="action-buttons"><button class="btn-approve" data-action="edit" data-id="'+w._id+'">✏️ Edit</button><button class="btn-delete" data-action="delete" data-id="'+w._id+'">🗑 Delete</button></div></td></tr>';
         }
         html+='</tbody></table>'; container.innerHTML=html;
@@ -1061,17 +1120,27 @@ if (path === "/rehearsals") {
 }
  
 if (path === "/auditions") {
-    loadDeadlinesFromAPI(function() { renderAuditionDeadline(); });
+    var session = getSession();
+    if (!session) { localStorage.setItem("miu_redirect", "auditions"); navigate("/login"); }
+    else { loadDeadlinesFromAPI(function() { renderAuditionDeadline(); }); }
 }
  
 if (path === "/scripts") {
-    loadDeadlinesFromAPI(function() { renderScriptDeadline(); });
+    var session = getSession();
+    if (!session) { localStorage.setItem("miu_redirect", "scripts"); navigate("/login"); }
+    else { loadDeadlinesFromAPI(function() { renderScriptDeadline(); }); }
 }
  
 if (path === "/admin") {
     var session = getSession();
     if (!session || session.role !== "admin") { navigate("/login"); }
     else { initAdminPage(); }
+}
+
+if (path === "/exit") {
+    var session = getSession();
+    if (!session) { localStorage.setItem("miu_redirect", "exit"); navigate("/login"); }
+    else { fillSignedInUser("exitName", "exitEmail"); }
 }
  
 if (path === "/contact") {

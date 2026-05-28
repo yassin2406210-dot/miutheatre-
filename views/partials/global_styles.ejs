@@ -1,12 +1,8 @@
 <!--- partials/global-styles.ejs --->
 <style>
   /* Global Theatre Background */
-  body {
-    background-image: url('/images/theatre-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    body {
+    background: #0f0f0f url('/images/theatre-bg.jpg') center / cover fixed no-repeat !important;
   }
   body::before {
     content: '';
@@ -15,7 +11,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 15, 15, 0.92);
+    background: rgba(15, 15, 15, 0.78);
     z-index: -1;
   }
   .section, .page-hero, .about-strip, .dark-section, .login-wrap, .admin-layout, .form-card, .hero, footer {

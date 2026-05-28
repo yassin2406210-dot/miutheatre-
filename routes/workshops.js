@@ -13,6 +13,56 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Join workshop (logged-in users only)
+router.post('/:id/join', auth, async (req, res) => {
+  try {
+    const workshop = await Workshop.findById(req.params.id)
+    if (!workshop) return res.status(404).json({ error: 'Workshop not found' })
+
+    const alreadyJoined = workshop.joinedUsers.some(function(user) {
+      return String(user.userId) === String(req.user.id)
+    })
+
+    if (alreadyJoined) {
+      return res.status(400).json({ error: 'You already joined this workshop' })
+    }
+
+    if (workshop.joinedUsers.length >= workshop.maxSpots) {
+      return res.status(400).json({ error: 'This workshop is full' })
+    }
+
+    workshop.joinedUsers.push({
+      userId: req.user.id,
+      name: req.body.name,
+      email: req.body.email,
+      studentId: req.body.studentId,
+      faculty: req.body.faculty
+    })
+
+    await workshop.save()
+    res.json({ success: true, workshop })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// Leave workshop (logged-in users only)
+router.post('/:id/leave', auth, async (req, res) => {
+  try {
+    const workshop = await Workshop.findById(req.params.id)
+    if (!workshop) return res.status(404).json({ error: 'Workshop not found' })
+
+    workshop.joinedUsers = workshop.joinedUsers.filter(function(user) {
+      return String(user.userId) !== String(req.user.id)
+    })
+
+    await workshop.save()
+    res.json({ success: true, workshop })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // Add workshop (admin only)
 router.post('/', auth, adminOnly, async (req, res) => {
   try {
