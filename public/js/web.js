@@ -490,14 +490,14 @@ function submitExit() {
     var comments = document.getElementById("exitComments").value.trim();
     var check1   = document.getElementById("exitCheck1").checked;
     hideAlert("exitAlert");
-    if (!name || !email || !reason) { showAlert("exitAlert", "Please fill in all required fields.", "error"); return; }
+    if (!name || !email || !duration || !reason) { showAlert("exitAlert", "Please fill in all required fields.", "error"); return; }
     if (!isValidMIUEmail(email)) { showAlert("exitAlert", "Please use your MIU email.", "error"); return; }
     if (!check1) { showAlert("exitAlert", "Please confirm the checkbox.", "error"); return; }
  
     fetch("/api/exit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, email: email, reason: reason + (comments ? " — " + comments : "") })
+        body: JSON.stringify({ name: name, email: email, reason: "Duration: " + duration + " — " + reason + (comments ? " — " + comments : "") })
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
