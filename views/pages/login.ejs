@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/home.css"/>
+  <link rel="stylesheet" href="/css/pages.css"/>
+  <link rel="stylesheet" href="/css/forms.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<section class="hero" style="min-height:100vh; padding-top:70px; display:flex; align-items:center;">
+  <div class="hero-content" style="max-width:1180px; margin:0 auto; padding:70px 5%; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; width:100%;">
+    <div class="hero-text">
+      <div class="hero-tag">MIU Theatre Club</div>
+      <h1>Welcome to<br>MIU <em>Theatre</em> Club</h1>
+      <p>Sign in or create an account using your MIU student email to access all club features.</p>
+      <div class="features-grid" style="margin-top:30px;">
+        <div class="feature-card" style="padding:20px;"><div class="feature-icon">🎤</div><h3>Auditions & Interviews</h3><p>Apply for roles and acting spots</p></div>
+        <div class="feature-card" style="padding:20px;"><div class="feature-icon">📜</div><h3>Script Submissions</h3><p>Upload your scripts for review</p></div>
+        <div class="feature-card" style="padding:20px;"><div class="feature-icon">🛠</div><h3>Workshops & Deadlines</h3><p>Stay on top of all events</p></div>
+      </div>
+    </div>
+    <div class="hero-card" style="max-width:420px; width:100%; margin:0 auto; padding:40px 30px; animation:none;">
+      <span style="font-size:50px; display:block; margin-bottom:15px;">🎭</span>
+      <h3 style="font-size:22px; margin-bottom:5px;">Member Access</h3>
+      <p style="font-size:13px; color:#888; margin-bottom:25px;">Sign in to your MIU Theatre Club account</p>
+      <div class="login-tabs" style="display:flex; border-bottom:2px solid rgba(255,255,255,0.1); margin-bottom:24px;">
+        <button id="tabSignIn" class="tab active" onclick="switchLoginTab('signin')" style="flex:1; padding:10px; background:none; border:none; cursor:pointer; font-size:14px; font-weight:600; color:#ff6b6b; border-bottom:3px solid #ff6b6b; margin-bottom:-2px;">Sign In</button>
+        <button id="tabSignUp" class="tab" onclick="switchLoginTab('signup')" style="flex:1; padding:10px; background:none; border:none; cursor:pointer; font-size:14px; font-weight:600; color:#888; border-bottom:3px solid transparent; margin-bottom:-2px;">Sign Up</button>
+      </div>
+      <div id="formSignIn">
+        <div id="signinAlert" class="alert" style="display:none"></div>
+        <div class="form-group" style="margin-bottom:15px;">
+          <label for="signinEmail" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">MIU Email</label>
+          <input type="email" id="signinEmail" placeholder="yourname@miuegypt.edu.eg" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none;"/>
+          <span id="signinEmailError" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Please enter a valid @miuegypt.edu.eg email.</span>
+        </div>
+        <div class="form-group" style="margin-bottom:15px;">
+          <label for="signinPw" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">Password</label>
+          <div class="input-wrap" style="position:relative;">
+            <input type="password" id="signinPw" placeholder="Enter your password" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none; padding-right:42px;"/>
+            <button type="button" onclick="togglePassword('signinPw', 'toggleSigninPw')" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#aaa; font-size:15px;">👁</button>
+          </div>
+          <span id="signinPwError" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Password must be at least 6 characters.</span>
+        </div>
+        <button class="btn-red" id="signinBtn" onclick="doLogin()" style="width:100%; margin-top:8px; min-height:46px; background:#C0141C; color:#fff; border:none; padding:13px 30px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer;">Sign In</button>
+      </div>
+      <div id="formSignUp" style="display:none">
+        <div id="signupAlert" class="alert" style="display:none"></div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="signupName" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">Full Name</label>
+          <input type="text" id="signupName" placeholder="Your full name" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none;"/>
+          <span id="signupNameError" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Please enter your name.</span>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="signupEmail" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">MIU Email</label>
+          <input type="email" id="signupEmail" placeholder="yourname@miuegypt.edu.eg" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none;"/>
+          <span id="signupEmailError" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Please enter a valid @miuegypt.edu.eg email.</span>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="signupPw" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">Password</label>
+          <div class="input-wrap" style="position:relative;">
+            <input type="password" id="signupPw" placeholder="At least 6 characters" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none; padding-right:42px;"/>
+            <button type="button" onclick="togglePassword('signupPw', 'toggleSignupPw')" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#aaa; font-size:15px;">👁</button>
+          </div>
+          <span id="signupPwError" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Password must be at least 6 characters.</span>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="signupPw2" style="display:block; font-size:12.5px; font-weight:600; color:#e0e0e0; margin-bottom:5px;">Confirm Password</label>
+          <input type="password" id="signupPw2" placeholder="Re-enter your password" required style="width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); font-size:14px; color:#fff; background:rgba(30,30,30,0.8); outline:none;"/>
+          <span id="signupPw2Error" class="error-msg" style="display:none; font-size:11px; color:#ff8888; margin-top:4px;">Passwords do not match.</span>
+        </div>
+        <button class="btn-red" id="signupBtn" onclick="doSignup()" style="width:100%; margin-top:8px; min-height:46px; background:#C0141C; color:#fff; border:none; padding:13px 30px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer;">Create Account</button>
+        <div style="background:rgba(42,42,42,0.8); border-radius:8px; padding:12px 14px; font-size:12px; color:#ccc; line-height:1.6; margin-top:16px; border-left:3px solid #C0141C;">
+          <strong style="color:#fff;">MIU Students Only</strong><br/>Email must end with <strong style="color:#ff6b6b;">@miuegypt.edu.eg</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/web.js"></script>
+</body>
+</html>

@@ -15,17 +15,36 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.set('views', './views')
 
-// ── Routes ──
+// ── Page Routes ──
 app.get('/', (req, res) => res.render('pages/home'))
 app.get('/login', (req, res) => res.render('pages/login'))
 app.get('/admin', (req, res) => res.render('pages/admin'))
 app.get('/about', (req, res) => res.render('pages/about'))
 app.get('/contact', (req, res) => res.render('pages/contact'))
 app.get('/auditions', (req, res) => res.render('pages/auditions'))
-app.get('/workshops', (req, res) => res.render('pages/workshops')) 
+app.get('/workshops', (req, res) => res.render('pages/workshops'))
 app.get('/rehearsals', (req, res) => res.render('pages/rehearsals'))
 app.get('/scripts', (req, res) => res.render('pages/scripts'))
 app.get('/exit', (req, res) => res.render('pages/exit'))
+
+// ── API Routes ──
+const authRouter       = require('./routes/auth')
+const auditionsRouter  = require('./routes/auditions')
+const workshopsRouter  = require('./routes/workshops')
+const rehearsalsRouter = require('./routes/rehearsals')
+const scriptsRouter    = require('./routes/scripts')
+const contactRouter    = require('./routes/contact')
+const exitRouter       = require('./routes/exit')
+const deadlinesRouter  = require('./routes/deadlines')
+
+app.use('/api/auth',       authRouter)
+app.use('/api/auditions',  auditionsRouter)
+app.use('/api/workshops',  workshopsRouter)
+app.use('/api/rehearsals', rehearsalsRouter)
+app.use('/api/scripts',    scriptsRouter)
+app.use('/api/contact',    contactRouter)
+app.use('/api/exit',       exitRouter)
+app.use('/api/deadlines',  deadlinesRouter)
 
 // ── Database + Start ──
 mongoose.connect(process.env.MONGO_URI)

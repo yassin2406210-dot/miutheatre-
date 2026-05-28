@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/home.css"/>
+  <link rel="stylesheet" href="/css/pages.css"/>
+  <link rel="stylesheet" href="/css/forms.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Exit Interview</span>
+    <h1>Leaving the <em>Stage</em></h1>
+    <p>We're sorry to see you go. Please complete this form to begin your exit process.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-container">
+    <div class="info-banner">
+      <strong>🚪 Exit Process</strong>
+      Submitting this form will notify club leadership. You'll be contacted to schedule a short exit interview.
+    </div>
+    <div class="form-card" id="exitForm">
+      <h2>Exit Interview Request</h2>
+      <p>Complete this form to begin the exit process from the MIU Theatre Club.</p>
+      <div id="exitAlert" class="alert" style="display:none"></div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="exitName">Full Name *</label><input type="text" id="exitName" placeholder="Your full name" required/></div>
+        <div class="form-group"><label for="exitEmail">MIU Email *</label><input type="email" id="exitEmail" placeholder="name@miuegypt.edu.eg" required/></div>
+      </div>
+      <div class="form-group"><label for="exitDuration">Membership Duration</label><input type="text" id="exitDuration" placeholder="e.g. 2 years, since 2023"/></div>
+      <div class="form-group">
+        <label for="exitReason">Reason for Leaving *</label>
+        <select id="exitReason" required>
+          <option value="">Select reason...</option>
+          <option>Academic workload</option>
+          <option>Personal reasons</option>
+          <option>Graduating / Leaving MIU</option>
+          <option>Time constraints</option>
+          <option>Found another opportunity</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="exitComments">Additional Comments</label><textarea id="exitComments" placeholder="Any feedback for the club leadership (optional)..."></textarea></div>
+      <div class="checkbox-group"><input type="checkbox" id="exitCheck1"/><span>I understand that submitting this form begins the official exit process and I will be contacted for a brief interview.</span></div>
+      <button class="btn-red full-width" onclick="submitExit()">Submit Exit Request</button>
+    </div>
+    <div id="exitSuccess" class="success-card" style="display:none">
+      <span>🚪</span>
+      <h2>Request Received</h2>
+      <p>A club leader will contact you via your MIU email within 3 days to schedule your exit interview.</p>
+      <button class="btn-red" onclick="window.location.href='/'">Back to Home</button>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/web.js"></script>
+</body>
+</html>

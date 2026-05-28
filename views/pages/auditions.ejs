@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/home.css"/>
+  <link rel="stylesheet" href="/css/pages.css"/>
+  <link rel="stylesheet" href="/css/forms.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Open Auditions</span>
+    <h1>Join the <em>Cast</em></h1>
+    <p>Apply for our upcoming production. Open to all MIU students — no prior experience needed.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-container">
+    <div class="info-banner">
+      <strong>📋 Before You Apply</strong>
+      Auditions are open to all MIU students. You must be available for rehearsals and committed to the full production schedule.
+    </div>
+    <div id="auditionDeadlineBanner" style="display:none;"></div>
+    <div id="auditionNotOpen" style="display:none;">
+      <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
+        <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
+        <h3 style="color:#ffc107; margin-bottom:10px;">Applications Not Yet Open</h3>
+        <p style="color:#cccccc;">Audition applications are not open yet. Please check back later!</p>
+      </div>
+    </div>
+    <div id="auditionClosed" style="display:none;">
+      <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
+        <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
+        <h3 style="color:#ff6b6b; margin-bottom:10px;">Applications Closed</h3>
+        <p style="color:#cccccc;">The deadline for audition applications has passed. Check back later!</p>
+      </div>
+    </div>
+    <div class="form-card" id="auditionForm">
+      <h2>Audition Application</h2>
+      <p>Fill in the form to apply for our next production audition.</p>
+      <div id="auditionAlert" class="alert" style="display:none"></div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="audName">Full Name *</label><input type="text" id="audName" placeholder="Your full name" required/></div>
+        <div class="form-group"><label for="audEmail">MIU Email *</label><input type="email" id="audEmail" placeholder="name@miuegypt.edu.eg" required/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="audId">Student ID</label><input type="text" id="audId" placeholder="e.g. MIU-2022-123"/></div>
+        <div class="form-group"><label for="audFaculty">Faculty</label><input type="text" id="audFaculty" placeholder="e.g. Business Administration"/></div>
+      </div>
+      <div class="form-group"><label for="audExperience">Previous Experience</label><textarea id="audExperience" placeholder="Any previous acting or performing arts experience..."></textarea></div>
+      <div class="form-group"><label for="audWhy">Why do you want to join?</label><textarea id="audWhy" placeholder="Tell us what drives your passion for theatre..."></textarea></div>
+      <div class="checkbox-group"><input type="checkbox" id="audCheck1"/><span>I am available for rehearsals and commit to the full production schedule.</span></div>
+      <div class="checkbox-group"><input type="checkbox" id="audCheck2"/><span>I understand that missing rehearsals without notice may result in losing my role.</span></div>
+      <button class="btn-red full-width" onclick="submitAudition()">Submit Application</button>
+    </div>
+    <div id="auditionSuccess" class="success-card" style="display:none">
+      <span>🎉</span>
+      <h2>Application Submitted!</h2>
+      <p>We'll review your application and contact you via your MIU email within 3–5 business days.</p>
+      <button class="btn-red" onclick="window.location.href='/'">Back to Home</button>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/web.js"></script>
+</body>
+</html>

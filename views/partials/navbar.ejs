@@ -1,0 +1,31 @@
+<nav id="navbar">
+  <div class="logo" onclick="window.location.href='/'">
+    <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU Logo"/>
+    <div class="logo-text">
+      <span class="logo-title">Theatre Club</span>
+      <span class="logo-sub">Misr International University</span>
+    </div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <button onclick="window.location.href='/'">Home</button>
+    <div class="dropdown">
+      <button>Features ▾</button>
+      <div class="dropdown-menu">
+        <button onclick="window.location.href='/auditions'">🎤 Auditions</button>
+        <button onclick="window.location.href='/scripts'">📜 Script Upload</button>
+        <button onclick="window.location.href='/exit'">🚪 Exit Interview</button>
+        <button onclick="window.location.href='/workshops'">🛠 Workshops</button>
+        <button onclick="window.location.href='/rehearsals'">🎥 Rehearsal Videos</button>
+      </div>
+    </div>
+    <button onclick="window.location.href='/about'">About Us</button>
+    <button onclick="window.location.href='/contact'">Contact</button>
+    <button id="loginBtn" class="btn-red" onclick="window.location.href='/login'">Login</button>
+    <button id="logoutBtn" class="btn-outline" onclick="doLogout()" style="display:none">Sign Out</button>
+  </div>
+
+  <button class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>

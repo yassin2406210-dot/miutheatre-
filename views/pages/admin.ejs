@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club - Admin</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/home.css"/>
+  <link rel="stylesheet" href="/css/pages.css"/>
+  <link rel="stylesheet" href="/css/forms.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<div class="admin-layout">
+  <div class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Misr_International_University_logo.png" alt="MIU"/>
+      <div>
+        <span class="sidebar-title">Theatre Club</span>
+        <span class="sidebar-sub">Admin Panel</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Overview</span>
+      <button class="sidebar-btn active" id="sb-dashboard" onclick="adminGoTo('dashboard', this)">📊 Dashboard</button>
+      <span class="nav-section-label">Applications</span>
+      <button class="sidebar-btn" id="sb-auditions" onclick="adminGoTo('auditions', this)">🎤 Auditions <span class="badge" id="badgeAud">0</span></button>
+      <button class="sidebar-btn" id="sb-exit" onclick="adminGoTo('exit', this)">🚪 Exit Interviews <span class="badge" id="badgeExit">0</span></button>
+      <span class="nav-section-label">Content</span>
+      <button class="sidebar-btn" id="sb-scripts" onclick="adminGoTo('scripts', this)">📜 Scripts <span class="badge" id="badgeScr">0</span></button>
+      <button class="sidebar-btn" id="sb-workshops" onclick="adminGoTo('workshops', this)">🛠 Workshops</button>
+      <button class="sidebar-btn" id="sb-rehearsals" onclick="adminGoTo('rehearsals', this)">🎥 Rehearsal Videos</button>
+      <button class="sidebar-btn" id="sb-social" onclick="adminGoTo('social', this)">📱 Social Links</button>
+      <button class="sidebar-btn" id="sb-messages" onclick="adminGoTo('messages', this)">✉️ Contact Messages <span class="badge" id="badgeMsg">0</span></button>
+      <span class="nav-section-label">System</span>
+      <button class="sidebar-btn" id="sb-deadlines" onclick="adminGoTo('deadlines', this)">⏰ Application Deadlines</button>
+      <button class="sidebar-btn" id="sb-users" onclick="adminGoTo('users', this)">👥 Registered Users</button>
+    </nav>
+    <button class="sidebar-logout" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 id="adminPanelTitle">Dashboard</h2>
+      <span class="admin-email-badge" id="adminEmailBadge">Admin</span>
+    </div>
+    <div class="admin-content">
+
+      <div class="admin-panel active" id="adminPanel-dashboard">
+        <div class="stats-cards" id="dashboardStats"></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Welcome to the Admin Panel</h3></div>
+          <div class="admin-card-body">Use the sidebar to navigate. Review and approve/reject applications, manage workshops, rehearsal links, social media, and registered users.</div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-auditions">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Audition Applications</h3><span class="count-badge" id="countAud">0 pending</span></div>
+          <div class="table-wrap" id="tableAud"></div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-exit">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Exit Interview Requests</h3><span class="count-badge" id="countExit">0 pending</span></div>
+          <div class="table-wrap" id="tableExit"></div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-scripts">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Script Submissions</h3><span class="count-badge" id="countScr">0 pending</span></div>
+          <div class="table-wrap" id="tableScr"></div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-workshops">
+        <div class="admin-form-card" id="addWorkshopForm">
+          <h3>⭐ Add New Workshop</h3>
+          <div class="form-row-2">
+            <div class="form-group"><label>Title *</label><input type="text" id="wsTitle" placeholder="e.g. Voice Training Workshop" required/></div>
+            <div class="form-group"><label>Date *</label><input type="date" id="wsDate" required/></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Time</label><input type="text" id="wsTime" placeholder="e.g. 2:00 PM – 4:00 PM"/></div>
+            <div class="form-group"><label>Location</label><input type="text" id="wsLocation" placeholder="e.g. OOA Room"/></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Instructor Name</label><input type="text" id="wsInstructor" placeholder="e.g. Prof. Ahmed Hassan"/></div>
+            <div class="form-group"><label>Max Spots</label><input type="number" id="wsMaxSpots" value="20" min="1" max="500"/></div>
+          </div>
+          <div class="form-group"><label>Image URL (optional)</label><input type="url" id="wsImage" placeholder="https://..."/></div>
+          <div class="form-group"><label>Description</label><textarea id="wsDesc" placeholder="Brief description..."></textarea></div>
+          <div class="checkbox-group" style="margin-bottom:15px;">
+            <input type="checkbox" id="wsFeatured"/>
+            <span>⭐ Mark as Featured (shows on homepage)</span>
+          </div>
+          <button class="btn-red" onclick="addWorkshop()">Add Workshop</button>
+        </div>
+        <div class="admin-form-card" id="editWorkshopForm" style="display:none;">
+          <h3>✏️ Edit Workshop</h3>
+          <div class="form-row-2">
+            <div class="form-group"><label>Title *</label><input type="text" id="editWsTitle" required/></div>
+            <div class="form-group"><label>Date *</label><input type="date" id="editWsDate" required/></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Time</label><input type="text" id="editWsTime"/></div>
+            <div class="form-group"><label>Location</label><input type="text" id="editWsLocation"/></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Instructor Name</label><input type="text" id="editWsInstructor"/></div>
+            <div class="form-group"><label>Max Spots</label><input type="number" id="editWsMaxSpots" min="1" max="500"/></div>
+          </div>
+          <div class="form-group"><label>Image URL</label><input type="url" id="editWsImage"/></div>
+          <div class="form-group"><label>Description</label><textarea id="editWsDesc"></textarea></div>
+          <div class="checkbox-group" style="margin-bottom:15px;">
+            <input type="checkbox" id="editWsFeatured"/>
+            <span>⭐ Mark as Featured</span>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-red" onclick="saveEditWorkshop()">💾 Save Changes</button>
+            <button class="btn-delete" onclick="cancelEditWorkshop()">❌ Cancel</button>
+          </div>
+        </div>
+        <div class="admin-card"><div class="admin-card-header"><h3>All Workshops</h3></div><div class="table-wrap" id="tableWs"></div></div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-rehearsals">
+        <div class="admin-form-card">
+          <h3>Add Rehearsal Video Link</h3>
+          <div class="form-row-2">
+            <div class="form-group"><label>Title *</label><input type="text" id="rehTitle" placeholder="e.g. Rehearsal Session 3" required/></div>
+            <div class="form-group"><label>Date</label><input type="date" id="rehDate"/></div>
+          </div>
+          <div class="form-group"><label>Video Link (YouTube / Drive) *</label><input type="url" id="rehLink" placeholder="https://..." required/></div>
+          <button class="btn-red" onclick="addRehearsal()">Add Link</button>
+        </div>
+        <div class="admin-card"><div class="admin-card-header"><h3>All Rehearsal Videos</h3></div><div class="table-wrap" id="tableReh"></div></div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-social">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Social Media Links</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group"><label>Instagram URL</label><input type="url" id="socialIG" placeholder="https://instagram.com/..."/></div>
+            <div class="form-group"><label>TikTok URL</label><input type="url" id="socialTT" placeholder="https://tiktok.com/@..."/></div>
+            <button class="btn-red" onclick="saveSocialLinks()">Save Links</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-messages">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Contact Messages</h3><span class="count-badge" id="countMsg">0 messages</span></div>
+          <div class="table-wrap" id="tableMsg"></div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-users">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Registered Users</h3><span class="count-badge" id="countUsers">0 users</span></div>
+          <div class="table-wrap" id="tableUsers"></div>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel-deadlines">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>⏰ Application Deadlines</h3></div>
+          <div class="admin-card-body">
+            <p style="color:#aaa; margin-bottom:20px;">Set deadlines for applications. Once a deadline passes, the form will automatically close for users.</p>
+            <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
+              <h4 style="color:#ff8e8e; margin-bottom:15px;">🎭 Auditions</h4>
+              <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
+                <div class="form-group" style="margin:0;">
+                  <label style="font-size:12px; color:#aaa;">Deadline Date</label>
+                  <input type="date" id="deadlineAudDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
+                </div>
+                <button class="btn-red" onclick="saveDeadline('auditions')" style="padding:10px 20px; font-size:13px;">Save</button>
+                <button class="btn-delete" onclick="clearDeadline('auditions')" style="padding:10px 20px; font-size:13px;">Remove</button>
+              </div>
+            </div>
+            <div style="background:rgba(30,30,30,0.8); border:1px solid rgba(192,20,28,0.3); border-radius:12px; padding:20px; margin-bottom:15px;">
+              <h4 style="color:#ff8e8e; margin-bottom:15px;">📜 Script Upload</h4>
+              <div style="display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;">
+                <div class="form-group" style="margin:0;">
+                  <label style="font-size:12px; color:#aaa;">Deadline Date</label>
+                  <input type="date" id="deadlineScrDate" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff;"/>
+                </div>
+                <button class="btn-red" onclick="saveDeadline('scripts')" style="padding:10px 20px; font-size:13px;">Save</button>
+                <button class="btn-delete" onclick="clearDeadline('scripts')" style="padding:10px 20px; font-size:13px;">Remove</button>
+              </div>
+            </div>
+            <div style="margin-top:25px;">
+              <h4 style="color:#fff; margin-bottom:15px;">Current Deadlines</h4>
+              <div id="tableDeadlines"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="/js/web.js"></script>
+</body>
+</html>

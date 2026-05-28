@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>MIU Theatre Club</title>
+  <%- include('../partials/global_styles') %>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/home.css"/>
+  <link rel="stylesheet" href="/css/pages.css"/>
+  <link rel="stylesheet" href="/css/forms.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<%- include('../partials/mobile-menu') %>
+<%- include('../partials/toast') %>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Script Submissions</span>
+    <h1>Share Your <em>Story</em></h1>
+    <p>Submit your script for admin review.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-container">
+    <div class="info-banner">
+      <strong>📜 How It Works</strong>
+      Submit your script details below. Admin will review it. If approved, it will be shared with the team.
+    </div>
+    <div id="scriptDeadlineBanner" style="display:none;"></div>
+    <div id="scriptNotOpen" style="display:none;">
+      <div style="text-align:center; padding:40px; background:rgba(255,193,7,0.1); border-radius:12px; border:1px solid rgba(255,193,7,0.3); margin:20px 0;">
+        <span style="font-size:48px; display:block; margin-bottom:15px;">🔒</span>
+        <h3 style="color:#ffc107; margin-bottom:10px;">Submissions Not Yet Open</h3>
+        <p style="color:#cccccc;">Script submissions are not open yet. Please check back later!</p>
+      </div>
+    </div>
+    <div id="scriptClosed" style="display:none;">
+      <div style="text-align:center; padding:40px; background:rgba(220,53,69,0.1); border-radius:12px; border:1px solid rgba(220,53,69,0.3); margin:20px 0;">
+        <span style="font-size:48px; display:block; margin-bottom:15px;">⛔</span>
+        <h3 style="color:#ff6b6b; margin-bottom:10px;">Submissions Closed</h3>
+        <p style="color:#cccccc;">The deadline for script submissions has passed. Check back later!</p>
+      </div>
+    </div>
+    <div class="form-card" id="scriptForm">
+      <h2>Script Submission</h2>
+      <p>Submit your script for review by the MIU Theatre Club admin team.</p>
+      <div id="scriptAlert" class="alert" style="display:none"></div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="scrName">Full Name *</label><input type="text" id="scrName" placeholder="Your full name" required/></div>
+        <div class="form-group"><label for="scrEmail">MIU Email *</label><input type="email" id="scrEmail" placeholder="name@miuegypt.edu.eg" required/></div>
+      </div>
+      <div class="form-group"><label for="scrTitle">Script Title *</label><input type="text" id="scrTitle" placeholder="Title of your script" required/></div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="scrGenre">Genre</label><select id="scrGenre"><option value="">Select...</option><option>Drama</option><option>Comedy</option><option>Tragedy</option><option>Historical</option><option>Musical</option><option>Other</option></select></div>
+        <div class="form-group"><label for="scrLanguage">Language</label><select id="scrLanguage"><option value="">Select...</option><option>Arabic</option><option>English</option><option>Mixed</option></select></div>
+      </div>
+      <div class="form-group"><label for="scrDescription">Script Description</label><textarea id="scrDescription" placeholder="Plot summary, characters, themes..."></textarea></div>
+      <div class="form-row-2">
+        <div class="form-group"><label for="scrCast">Estimated Cast Size</label><input type="text" id="scrCast" placeholder="e.g. 5–8 actors"/></div>
+        <div class="form-group"><label for="scrLink">Script Link (Drive / Dropbox) *</label><input type="url" id="scrLink" placeholder="https://..." required/></div>
+      </div>
+      <div class="checkbox-group"><input type="checkbox" id="scrCheck1"/><span>I confirm this is my original work and give MIU Theatre Club permission to review and potentially produce it.</span></div>
+      <button class="btn-red full-width" onclick="submitScript()">Submit Script</button>
+    </div>
+    <div id="scriptSuccess" class="success-card" style="display:none">
+      <span>📜</span>
+      <h2>Script Submitted!</h2>
+      <p>Our admin team will review it and contact you via your MIU email with their decision.</p>
+      <button class="btn-red" onclick="window.location.href='/'">Back to Home</button>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/web.js"></script>
+</body>
+</html>
