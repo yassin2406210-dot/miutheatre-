@@ -60,9 +60,12 @@
       </div>
       <div class="form-group"><label for="scrDescription">Script Description</label><textarea id="scrDescription" placeholder="Plot summary, characters, themes..."></textarea></div>
       <div class="form-row-2">
-        <div class="form-group"><label for="scrCast">Estimated Cast Size</label><input type="text" id="scrCast" placeholder="e.g. 5–8 actors"/></div>
-        <div class="form-group"><label for="scrLink">Script Link (Drive / Dropbox) *</label><input type="url" id="scrLink" placeholder="https://..." required/></div>
-      </div>
+  <div class="form-group"><label for="scrCast">Estimated Cast Size</label><input type="text" id="scrCast" placeholder="e.g. 5–8 actors"/></div>
+</div>
+<div class="form-group">
+  <label for="scrFile">Upload Script File (PDF, DOC, DOCX) — optional</label>
+  <input type="file" id="scrFile" accept=".pdf,.doc,.docx,.txt" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid rgba(192,20,28,0.3); background:rgba(30,30,30,0.9); color:#fff; cursor:pointer;"/>
+</div>  
       <div class="checkbox-group"><input type="checkbox" id="scrCheck1"/><span>I confirm this is my original work and give MIU Theatre Club permission to review and potentially produce it.</span></div>
       <button class="btn-red full-width" onclick="submitScript()">Submit Script</button>
     </div>

@@ -6,6 +6,20 @@ const adminOnly = require('../middleware/adminOnly')
 
 router.post('/', auth, async (req, res) => {
   try {
+    const { name, email, experience, whyJoin } = req.body
+
+    // Backend validation
+    if (!name || !name.trim())
+      return res.status(400).json({ error: 'Full name is required' })
+    if (!email || !email.trim())
+      return res.status(400).json({ error: 'Email is required' })
+    if (!email.toLowerCase().endsWith('@miuegypt.edu.eg'))
+      return res.status(400).json({ error: 'MIU email only (@miuegypt.edu.eg)' })
+    if (!experience || !experience.trim())
+      return res.status(400).json({ error: 'Experience field is required' })
+    if (!whyJoin || !whyJoin.trim())
+      return res.status(400).json({ error: 'Please tell us why you want to join' })
+
     const a = await Audition.create(req.body)
     res.json({ success: true, a })
   } catch (err) {
@@ -24,11 +38,16 @@ router.get('/', auth, adminOnly, async (req, res) => {
 
 router.patch('/:id', auth, adminOnly, async (req, res) => {
   try {
+    const { status } = req.body
+    if (!status || !['approved', 'rejected'].includes(status))
+      return res.status(400).json({ error: 'Invalid status value' })
+
     const a = await Audition.findByIdAndUpdate(
       req.params.id,
-      { status: req.body.status },
+      { status },
       { new: true }
     )
+    if (!a) return res.status(404).json({ error: 'Audition not found' })
     res.json(a)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -37,7 +56,8 @@ router.patch('/:id', auth, adminOnly, async (req, res) => {
 
 router.delete('/:id', auth, adminOnly, async (req, res) => {
   try {
-    await Audition.findByIdAndDelete(req.params.id)
+    const a = await Audition.findByIdAndDelete(req.params.id)
+    if (!a) return res.status(404).json({ error: 'Audition not found' })
     res.json({ success: true })
   } catch (err) {
     res.status(500).json({ error: err.message })
