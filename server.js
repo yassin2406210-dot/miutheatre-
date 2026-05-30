@@ -46,6 +46,17 @@ app.use('/api/contact',    contactRouter)
 app.use('/api/exit',       exitRouter)
 app.use('/api/deadlines',  deadlinesRouter)
 
+// 404 handler
+app.use((req, res) => {
+  res.status(404).render('pages/404')
+})
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json({ error: 'Something went wrong' })
+})  
+
 // ── Database + Start ──
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -55,3 +66,5 @@ mongoose.connect(process.env.MONGO_URI)
     )
   })
   .catch(err => console.log('DB Error:', err))
+
+  

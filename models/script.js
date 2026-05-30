@@ -6,7 +6,9 @@ const scriptSchema = new mongoose.Schema({
   title:       { type: String, required: true, trim: true },
   genre:       { type: String },
   description: { type: String },
-  status:      { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
+  status:      { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  filePath:    { type: String },
+  fileName:    { type: String }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Script', scriptSchema)

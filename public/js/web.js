@@ -456,20 +456,29 @@ function submitScript() {
     var language    = document.getElementById("scrLanguage").value;
     var description = document.getElementById("scrDescription").value.trim();
     var cast        = document.getElementById("scrCast").value.trim();
-    var link        = document.getElementById("scrLink").value.trim();
+    var fileInput   = document.getElementById("scrFile");
     var check1      = document.getElementById("scrCheck1").checked;
     hideAlert("scriptAlert");
+
     var deadline = getDeadline("scripts");
     if (deadline && isDeadlinePassed(deadline.date)) { showAlert("scriptAlert", "Submissions are now closed. The deadline has passed.", "error"); return; }
-    if (!name || !email || !title || !genre || !language || !description || !cast || !link) { showAlert("scriptAlert", "Please fill in ALL fields.", "error"); return; }
+    if (!name || !email || !title || !genre || !language || !description || !cast) { showAlert("scriptAlert", "Please fill in all required fields.", "error"); return; }
     if (!isValidMIUEmail(email)) { showAlert("scriptAlert", "Please use your MIU email.", "error"); return; }
-    if (!isValidURL(link)) { showAlert("scriptAlert", "Please enter a valid URL for the script link.", "error"); return; }
     if (!check1) { showAlert("scriptAlert", "Please confirm the ownership checkbox.", "error"); return; }
- 
+
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("title", title);
+    formData.append("genre", genre);
+    formData.append("language", language);
+    formData.append("description", description);
+    formData.append("cast", cast);
+    if (fileInput && fileInput.files[0]) formData.append("scriptFile", fileInput.files[0]);
+
     fetch("/api/scripts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, email: email, title: title, genre: genre, description: description })
+        body: formData
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -1093,7 +1102,29 @@ document.addEventListener("click", function(e) {
     else if (action==="delete") { e.preventDefault(); if(confirm("Delete this workshop?")) adminDeleteWorkshop(id); }
 });
  
-// ── Init ──────────────────────────────────────────────────────
+// ── External API — Theatre Quote ──────────────────────────────
+function fetchQuote() {
+    var box = document.getElementById("quoteBox");
+    if (!box) return;
+
+    var session = getSession();
+    var greeting = session ? "Welcome back, " + session.name.split(" ")[0] + "! 🎭 " : "";
+
+    fetch("https://api.quotable.io/random?tags=inspirational|life|success")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data && data.content) {
+            box.innerHTML = greeting + '"' + data.content + '" — ' + data.author;
+            box.style.display = "block";
+        }
+    })
+    .catch(function() {
+        if (greeting) {
+            box.innerHTML = greeting + "Break a leg tonight! 🎭";
+            box.style.display = "block";
+        }
+    });
+}
 // ── Init ──────────────────────────────────────────────────────
 updateNav();
 loadSocialLinks();
@@ -1107,6 +1138,7 @@ var path = window.location.pathname;
 if (path === "/" || path === "/home") {
     renderHomeWorkshops();
     renderHomeDeadlines();
+    fetchQuote();
 }
  
 if (path === "/workshops") {
