@@ -833,10 +833,11 @@ function renderAdminScripts() {
         var html = '<table><thead><tr><th>Title</th><th>Author</th><th>Genre</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
         for (var i=0; i<data.length; i++) {
             var item=data[i]; var sb='<span class="status-badge '+item.status+'">'+item.status+'</span>';
-            var actions=item.status==="pending"
-                ?'<div class="action-buttons"><button class="btn-approve" onclick="adminAction(\'scripts\',\''+item._id+'\',\'approved\')">Approve</button><button class="btn-reject" onclick="adminAction(\'scripts\',\''+item._id+'\',\'rejected\')">Reject</button></div>'
-                :'<button class="btn-delete" onclick="adminDelete(\'scripts\',\''+item._id+'\')">Delete</button>';
-            html+='<tr><td><strong>'+item.title+'</strong></td><td>'+item.name+'</td><td>'+(item.genre||"-")+'</td><td>'+sb+'</td><td>'+actions+'</td></tr>';
+            var fileBtn = item.filePath ? '<a href="'+item.filePath+'" target="_blank" class="btn-approve" style="text-decoration:none;margin-right:5px;">📄 View PDF</a>' : '';
+    var actions=item.status==="pending"
+    ?'<div class="action-buttons">'+fileBtn+'<button class="btn-approve" onclick="adminAction(\'scripts\',\''+item._id+'\',\'approved\')">Approve</button><button class="btn-reject" onclick="adminAction(\'scripts\',\''+item._id+'\',\'rejected\')">Reject</button></div>'
+    :'<div class="action-buttons">'+fileBtn+'<button class="btn-delete" onclick="adminDelete(\'scripts\',\''+item._id+'\')">Delete</button></div>';
+    html+='<tr><td><strong>'+item.title+'</strong></td><td>'+item.name+'</td><td>'+(item.genre||"-")+'</td><td>'+sb+'</td><td>'+actions+'</td></tr>';
         }
         html += '</tbody></table>'; container.innerHTML = html;
     }).catch(function(){ container.innerHTML='<div class="admin-empty"><p>Could not load data.</p></div>'; });

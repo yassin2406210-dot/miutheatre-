@@ -5,6 +5,8 @@ const scriptSchema = new mongoose.Schema({
   email:       { type: String, required: true, lowercase: true, trim: true },
   title:       { type: String, required: true, trim: true },
   genre:       { type: String },
+  language: { type: String },
+  cast:     { type: String },
   description: { type: String },
   status:      { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
   filePath:    { type: String },
