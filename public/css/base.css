@@ -148,37 +148,44 @@ body {
 footer {
   background: #0d0d0d;
   color: #888888;
-  padding: 56px 5% 24px;
+  padding: 20px 5% 10px;
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 32px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  padding-bottom: 15px;
   border-bottom: 1px solid #333333;
 }
+.footer-brand img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
 .footer-brand p {
   font-size: 13px;
   color: #888888;
-  max-width: 230px;
-  margin-top: 12px;
+  max-width: 220px;
+  margin-top: 8px;
+  line-height: 1.5;
 }
 .footer-col h4 {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   color: #ffffff;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 .footer-col button {
   display: block;
   text-align: left;
-  font-size: 13px;
+  font-size: 11px;
   color: #888888;
   background: none;
   border: none;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   transition: color 0.3s;
 }
 .footer-col button:hover {
@@ -187,9 +194,22 @@ footer {
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 10px;
   color: #444444;
-  margin-top: 20px;
+  margin-top: 10px;
+}
+.footer-col button {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.footer-col h4 {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.footer-brand p {
+  font-size: 12px;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -197,7 +217,7 @@ footer {
 }
 @media (max-width: 860px) {
   .footer-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
     gap: 30px;
   }
 }
