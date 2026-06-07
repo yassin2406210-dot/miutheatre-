@@ -156,7 +156,8 @@ function isValidMIUEmail(email) {
     return /^[^ ]+@miuegypt\.edu\.eg$/.test(email.trim().toLowerCase());
 }
 function isValidURL(url) {
-    return /^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(url.trim());
+    try { new URL(url.trim()); return true; }
+    catch { return false; }
 }
  
 // â”€â”€ Alerts & Errors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
