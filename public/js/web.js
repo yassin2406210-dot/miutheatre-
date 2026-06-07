@@ -878,30 +878,20 @@ function addWorkshop() {
     var title=document.getElementById("wsTitle").value.trim(), date=document.getElementById("wsDate").value;
     var time=document.getElementById("wsTime").value.trim(), location=document.getElementById("wsLocation").value.trim();
     var desc=document.getElementById("wsDesc").value.trim(), instructor=document.getElementById("wsInstructor").value.trim();
-    var imageFile=document.getElementById("wsImage").files[0], maxSpots=parseInt(document.getElementById("wsMaxSpots").value)||20;
+    var image=document.getElementById("wsImage").value.trim(), maxSpots=parseInt(document.getElementById("wsMaxSpots").value)||20;
     var featured=document.getElementById("wsFeatured").checked;
     if (!title||!date) { showToast("Title and date are required","er"); return; }
     var today=new Date(); today.setHours(0,0,0,0);
     if (new Date(date)<today) { showToast("Please select a future date","er"); return; }
-    var formData = new FormData();
-formData.append("title", title);
-formData.append("date", date);
-formData.append("time", time);
-formData.append("location", location);
-formData.append("description", desc);
-formData.append("instructor", instructor||"TBA");
-formData.append("maxSpots", maxSpots);
-formData.append("featured", featured);
-if (imageFile) formData.append("image", imageFile);
-fetch("/api/workshops", {
-    method: "POST", headers: authHeader(),
-    body: formData
-})
+    var headers = Object.assign({ "Content-Type": "application/json" }, authHeader());
+    fetch("/api/workshops", {
+        method: "POST", headers: headers,
+        body: JSON.stringify({ title:title, date:date, time:time, location:location, description:desc, instructor:instructor||"TBA", image:image||"", maxSpots:maxSpots, featured:featured })
+    })
     .then(function(r){return r.json();})
     .then(function(data) {
         if (data.error) { showToast(data.error,"er"); return; }
-        ["wsTitle","wsDate","wsTime","wsLocation","wsDesc","wsInstructor"].forEach(function(id){document.getElementById(id).value="";});
-document.getElementById("wsImage").value="";
+        ["wsTitle","wsDate","wsTime","wsLocation","wsDesc","wsInstructor","wsImage"].forEach(function(id){document.getElementById(id).value="";});
         document.getElementById("wsMaxSpots").value="20"; document.getElementById("wsFeatured").checked=false;
         renderAdminWorkshops(); renderDashboard(); showToast("Workshop added!","ok");
     })
@@ -936,21 +926,20 @@ function saveEditWorkshop() {
     if (!editingWorkshopId) return;
     var title=document.getElementById("editWsTitle").value.trim(), date=document.getElementById("editWsDate").value;
     if (!title||!date) { showToast("Title and date are required","er"); return; }
-    var editFormData = new FormData();
-editFormData.append("title", title);
-editFormData.append("date", date);
-editFormData.append("time", document.getElementById("editWsTime").value.trim());
-editFormData.append("location", document.getElementById("editWsLocation").value.trim());
-editFormData.append("description", document.getElementById("editWsDesc").value.trim());
-editFormData.append("instructor", document.getElementById("editWsInstructor").value.trim()||"TBA");
-editFormData.append("maxSpots", parseInt(document.getElementById("editWsMaxSpots").value)||20);
-editFormData.append("featured", document.getElementById("editWsFeatured").checked);
-var editImageFile = document.getElementById("editWsImage").files[0];
-if (editImageFile) editFormData.append("image", editImageFile);
-fetch("/api/workshops/" + editingWorkshopId, {
-    method: "PUT", headers: authHeader(),
-    body: editFormData
-})
+    var headers = Object.assign({ "Content-Type": "application/json" }, authHeader());
+    fetch("/api/workshops/" + editingWorkshopId, {
+        method: "PUT", headers: headers,
+        body: JSON.stringify({
+            title:title, date:date,
+            time:document.getElementById("editWsTime").value.trim(),
+            location:document.getElementById("editWsLocation").value.trim(),
+            description:document.getElementById("editWsDesc").value.trim(),
+            instructor:document.getElementById("editWsInstructor").value.trim()||"TBA",
+            image:document.getElementById("editWsImage").value.trim(),
+            maxSpots:parseInt(document.getElementById("editWsMaxSpots").value)||20,
+            featured:document.getElementById("editWsFeatured").checked
+        })
+    })
     .then(function(r){return r.json();})
     .then(function() {
         editingWorkshopId=null;

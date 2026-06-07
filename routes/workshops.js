@@ -3,19 +3,6 @@ const Workshop = require('../models/workshop')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 const { queueEmail } = require('../utils/email')
-const multer = require('multer')
-const path = require('path')
-
-// ── Multer Setup ──
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-})
-const upload = multer({ storage })
 
 function formatWorkshopDate(date) {
   if (!date) return '-'
@@ -100,12 +87,9 @@ router.post('/:id/leave', auth, async (req, res) => {
 })
 
 // Add workshop (admin only)
-router.post('/', auth, adminOnly, upload.single('image'), async (req, res) => {
+router.post('/', auth, adminOnly, async (req, res) => {
   try {
-    const workshop = await Workshop.create({
-      ...req.body,
-      image: req.file ? '/uploads/' + req.file.filename : null
-    })
+    const workshop = await Workshop.create(req.body)
     res.json({ success: true, workshop })
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -113,15 +97,11 @@ router.post('/', auth, adminOnly, upload.single('image'), async (req, res) => {
 })
 
 // Edit workshop (admin only)
-router.put('/:id', auth, adminOnly, upload.single('image'), async (req, res) => {
+router.put('/:id', auth, adminOnly, async (req, res) => {
   try {
-    const updateData = { ...req.body }
-    if (req.file) {
-      updateData.image = '/uploads/' + req.file.filename
-    }
     const workshop = await Workshop.findByIdAndUpdate(
       req.params.id,
-      updateData,
+      req.body,
       { new: true }
     )
     res.json(workshop)
