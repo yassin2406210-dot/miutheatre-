@@ -399,3 +399,67 @@ a {
     min-width: 560px;
   }
 }
+  @media (max-width: 700px) {
+  body:has(.login-tabs) .hero {
+    min-height: auto !important;
+    padding-top: 64px !important;
+    align-items: flex-start !important;
+  }
+
+  body:has(.login-tabs) .hero-content {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    padding: 28px 16px 44px !important;
+    gap: 22px !important;
+  }
+
+  body:has(.login-tabs) .hero-text {
+    text-align: center !important;
+  }
+
+  body:has(.login-tabs) .hero-text h1 {
+    font-size: 30px !important;
+  }
+
+  body:has(.login-tabs) .hero-text p {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body:has(.login-tabs) .features-grid {
+    display: none !important;
+  }
+
+  body:has(.login-tabs) .hero-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 24px 16px !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  body:has(.login-tabs) .login-tabs {
+    margin-bottom: 18px !important;
+  }
+
+  body:has(.login-tabs) .tab {
+    min-height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  body:has(.login-tabs) .form-group {
+    margin-bottom: 12px !important;
+  }
+
+  body:has(.login-tabs) input {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+
+  body:has(.login-tabs) .input-wrap button {
+    width: auto !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+}
