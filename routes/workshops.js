@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Workshop = require('../models/Workshop')
+const Workshop = require('../models/workshop')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 

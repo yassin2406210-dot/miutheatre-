@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Rehearsal = require('../models/Rehearsal')
+const Rehearsal = require('../models/rehearsal')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 

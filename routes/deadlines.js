@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Deadline = require('../models/Deadline')
+const Deadline = require('../models/deadline')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 

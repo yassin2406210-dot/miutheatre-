@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Audition = require('../models/Audition')
+const Audition = require('../models/audition')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Script = require('../models/Script')
+const Script = require('../models/script')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 const multer = require('multer')

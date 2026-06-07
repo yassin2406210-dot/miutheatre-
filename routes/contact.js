@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Contact = require('../models/Contact')
+const Contact = require('../models/contact')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 
