@@ -4,6 +4,7 @@ const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 const multer = require('multer')
 const path = require('path')
+const { getAdminEmail, queueEmail } = require('../utils/email')
  
 // ── Multer Setup ──
 const storage = multer.diskStorage({
@@ -52,6 +53,28 @@ router.post('/', upload.single('scriptFile'), async (req, res) => {
     }
  
     const script = await Script.create(scriptData)
+    queueEmail({
+      to: script.email,
+      subject: 'Your script submission was received',
+      title: 'Script Submission Received',
+      lines: [
+        `Hi ${script.name},`,
+        `We received your script submission: ${script.title}.`,
+        'Our team will review it and update you once a decision is made.'
+      ]
+    })
+    queueEmail({
+      to: getAdminEmail(),
+      subject: 'New script submission',
+      title: 'New Script Submission',
+      lines: [
+        `Title: ${script.title}`,
+        `Author: ${script.name}`,
+        `Email: ${script.email}`,
+        `Genre: ${script.genre || '-'}`,
+        `File: ${script.fileName || 'No file uploaded'}`
+      ]
+    })
     res.json({ success: true, script })
   } catch (err) {
     if (err.code === 'LIMIT_FILE_SIZE')
@@ -83,6 +106,18 @@ router.patch('/:id', auth, adminOnly, async (req, res) => {
       { new: true }
     )
     if (!script) return res.status(404).json({ error: 'Script not found' })
+    queueEmail({
+      to: script.email,
+      subject: `Your script submission was ${script.status}`,
+      title: 'Script Submission Update',
+      lines: [
+        `Hi ${script.name},`,
+        `Your script "${script.title}" was ${script.status}.`,
+        script.status === 'approved'
+          ? 'Congratulations. Your script has been approved for the next step.'
+          : 'Thank you for submitting your work. We appreciate your effort and creativity.'
+      ]
+    })
     res.json(script)
   } catch (err) {
     res.status(500).json({ error: err.message })

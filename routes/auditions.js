@@ -3,6 +3,7 @@ const router = express.Router()
 const Audition = require('../models/audition')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
+const { getAdminEmail, queueEmail } = require('../utils/email')
 
 router.post('/', auth, async (req, res) => {
   try {
@@ -21,6 +22,28 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ error: 'Please tell us why you want to join' })
 
     const a = await Audition.create(req.body)
+    queueEmail({
+      to: a.email,
+      subject: 'Your audition application was received',
+      title: 'Audition Application Received',
+      lines: [
+        `Hi ${a.name},`,
+        'We received your MIU Theatre Club audition application.',
+        'Our team will review it and update you once a decision is made.'
+      ]
+    })
+    queueEmail({
+      to: getAdminEmail(),
+      subject: 'New audition application',
+      title: 'New Audition Application',
+      lines: [
+        `Name: ${a.name}`,
+        `Email: ${a.email}`,
+        `Major: ${a.major || '-'}`,
+        `Year: ${a.year || '-'}`,
+        `Experience: ${a.experience || '-'}`
+      ]
+    })
     res.json({ success: true, a })
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -48,6 +71,18 @@ router.patch('/:id', auth, adminOnly, async (req, res) => {
       { new: true }
     )
     if (!a) return res.status(404).json({ error: 'Audition not found' })
+    queueEmail({
+      to: a.email,
+      subject: `Your audition application was ${a.status}`,
+      title: 'Audition Application Update',
+      lines: [
+        `Hi ${a.name},`,
+        `Your MIU Theatre Club audition application was ${a.status}.`,
+        a.status === 'approved'
+          ? 'Congratulations. Our team will follow up with the next steps.'
+          : 'Thank you for applying. We appreciate your interest in the club.'
+      ]
+    })
     res.json(a)
   } catch (err) {
     res.status(500).json({ error: err.message })

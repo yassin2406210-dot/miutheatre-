@@ -2,6 +2,16 @@ const router = require('express').Router()
 const Workshop = require('../models/workshop')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
+const { queueEmail } = require('../utils/email')
+
+function formatWorkshopDate(date) {
+  if (!date) return '-'
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
 
 // Get all workshops (public)
 router.get('/', async (req, res) => {
@@ -40,6 +50,19 @@ router.post('/:id/join', auth, async (req, res) => {
     })
 
     await workshop.save()
+    queueEmail({
+      to: req.body.email,
+      subject: `Workshop confirmation: ${workshop.title}`,
+      title: 'Workshop Registration Confirmed',
+      lines: [
+        `Hi ${req.body.name},`,
+        `You joined: ${workshop.title}.`,
+        `Date: ${formatWorkshopDate(workshop.date)}`,
+        `Time: ${workshop.time || '-'}`,
+        `Location: ${workshop.location || '-'}`,
+        'See you there.'
+      ]
+    })
     res.json({ success: true, workshop })
   } catch (err) {
     res.status(500).json({ error: err.message })

@@ -2,6 +2,7 @@ const router = require('express').Router()
 const ExitInterview = require('../models/exitinterview')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
+const { getAdminEmail, queueEmail } = require('../utils/email')
 
 // Submit exit request (public)
 router.post('/', async (req, res) => {
@@ -19,6 +20,26 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Reason for leaving is required' })
 
     const exit = await ExitInterview.create(req.body)
+    queueEmail({
+      to: exit.email,
+      subject: 'Your exit interview request was received',
+      title: 'Exit Interview Request Received',
+      lines: [
+        `Hi ${exit.name},`,
+        'We received your MIU Theatre Club exit interview request.',
+        'Our team will review it and update you once a decision is made.'
+      ]
+    })
+    queueEmail({
+      to: getAdminEmail(),
+      subject: 'New exit interview request',
+      title: 'New Exit Interview Request',
+      lines: [
+        `Name: ${exit.name}`,
+        `Email: ${exit.email}`,
+        `Reason: ${exit.reason || '-'}`
+      ]
+    })
     res.json({ success: true, exit })
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -48,6 +69,18 @@ router.patch('/:id', auth, adminOnly, async (req, res) => {
       { new: true }
     )
     if (!exit) return res.status(404).json({ error: 'Exit request not found' })
+    queueEmail({
+      to: exit.email,
+      subject: `Your exit interview request was ${exit.status}`,
+      title: 'Exit Interview Request Update',
+      lines: [
+        `Hi ${exit.name},`,
+        `Your MIU Theatre Club exit interview request was ${exit.status}.`,
+        exit.status === 'approved'
+          ? 'Our team will follow up with the next steps.'
+          : 'If you need more support, please contact the club team.'
+      ]
+    })
     res.json(exit)
   } catch (err) {
     res.status(500).json({ error: err.message })
