@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const ExitInterview = require('../models/exitInterview')
+const ExitInterview = require('../models/exitinterview')
 const auth = require('../middleware/auth')
 const adminOnly = require('../middleware/adminOnly')
 
